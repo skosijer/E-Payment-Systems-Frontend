@@ -9,12 +9,9 @@ import {KeycloakService} from "../shared/keycloak.service";
 @Injectable()
 export class KeycloakGuard implements CanActivate{
 
-
   constructor(){
 
   }
-
-
 
   canActivate(){
     // let keycloak = Keycloak('../../keycloak/keycloak.json');

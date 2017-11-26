@@ -10,12 +10,14 @@ import {provideAuth} from "angular2-jwt";
 import {routing} from "./app.routing";
 import {KeycloakService} from "./shared/keycloak.service";
 import {KeycloakGuard} from "./guard/guard";
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

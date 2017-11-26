@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(private keycloakService:KeycloakService) { }
 
   ngOnInit() {
-    this.keycloakService.checkAuthorization();
+    //this.keycloakService.checkAuthorization();
   }
 
 }
