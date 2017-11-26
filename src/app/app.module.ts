@@ -5,17 +5,32 @@ import { AppComponent } from './app.component';
 
 // Primeng import
 import {ButtonModule} from 'primeng/primeng';
+import { HomeComponent } from './components/home/home.component';
+import {provideAuth} from "angular2-jwt";
+import {routing} from "./app.routing";
+import {KeycloakService} from "./shared/keycloak.service";
+import {KeycloakGuard} from "./guard/guard";
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
-    ButtonModule
+    ButtonModule,
+    routing
   ],
-  providers: [],
+  providers: [
+    provideAuth({
+      globalHeaders: [{'Content-Type': 'application/json'}],
+      noJwtError: true,
+      tokenGetter: () => {
+        return window['_keycloak'].token;
+      }
+    }), KeycloakService, KeycloakGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
