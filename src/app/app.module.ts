@@ -11,13 +11,15 @@ import {routing} from "./app.routing";
 import {KeycloakService} from "./shared/keycloak.service";
 import {KeycloakGuard} from "./guard/guard";
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
