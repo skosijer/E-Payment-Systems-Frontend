@@ -1,10 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 
 // Primeng import
 import {ButtonModule} from 'primeng/primeng';
+import {StepsModule} from 'primeng/primeng';
+import {DropdownModule} from 'primeng/primeng';
+
+// Component imports
 import { HomeComponent } from './components/home/home.component';
 import {provideAuth} from "angular2-jwt";
 import {routing} from "./app.routing";
@@ -12,6 +19,8 @@ import {KeycloakService} from "./shared/keycloak.service";
 import {KeycloakGuard} from "./guard/guard";
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { InsuranceComponent } from './components/insurance/insurance.component';
+
 
 
 @NgModule({
@@ -19,11 +28,18 @@ import { FooterComponent } from './components/footer/footer.component';
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    InsuranceComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpModule,
+    ReactiveFormsModule,
     ButtonModule,
+    StepsModule,
+    DropdownModule,
     routing
   ],
   providers: [
