@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {MenuItem} from 'primeng/primeng';
-import {SelectItem} from 'primeng/primeng';
+import { MenuItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/primeng';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-insurance',
@@ -11,26 +12,58 @@ import {SelectItem} from 'primeng/primeng';
 export class InsuranceComponent implements OnInit {
 
   items: MenuItem[];
-  cities1: SelectItem[];
+  destinacije: SelectItem[];
+  vrstePaketa: SelectItem[];
+  starost: SelectItem[];
 
-  constructor() { }
+  form1: FormGroup;
+  form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 1, brojDece: 1, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1};
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-      this.items = [
-            {label: 'Podaci za proračun'},
-            {label: 'Cena'},
-            {label: 'Podaci za polisu'},
-            {label: 'Porudžbina'}
-        ];
+    this.items = [
+      { label: 'Podaci za proračun' },
+      { label: 'Cena' },
+      { label: 'Podaci za polisu' },
+      { label: 'Porudžbina' }
+    ];
 
-       this.cities1 = [
-            {label:'Select City', value:null},
-            {label:'New York', value:{id:1, name: 'New York', code: 'NY'}},
-            {label:'Rome', value:{id:2, name: 'Rome', code: 'RM'}},
-            {label:'London', value:{id:3, name: 'London', code: 'LDN'}},
-            {label:'Istanbul', value:{id:4, name: 'Istanbul', code: 'IST'}},
-            {label:'Paris', value:{id:5, name: 'Paris', code: 'PRS'}}
-        ];
+    this.destinacije = [
+      { label: 'Odaberi destinaciju', value: null },
+      { label: 'Srbija', value: "RS" },
+      { label: 'Rusija', value: "RU" }
+    ];
+
+     this.vrstePaketa = [
+      { label: 'Individualno', value: "individualno" },
+      { label: 'Grupno', value: "grupno" }
+    ];
+
+    this.starost = [
+        { label: 'Deca (6 meseci - 18 godina)', value: "deca" },
+        { label: 'Odrasli (18 - 60 godina)', value: "odrasli" },
+        { label: 'Starija lica (preko 60 godina)', value: "stariji" }
+    ];
+
+    this.form1 = this.fb.group({
+      destinacija: ['', Validators.required],
+      vrstaPaketa: ['', Validators.required],
+      //polje vezano samo za individualno osiguranje
+      starost: [''],
+      /******************************************/
+      //polja vezana samo za grupno osiguranje
+      brojOdraslih: [''],
+      brojDece: [''],
+      /************************************/
+      pocetakOsiguranja: ['', Validators.required],
+      trajanjeOsiguranja: ['']
+    });
+  }
+
+  submitForm1()
+  {
+     console.log(this.form1);
   }
 
 }

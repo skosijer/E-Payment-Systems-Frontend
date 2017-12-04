@@ -1,4 +1,66 @@
-<div class="container"> 
+<div class="container">
   <p-steps [model]="items"></p-steps>
-  <p-dropdown [options]="cities1" [(ngModel)]="selectedCity1"></p-dropdown>
+  <div class="container" style="padding: 20px">
+    <form [formGroup]="form1" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-md-12">
+          <label class="control-label">Destinacija:</label><br>
+          <p-dropdown [options]="destinacije" formControlName="destinacija" [(ngModel)]="form1Data.destinacija" [style]="{'width':'28%'}"></p-dropdown>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label class="control-label">Vrsta osiguravajućeg paketa:</label><br>
+          <p-dropdown [options]="vrstePaketa" formControlName="vrstaPaketa" [(ngModel)]="form1Data.vrstaPaketa" [style]="{'width':'28%'}"></p-dropdown>
+        </div>
+      </div>
+
+      <!--Polje koje se odnosi samo na individualni osiguravajuci paket-->
+      <div [hidden]="form1.value.vrstaPaketa === 'grupno'">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <label class="control-label">Uzrast lica koje putuje: </label><br>
+            <p-dropdown [options]="starost" formControlName="starost" [(ngModel)]="form1Data.starost" [style]="{'width':'28%'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <!--****************************************************************-->
+
+      <!--Dva dodatna polja pri odabiru grupnog osiguravajuceg paketa-->
+      <div [hidden]="form1.value.vrstaPaketa === 'individualno'">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <label class="control-label">Broj odraslih (18 - 65 godina):</label><br>
+            <p-spinner size="30" formControlName="brojOdraslih" [(ngModel)]="form1Data.brojOdraslih" [min]="1" [max]="2"></p-spinner>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-12">
+            <label class="control-label">Broj dece (6 meseci - 18 godina):</label><br>
+            <p-spinner size="30" formControlName="brojDece" [(ngModel)]="form1Data.brojDece" [min]="1" [max]="10"></p-spinner>
+          </div>
+        </div>
+      </div>
+      <!--****************************************************************-->
+
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label class="control-label">Početak osiguranja:</label><br>
+          <p-calendar formControlName="pocetakOsiguranja" [(ngModel)]="form1Data.pocetakOsiguranja" [showIcon]="true" inputStyleClass="calendarStyleClass"></p-calendar>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label class="control-label">Trajanje osiguranja (u danima):</label><br>
+          <p-spinner size="30" formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja" [min]="1" [max]="100"></p-spinner>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label"></label>
+        <div>
+          <button pButton [disabled]="!form1.valid" class="ui-button-success" (click)="submitForm1()" type="text" icon="fa-check" label="Izračunaj"></button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

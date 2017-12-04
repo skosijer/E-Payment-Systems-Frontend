@@ -24,3 +24,7 @@
         .ui-steps.steps-custom .ui-steps-item .ui-steps-title {
             color: #555555;
         }
+    
+.calendarStyleClass {
+    width: 260px;
+}
