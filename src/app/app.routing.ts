@@ -8,7 +8,7 @@ import {InsuranceComponent} from "./components/insurance/insurance.component";
 const APP_ROUTES: Routes = [
   {path:'', component:HomeComponent},
   {path:'insurance', component:InsuranceComponent}
-]
+];
 
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

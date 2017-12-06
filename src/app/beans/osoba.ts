@@ -4,4 +4,7 @@ export class Osoba{
   public prezime : string;
   public JMBG : string;
   public adresa : string;
+  public brojTelefona : string;
+  public brojPasosa : string;
+  public datumRodjenja : Date = new Date();
 }

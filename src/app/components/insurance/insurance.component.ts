@@ -17,16 +17,22 @@ export class InsuranceComponent implements OnInit {
   starost: SelectItem[];
 
   form1: FormGroup;
-  form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 1, brojDece: 1, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1};
+  form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 0, brojDece: 0, brojStarijih: 0, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1};
+
+  form2: FormGroup;
+  form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : ""};
+
+  private activeIndex = 0;
+  private groupIterNiz : any[] = [];
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.items = [
-      { label: 'Podaci za proračun' },
-      { label: 'Cena' },
-      { label: 'Podaci za polisu' },
-      { label: 'Porudžbina' }
+      { label: 'Osnovni podaci' },
+      { label: 'Individualni podaci' },
+      { label: 'Dodatna osiguranja' },
+      { label: 'Placanje' }
     ];
 
     this.destinacije = [
@@ -41,9 +47,9 @@ export class InsuranceComponent implements OnInit {
     ];
 
     this.starost = [
-        { label: 'Deca (6 meseci - 18 godina)', value: "deca" },
-        { label: 'Odrasli (18 - 60 godina)', value: "odrasli" },
-        { label: 'Starija lica (preko 60 godina)', value: "stariji" }
+        { label: 'Deca (0 - 18 godina)', value: "deca" },
+        { label: 'Odrasli (19 - 70 godina)', value: "odrasli" },
+        { label: 'Starija lica (preko 70 godina)', value: "stariji" }
     ];
 
     this.form1 = this.fb.group({
@@ -55,15 +61,39 @@ export class InsuranceComponent implements OnInit {
       //polja vezana samo za grupno osiguranje
       brojOdraslih: [''],
       brojDece: [''],
+      brojStarijih: [''],
       /************************************/
       pocetakOsiguranja: ['', Validators.required],
       trajanjeOsiguranja: ['']
+    });
+
+    this.form2 = this.fb.group({
+      ime : [''],
+      prezime : [''],
+      jmbg : [''],
+      brojPasosa : [''],
+      datumRodjenja : [''],
+      adresa : [''],
+      brojTelefona : ['']
     });
   }
 
   submitForm1()
   {
-     console.log(this.form1);
+    this.activeIndex++;
+    console.log(this.form1);
+    let br;
+    if(this.form1.controls['vrstaPaketa'].value == 'individualno')
+      br = 1;
+    else
+      br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
+    console.log(br);
+    for (let i = 0; i < br; i++)
+      this.groupIterNiz.push(null);
+  }
+
+  onSubmitStepTwo(form) {
+    console.log(form);
   }
 
 }
