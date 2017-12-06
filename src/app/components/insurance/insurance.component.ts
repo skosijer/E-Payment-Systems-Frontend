@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Osoba} from "../../beans/osoba";
 
 @Component({
   selector: 'app-insurance',
@@ -24,6 +25,7 @@ export class InsuranceComponent implements OnInit {
 
   private activeIndex = 0;
   private groupIterNiz : any[] = [];
+  private osobe : Osoba[] = [];
 
   constructor(private fb: FormBuilder) { }
 
@@ -94,6 +96,11 @@ export class InsuranceComponent implements OnInit {
 
   onSubmitStepTwo(form) {
     console.log(form);
+  }
+
+  previous(){
+    this.groupIterNiz = [];
+    this.activeIndex--;
   }
 
 }
