@@ -1,5 +1,5 @@
 <div class="container">
-  <p-steps [model]="items" [(activeIndex)] = "activeIndex"></p-steps>
+  <p-steps [model]="items" [(activeIndex)]="activeIndex"></p-steps>
   <!-- DIV za prvi korak -->
   <div class="container" style="padding: 20px" *ngIf="activeIndex == 0" align="center">
     <form [formGroup]="form1" class="form-horizontal">
@@ -10,8 +10,7 @@
             <label class="control-label">Destinacija:</label>
           </div>
           <div class="col-lg-4">
-            <p-dropdown [options]="destinacije" formControlName="destinacija" [(ngModel)]="form1Data.destinacija"
-                        [style]="{'width':'100%'}"></p-dropdown>
+            <p-dropdown [options]="destinacije" formControlName="destinacija" [(ngModel)]="form1Data.destinacija" [style]="{'width':'100%'}"></p-dropdown>
           </div>
         </div>
       </div>
@@ -36,8 +35,7 @@
               <label class="control-label">Uzrast lica koje putuje: </label><br>
             </div>
             <div class="col-lg-4">
-              <p-dropdown [options]="starost" formControlName="starost" [(ngModel)]="form1Data.starost"
-                          [style]="{'width':'100%'}"></p-dropdown>
+              <p-dropdown [options]="starost" formControlName="starost" [(ngModel)]="form1Data.starost" [style]="{'width':'100%'}"></p-dropdown>
             </div>
           </div>
         </div>
@@ -53,8 +51,7 @@
               <label class="control-label">Broj starijih lica (71 - vise):</label><br>
             </div>
             <div class="col-lg-4">
-              <p-spinner size="35" formControlName="brojStarijih" [(ngModel)]="form1Data.brojStarijih" [min]="0"
-                         [max]="10"></p-spinner>
+              <p-spinner size="35" formControlName="brojStarijih" [(ngModel)]="form1Data.brojStarijih" [min]="0" [max]="10"></p-spinner>
             </div>
           </div>
         </div>
@@ -65,8 +62,7 @@
               <label class="control-label">Broj odraslih (19 - 70 godina):</label><br>
             </div>
             <div class="col-lg-4">
-              <p-spinner size="35" formControlName="brojOdraslih" [(ngModel)]="form1Data.brojOdraslih" [min]="0"
-                         [max]="10"></p-spinner>
+              <p-spinner size="35" formControlName="brojOdraslih" [(ngModel)]="form1Data.brojOdraslih" [min]="0" [max]="10"></p-spinner>
             </div>
           </div>
         </div>
@@ -77,8 +73,7 @@
               <label class="control-label">Broj dece (0 - 18 godina):</label><br>
             </div>
             <div class="col-lg-4">
-              <p-spinner size="35" formControlName="brojDece" [(ngModel)]="form1Data.brojDece" [min]="0"
-                         [max]="10"></p-spinner>
+              <p-spinner size="35" formControlName="brojDece" [(ngModel)]="form1Data.brojDece" [min]="0" [max]="10"></p-spinner>
             </div>
           </div>
         </div>
@@ -92,8 +87,7 @@
             <label class="control-label">Početak osiguranja:</label><br>
           </div>
           <div class="col-lg-4">
-            <p-calendar formControlName="pocetakOsiguranja" [(ngModel)]="form1Data.pocetakOsiguranja"
-                        inputStyleClass="calendarStyleClass"></p-calendar>
+            <p-calendar formControlName="pocetakOsiguranja" [(ngModel)]="form1Data.pocetakOsiguranja" inputStyleClass="calendarStyleClass"></p-calendar>
           </div>
         </div>
       </div>
@@ -104,19 +98,19 @@
             <label class="control-label">Trajanje osiguranja (u danima):</label><br>
           </div>
           <div class="col-lg-4">
-            <p-spinner size="35" formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja"
-                       [min]="1" [max]="100"></p-spinner>
+            <p-spinner size="35" formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja" [min]="1" [max]="100"></p-spinner>
           </div>
         </div>
       </div>
       <div class="form-group">
         <label class="col-md-3 control-label"></label>
         <div>
-          <button pButton [disabled]="!form1.valid" class="ui-button-success" (click)="submitForm1()" type="text" label="Sledeci korak"></button>
+          <button pButton [disabled]="!form1.valid" class="ui-button-success" (click)="step1Submit()" type="text" label="Sledeci korak"></button>
         </div>
       </div>
     </form>
   </div>
+
   <!-- DIV za drugi korak -->
   <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="center">
     <form (ngSubmit)="onSubmitStepTwo(ff)" #ff="ngForm">
@@ -179,7 +173,7 @@
               <label class="control-label">Datum rodjenja:</label>
             </div>
             <div class="col-md-4">
-              <p-calendar name="datumRodjenja{{i}}" ngModel  inputStyleClass="calendarStyleClass"></p-calendar>
+              <p-calendar name="datumRodjenja{{i}}" ngModel inputStyleClass="calendarStyleClass"></p-calendar>
             </div>
           </div>
         </div>
@@ -199,9 +193,305 @@
         <label class="col-md-3 control-label"></label>
         <div>
           <button pButton [disabled]="!form1.valid" class="ui-button-success" type="text" (click)="previous()" label="Prethodni korak"></button>
-          <button pButton [disabled]="!form1.valid" class="ui-button-success" type="submit" label="Sledeci korak"></button>
+          <button pButton class="ui-button-success" type="submit" (click)="step2Submit()" label="Sledeci korak"></button>
         </div>
       </div>
     </form>
+  </div>
+
+  <!--DIV ZA TRECI KORAK-->
+
+  <div *ngIf="activeIndex == 2">
+  <button pButton class="ui-button-primary" type="text" (click)="showForm3 = !showForm3" label="Osiguranje vozila"></button>
+  <button pButton class="ui-button-primary" type="text" (click)="showForm4 = !showForm4" label="Osiguranje nekretnine"></button>
+
+  <!--PRIKAZ PODATAKA O OSIGURANJIMA VOZILA-->
+  <div style="margin-top: 20px" [hidden]="osiguranjaVozila.length === 0">
+    <p-dataTable [value]="osiguranjaVozila" [responsive]="true" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]">
+
+      <p-header>Osiguranja vozila</p-header>
+      <!--ako zelis da dodas search polja ubaci [filter]="true" filterPlaceholder="Search"-->
+      <p-column *ngFor="let col of osiguranjaVozilaKolone" [field]="col.field" [header]="col.header"></p-column>
+
+      <p-column styleClass="col-button" [style]="{width: '65px', 'text-align': 'center'}">
+        <ng-template pTemplate="header">
+          <header>Obriši</header>
+        </ng-template>
+        <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
+          <button type="button" class="ui-button-danger" (click)="obrisiOsiguranjeVozila(formaOsiguranjaVozila)" pButton icon="fa-times"
+            iconPos="left"></button>
+        </ng-template>
+      </p-column>
+    </p-dataTable>
+  </div>
+
+  <div class="container" [hidden]="!showForm3" style="padding: 20px" align="center">
+
+    <!--FORMA ZA OSIGURANJE VOZILA-->
+    <form [formGroup]="form3" class="form-horizontal">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Marka i tip vozila:</label>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="markaITip" [(ngModel)]="form3Data.markaITip" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Godina proizvodnje:</label><br>
+          </div>
+          <div class="col-lg-4">
+            <p-calendar formControlName="godinaProizvodnje" [(ngModel)]="form3Data.godinaProizvodnje" inputStyleClass="calendarStyleClass"></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Broj tablica: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="brojTablica" [(ngModel)]="form3Data.brojTablica" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Broj šasije: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="brojSasije" [(ngModel)]="form3Data.brojSasije" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Ime vlasnika: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="imeVlasnika" [(ngModel)]="form3Data.imeVlasnika" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Prezime vlasnika: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="prezimeVlasnika" [(ngModel)]="form3Data.prezimeVlasnika" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">JMBG Vlasnika: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="jmbgVlasnika" [(ngModel)]="form3Data.jmbgVlasnika" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Paket osiguranja: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <p-dropdown [options]="paketiOsiguranja" formControlName="paketOsiguranja" [(ngModel)]="form3Data.paketOsiguranja" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <!--Opciona polja u zavisnosti od izbora paketa osiguranja-->
+      <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'slepovanje'">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Broj kilometara za šlepovanje: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <p-spinner size="35" formControlName="slepovanje" [(ngModel)]="form3Data.slepovanje" [min]="1" [max]="10000"></p-spinner>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'popravka'">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Cena popravke (dinari): </label><br>
+          </div>
+          <div class="col-lg-4">
+            <p-spinner size="35" formControlName="popravka" [(ngModel)]="form3Data.popravka" [min]="1" [max]="1000000"></p-spinner>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'smestaj'">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Smeštaj u hotelu (dani): </label><br>
+          </div>
+          <div class="col-lg-4">
+            <p-spinner size="35" formControlName="smestaj" [(ngModel)]="form3Data.smestaj" [min]="1" [max]="1000000"></p-spinner>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'prevoz'">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Vrsta alternativnog prevoza: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <p-dropdown [options]="vrsteAlternativnogPrevoza" formControlName="prevoz" [(ngModel)]="form3Data.prevoz" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <!--**********************************************************-->
+      <div class="form-group">
+        <label class="col-md-3 control-label"></label>
+        <div>
+          <button pButton [disabled]="!form3.valid" class="ui-button-success" type="submit" (click)="dodajOsiguranjeVozila()" label="Dodaj osiguranje vozila"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!--PODACI O OSIGURANJU NEKRETNINA-->
+  <div style="margin-top: 20px" [hidden]="osiguranjaNekretnina.length === 0">
+    <p-dataTable [value]="osiguranjaNekretnina" [responsive]="true" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]">
+
+      <p-header>Osiguranja nekretnina</p-header>
+      <!--ako zelis da dodas search polja ubaci [filter]="true" filterPlaceholder="Search"-->
+      <p-column *ngFor="let col of osiguranjaNekretninaKolone" [field]="col.field" [header]="col.header"></p-column>
+
+      <p-column styleClass="col-button" [style]="{width: '65px', 'text-align': 'center'}">
+        <ng-template pTemplate="header">
+          <header>Obriši</header>
+        </ng-template>
+        <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
+          <button type="button" class="ui-button-danger" (click)="obrisiOsiguranjeNekretnine(formaOsiguranjaNekretnine)" pButton icon="fa-times"
+            iconPos="left"></button>
+        </ng-template>
+      </p-column>
+    </p-dataTable>
+  </div>
+
+  <div class="container" [hidden]="!showForm4" style="padding: 20px" align="center">
+
+    <!--FORMA ZA OSIGURANJE NEKRETNINA-->
+    <form [formGroup]="form4" class="form-horizontal">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Površina stana (m2):</label>
+          </div>
+          <div class="col-lg-4">
+            <p-spinner size="35" formControlName="povrsinaStana" [(ngModel)]="form4Data.povrsinaStana" [min]="1" [max]="5000"></p-spinner>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Starost stana (godine):</label>
+          </div>
+          <div class="col-lg-4">
+            <p-spinner size="35" formControlName="starostStana" [(ngModel)]="form4Data.starostStana" [min]="1" [max]="200"></p-spinner>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Procenjena vrednost stana (RSD):</label>
+          </div>
+          <div class="col-lg-4">
+            <p-spinner size="35" formControlName="procenjenaVrednostStana" [(ngModel)]="form4Data.procenjenaVrednostStana" [min]="0" [max]="10"></p-spinner>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Od čega se osigurava:</label>
+          </div>
+          <div class="col-lg-4">
+            <p-dropdown [options]="osiguranjaStana" formControlName="osiguranjeStana" [(ngModel)]="form4Data.osiguranjeStana" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Ime vlasnika:</label>
+          </div>
+          <div class="col-lg-4">
+               <input class="form-control" formControlName="imeVlasnika" [(ngModel)]="form4Data.imeVlasnika" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Prezime vlasnika: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="prezimeVlasnika" [(ngModel)]="form4Data.prezimeVlasnika" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">JMBG Vlasnika: </label><br>
+          </div>
+          <div class="col-lg-4">
+            <input class="form-control" formControlName="jmbgVlasnika" [(ngModel)]="form4Data.jmbgVlasnika" type="text">
+          </div>
+        </div>
+      </div>
+     <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Adresa vlasnika:</label>
+          </div>
+          <div class="col-lg-4">
+               <input class="form-control" formControlName="adresaVlasnika" [(ngModel)]="form4Data.adresaVlasnika" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label"></label>
+        <div>
+          <button pButton [disabled]="!form4.valid" class="ui-button-success" type="submit" (click)="dodajOsiguranjeNekretnine()" label="Dodaj osiguranje nekretnine"></button>
+        </div>
+      </div>
+    </form>
+  </div>
   </div>
 </div>

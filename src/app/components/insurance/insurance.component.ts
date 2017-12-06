@@ -12,16 +12,48 @@ import {Osoba} from "../../beans/osoba";
 })
 export class InsuranceComponent implements OnInit {
 
+  //Podaci za select polja u formama
+
   items: MenuItem[];
   destinacije: SelectItem[];
   vrstePaketa: SelectItem[];
   starost: SelectItem[];
+  paketiOsiguranja : SelectItem[];
+  vrsteAlternativnogPrevoza : SelectItem[];
+  osiguranjaStana : SelectItem[];
+
+  //************************************/
+
+  //Podaci za prikaz tabela koje sadrze sve informacije o dodatnim osiguranjima
+
+  osiguranjaVozila : any[] = [];
+  osiguranjaVozilaKolone : any[];
+
+  osiguranjaNekretnina : any[] = [];
+  osiguranjaNekretninaKolone : any[];
+
+  //Forme za kupovinu polise
 
   form1: FormGroup;
   form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 0, brojDece: 0, brojStarijih: 0, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1};
 
   form2: FormGroup;
   form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : ""};
+
+  form3: FormGroup;
+  form3Data: any = {markaITip: "", godinaProizvodnje: new Date(), brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus'};
+
+  form4: FormGroup;
+  form4Data: any = {povrsinaStana: 1, starostStana: 1, procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: ''};
+
+  //**********************************************/
+
+  //Boolean vrednosti za medjusobno sakrivanje formi
+  
+  showForm3 : boolean = false;
+  showForm4 : boolean = false;
+
+  //*********************************************/
 
   private activeIndex = 0;
   private groupIterNiz : any[] = [];
@@ -54,6 +86,49 @@ export class InsuranceComponent implements OnInit {
         { label: 'Starija lica (preko 70 godina)', value: "stariji" }
     ];
 
+    this.paketiOsiguranja = [
+      { label: 'Odaberi paket', value: null },
+      { label: 'Šlepovanje do određene kilometraže', value: "slepovanje" },
+      { label: 'Popravka do određene cene', value: "popravka" },
+      { label: 'Smeštaj u hotelu do određenog broja dana', value: "smestaj" },
+      { label: 'Alternativni prevoz', value: "prevoz" }
+    ];
+
+     this.vrsteAlternativnogPrevoza = [
+        { label: 'Autobus', value: "autobus" },
+        { label: 'Automobil', value: "automobil" },
+        { label: 'Avion', value: "avion" }
+    ];
+
+    this.osiguranjaStana = [
+        { label: 'Osiguranje od poplave', value: "Poplava" },
+        { label: 'Osiguranje od krađe', value: "Krađa" },
+        { label: 'Osiguranje od požara', value: "Požar" }
+    ];
+
+    this.osiguranjaVozilaKolone = [
+            {field: 'markaITip', header: 'Marka i tip vozila'},
+          //{field: 'godinaProizvodnje', header: 'Godina proizvodnje'}, //Potrebno je formatirati ovaj datum na neki nacin
+            {field: 'brojTablica', header: 'Broj tablica'},
+            {field: 'brojSasije', header: 'Broj šasije'},
+            {field: 'paketOsiguranja', header: 'Paket osiguranja'},
+            {field: 'slepovanje', header: 'Šlepovanje (KM)'},
+            {field: 'popravka', header: 'Popravka (RSD)'},
+            {field: 'smestaj', header: 'Smeštaj (dana)'},
+            {field: 'prevoz', header: 'Prevoz'}
+    ];
+
+     this.osiguranjaNekretninaKolone = [
+            {field: 'povrsinaStana', header: 'Površina stana'},
+            {field: 'starostStana', header: 'Starost stana (godine)'},
+            {field: 'procenjenaVrednostStana', header: 'Procenjena vrednost stana (RSD)'},
+            {field: 'osiguranjeStana', header: 'Od čega se osigurava'},
+            {field: 'imeVlasnika', header: 'Ime vlasnika'},
+            {field: 'prezimeVlasnika', header: 'Adresa vlasnika'},
+            {field: 'jmbgVlasnika', header: 'JMBG vlasnika'},
+            {field: 'adresaVlasnika', header: 'Adresa vlasnika'}
+    ];
+
     this.form1 = this.fb.group({
       destinacija: ['', Validators.required],
       vrstaPaketa: ['', Validators.required],
@@ -78,9 +153,35 @@ export class InsuranceComponent implements OnInit {
       adresa : [''],
       brojTelefona : ['']
     });
+
+    this.form3 = this.fb.group({
+      markaITip : [''],
+      godinaProizvodnje : [''],
+      brojTablica : [''],
+      brojSasije : [''],
+      imeVlasnika: [''],
+      prezimeVlasnika: [''],
+      jmbgVlasnika: [''],
+      paketOsiguranja : ['',  Validators.required],
+      slepovanje : [''],
+      popravka : [''],
+      smestaj : [''],
+      prevoz : ['']
+    });
+
+     this.form4 = this.fb.group({
+      povrsinaStana : [''],
+      starostStana : [''],
+      procenjenaVrednostStana : [''],
+      osiguranjeStana : [''],
+      imeVlasnika: [''],
+      prezimeVlasnika: [''],
+      jmbgVlasnika: [''],
+      adresaVlasnika : ['']
+    });
   }
 
-  submitForm1()
+  step1Submit()
   {
     this.activeIndex++;
     console.log(this.form1);
@@ -94,13 +195,49 @@ export class InsuranceComponent implements OnInit {
       this.groupIterNiz.push(null);
   }
 
+  step2Submit()
+  {
+     this.activeIndex++;
+  }
+
   onSubmitStepTwo(form) {
     console.log(form);
+
   }
 
   previous(){
     this.groupIterNiz = [];
     this.activeIndex--;
+  }
+
+  dodajOsiguranjeVozila()
+  {
+      //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
+      let x = Object.assign({}, this.form3Data);
+      //spread operator za unos kopije objekta u niz
+      this.osiguranjaVozila = [...this.osiguranjaVozila, x];
+  }
+
+  obrisiOsiguranjeVozila(formaOsiguranjaVozila)
+  {
+      let index = this.osiguranjaVozila.indexOf(formaOsiguranjaVozila);
+      this.osiguranjaVozila.splice(index, 1);
+      this.osiguranjaVozila =  [...this.osiguranjaVozila];
+  }
+
+  dodajOsiguranjeNekretnine()
+  {
+      //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
+      let x = Object.assign({}, this.form4Data);
+      //spread operator za unos kopije objekta u niz
+      this.osiguranjaNekretnina = [...this.osiguranjaNekretnina, x];
+  }
+
+   obrisiOsiguranjeNekretnine(formaOsiguranjaNekretnine)
+  {
+      let index = this.osiguranjaNekretnina.indexOf(formaOsiguranjaNekretnine);
+      this.osiguranjaNekretnina.splice(index, 1);
+      this.osiguranjaNekretnina =  [...this.osiguranjaNekretnina];
   }
 
 }
