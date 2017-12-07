@@ -4,6 +4,7 @@ import { SelectItem } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Osoba} from "../../beans/osoba";
 
+
 @Component({
   selector: 'app-insurance',
   templateUrl: './insurance.component.html',
@@ -15,6 +16,7 @@ export class InsuranceComponent implements OnInit {
   //Podaci za select polja u formama
 
   items: MenuItem[];
+  itemsTwo: MenuItem[];
   destinacije: SelectItem[];
   vrstePaketa: SelectItem[];
   starost: SelectItem[];
@@ -41,21 +43,24 @@ export class InsuranceComponent implements OnInit {
   form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : ""};
 
   form3: FormGroup;
-  form3Data: any = {markaITip: "", godinaProizvodnje: new Date(), brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus'};
+  form3Data: any = {markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus'};
 
   form4: FormGroup;
-  form4Data: any = {povrsinaStana: 1, starostStana: 1, procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: ''};
+  form4Data: any = {povrsinaStana: "", starostStana: "", procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: ''};
 
   //**********************************************/
 
   //Boolean vrednosti za medjusobno sakrivanje formi
-  
+
   showForm3 : boolean = false;
   showForm4 : boolean = false;
 
+  private showCarDialog = false;
+  private showHomeDialog = false;
+
   //*********************************************/
 
-  private activeIndex = 0;
+  private activeIndex = 2;
   private groupIterNiz : any[] = [];
   private osobe : Osoba[] = [];
 
@@ -65,7 +70,7 @@ export class InsuranceComponent implements OnInit {
     this.items = [
       { label: 'Osnovni podaci' },
       { label: 'Individualni podaci' },
-      { label: 'Dodatna osiguranja' },
+      { label: 'Ostala osiguranja' },
       { label: 'Placanje' }
     ];
 
@@ -181,10 +186,13 @@ export class InsuranceComponent implements OnInit {
     });
   }
 
-  step1Submit()
+  stepSubmit()
   {
     this.activeIndex++;
-    console.log(this.form1);
+
+    if(this.activeIndex != 1)
+        return;
+
     let br;
     if(this.form1.controls['vrstaPaketa'].value == 'individualno')
       br = 1;
@@ -195,19 +203,15 @@ export class InsuranceComponent implements OnInit {
       this.groupIterNiz.push(null);
   }
 
-  step2Submit()
-  {
-     this.activeIndex++;
-  }
-
   onSubmitStepTwo(form) {
     console.log(form);
 
   }
 
   previous(){
-    this.groupIterNiz = [];
-    this.activeIndex--;
+      if(this.activeIndex == 1)
+        this.groupIterNiz = [];
+      this.activeIndex--;
   }
 
   dodajOsiguranjeVozila()
@@ -216,6 +220,8 @@ export class InsuranceComponent implements OnInit {
       let x = Object.assign({}, this.form3Data);
       //spread operator za unos kopije objekta u niz
       this.osiguranjaVozila = [...this.osiguranjaVozila, x];
+      this.showCarDialog = false;
+      this.form3.reset();
   }
 
   obrisiOsiguranjeVozila(formaOsiguranjaVozila)
@@ -231,6 +237,8 @@ export class InsuranceComponent implements OnInit {
       let x = Object.assign({}, this.form4Data);
       //spread operator za unos kopije objekta u niz
       this.osiguranjaNekretnina = [...this.osiguranjaNekretnina, x];
+      this.showHomeDialog = false;
+      this.form4.reset();
   }
 
    obrisiOsiguranjeNekretnine(formaOsiguranjaNekretnine)
@@ -239,5 +247,13 @@ export class InsuranceComponent implements OnInit {
       this.osiguranjaNekretnina.splice(index, 1);
       this.osiguranjaNekretnina =  [...this.osiguranjaNekretnina];
   }
+
+    onShowCarDialog() {
+      this.showCarDialog = true;
+    }
+
+    onShowHomeDialog() {
+      this.showHomeDialog = true;
+    }
 
 }
