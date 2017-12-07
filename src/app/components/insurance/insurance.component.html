@@ -535,7 +535,11 @@
               <label class="control-label">Ime:</label>
             </div>
             <div class="col-lg-4">
-              <input class="form-control" [ngModel]="form2Data.ime" type="text" name="ime{{i}}">
+              <input class="form-control" required [ngModel]="form2Data.ime" type="text" #ime="ngModel" name="ime{{i}}">
+              <div style="color: red; font-weight: 300" class="form-control-feedback"
+                   *ngIf="!ime.valid && ime.touched">
+                Polje je obavezno
+              </div>
             </div>
           </div>
         </div>
@@ -545,7 +549,11 @@
             <div class="col-lg-3">
               <label class="control-label">Prezime:</label></div>
             <div class="col-lg-4">
-              <input class="form-control" name="prezime{{i}}" [ngModel]="form2Data.prezime" type="text">
+              <input class="form-control" name="prezime{{i}}" required #prezime="ngModel" [ngModel]="form2Data.prezime" type="text">
+              <div style="color: red; font-weight: 300" class="form-control-feedback"
+                   *ngIf="!prezime.valid && prezime.touched">
+                Polje je obavezno
+              </div>
             </div>
           </div>
         </div>
@@ -555,7 +563,12 @@
             <div class="col-lg-3">
               <label class="control-label">JMBG:</label></div>
             <div class="col-lg-4">
-              <input class="form-control" name="jmbg{{i}}" [ngModel]="form2Data.jmbg" type="text">
+              <input class="form-control" #jmbg="ngModel" minlength="13" maxlength="13" required name="jmbg{{i}}" [ngModel]="form2Data.jmbg" type="text" pattern="[0-9]*">
+              <div style="color: red; font-weight: 300" class="form-control-feedback"
+                   *ngIf="jmbg.errors && (jmbg.dirty || jmbg.touched)">
+                <span *ngIf="jmbg.errors.required">Polje je obavezno</span>
+                <span *ngIf="jmbg.errors.minlength">JMBG ima tacno 13 brojeva, potrebno je uneti jos {{jmbg.errors.minlength.requiredLength - jmbg.errors.minlength.actualLength}} broj/a/eva </span>
+              </div>
             </div>
           </div>
         </div>
@@ -565,7 +578,11 @@
             <div class="col-lg-3">
               <label class="control-label">Adresa:</label></div>
             <div class="col-lg-4">
-              <input class="form-control" name="adresa{{i}}" [ngModel]="form2Data.adresa" type="text">
+              <input class="form-control" #adresa="ngModel" required name="adresa{{i}}" [ngModel]="form2Data.adresa" type="text">
+              <div style="color: red; font-weight: 300" class="form-control-feedback"
+                   *ngIf="!adresa.valid && adresa.touched">
+                Polje je obavezno
+              </div>
             </div>
           </div>
         </div>
@@ -575,7 +592,12 @@
             <div class="col-lg-3">
               <label class="control-label">Broj pasosa:</label></div>
             <div class="col-lg-4">
-              <input class="form-control" name="brojPasosa{{i}}" [ngModel]="form2Data.brojPasosa" type="text">
+              <input class="form-control" #brojPasosa="ngModel" required minlength="7" maxlength="7" name="brojPasosa{{i}}" [ngModel]="form2Data.brojPasosa" type="text">
+              <div style="color: red; font-weight: 300" class="form-control-feedback"
+                   *ngIf="brojPasosa.errors && (brojPasosa.dirty || brojPasosa.touched)">
+                <span *ngIf="brojPasosa.errors.required">Polje je obavezno</span>
+                <span *ngIf="brojPasosa.errors.minlength">Broj pasosa ima tacno 7 brojeva, potrebno je uneti jos {{brojPasosa.errors.minlength.requiredLength - brojPasosa.errors.minlength.actualLength}} broj/a/eva </span>
+              </div>
             </div>
           </div>
         </div>
@@ -586,7 +608,11 @@
               <label class="control-label">Broj telefona:</label>
             </div>
             <div class="col-lg-4">
-              <input class="form-control" name="brojTelefona{{i}}" [ngModel]="form2Data.brojTelefona" type="text">
+              <input class="form-control" #brojTelefona="ngModel" required pattern="[0-9]" name="brojTelefona{{i}}" [ngModel]="form2Data.brojTelefona" type="text">
+              <div style="color: red; font-weight: 300" class="form-control-feedback"
+                   *ngIf="!brojTelefona.valid && brojTelefona.touched">
+                Polje je obavezno
+              </div>
             </div>
           </div>
         </div>
@@ -916,6 +942,98 @@
       </div>
     </div>
   </div>
+
+
+
+  <div class="container" *ngIf="activeIndex==3">
+    <div class="row">
+
+      <div class="receipt-main">
+
+              <div class="receipt-left">
+                <h1>Racun</h1>
+              </div>
+
+        <div>
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th>Osiguranje</th>
+              <th>Cena</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="col-md-9">Medjunarodno putno osiguranje</td>
+              <td class="col-md-3"><i class="fa fa-inr"></i> 15,000/-</td>
+            </tr>
+            <tr>
+              <td class="col-md-9">Osiguranje vozila</td>
+              <td class="col-md-3"><i class="fa fa-inr"></i> 6,00/-</td>
+            </tr>
+            <tr>
+              <td class="col-md-9">Osiguranje nekretnine</td>
+              <td class="col-md-3"><i class="fa fa-inr"></i> 35,00/-</td>
+            </tr>
+            <tr>
+              <td class="text-right">
+                <p>
+                  <strong>Total Amount: </strong>
+                </p>
+                <p>
+                  <strong>Late Fees: </strong>
+                </p>
+                <p>
+                  <strong>Payable Amount: </strong>
+                </p>
+                <p>
+                  <strong>Balance Due: </strong>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <strong><i class="fa fa-inr"></i> 65,500/-</strong>
+                </p>
+                <p>
+                  <strong><i class="fa fa-inr"></i> 500/-</strong>
+                </p>
+                <p>
+                  <strong><i class="fa fa-inr"></i> 1300/-</strong>
+                </p>
+                <p>
+                  <strong><i class="fa fa-inr"></i> 9500/-</strong>
+                </p>
+              </td>
+            </tr>
+            <tr>
+
+              <td class="text-right"><h2><strong>Total: </strong></h2></td>
+              <td class="text-left text-danger"><h2><strong><i class="fa fa-inr"></i> 31.566/-</strong></h2></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row">
+          <div class="receipt-header receipt-header-mid receipt-footer">
+            <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+              <div class="receipt-right">
+                <p><b>Date :</b> 08 Dec 2017</p>
+                <h5 style="color: rgb(140, 140, 140);">Thank you for your business!</h5>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4">
+              <div class="receipt-left">
+                <h1>Signature</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 
   <br>
   <br>
