@@ -1,13 +1,13 @@
 <div class="container">
   <p-steps [model]="items" [(activeIndex)] = "activeIndex"></p-steps>
   <!-- DIV za prvi korak -->
-  <div class="container" style="padding: 20px" *ngIf="activeIndex == 0" align="center">
+  <div class="container" style="padding: 40px" *ngIf="activeIndex == 0" align="center">
     <form [formGroup]="form1" class="form-horizontal">
       <div class="form-group">
         <div class="row">
           <div class="col-lg-2"></div>
-          <div class="col-lg-3">
-            <label class="control-label">Destinacija:</label>
+          <div class="col-lg-3" > 
+            <label class="control-label" >Destinacija:</label>
           </div>
           <div class="col-lg-4">
             <p-dropdown [options]="destinacije" formControlName="destinacija" [(ngModel)]="form1Data.destinacija"
@@ -54,7 +54,7 @@
             </div>
             <div class="col-lg-4">
               <p-spinner size="35" formControlName="brojStarijih" [(ngModel)]="form1Data.brojStarijih" [min]="0"
-                         [max]="10"></p-spinner>
+                         [max]="10" ></p-spinner>
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="col-lg-4">
               <p-spinner size="35" formControlName="brojDece" [(ngModel)]="form1Data.brojDece" [min]="0"
-                         [max]="10"></p-spinner>
+                         [max]="10" ></p-spinner>
             </div>
           </div>
         </div>
@@ -91,9 +91,10 @@
           <div class="col-lg-3">
             <label class="control-label">Početak osiguranja:</label><br>
           </div>
-          <div class="col-lg-4">
-            <p-calendar formControlName="pocetakOsiguranja" [(ngModel)]="form1Data.pocetakOsiguranja"
-                        inputStyleClass="calendarStyleClass"></p-calendar>
+          <div class="col-lg-4" style="margin-left: -16px">
+            <p-calendar size="35" formControlName="pocetakOsiguranja" [(ngModel)]="form1Data.pocetakOsiguranja"
+             inputStyleClass="calendarStyleClass" [showIcon]="true"  ></p-calendar>
+             
           </div>
         </div>
       </div>
@@ -103,8 +104,8 @@
           <div class="col-lg-3">
             <label class="control-label">Trajanje osiguranja (u danima):</label><br>
           </div>
-          <div class="col-lg-4">
-            <p-spinner size="35" formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja"
+          <div class="col-lg-4" >
+            <p-spinner size="34" formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja"
                        [min]="1" [max]="100"></p-spinner>
           </div>
         </div>
@@ -112,7 +113,7 @@
       <div class="form-group">
         <label class="col-md-3 control-label"></label>
         <div>
-          <button pButton [disabled]="!form1.valid" class="ui-button-success" (click)="submitForm1()" type="text" label="Sledeci korak"></button>
+          <button pButton [disabled]="!form1.valid" class="ui-button-success" (click)="submitForm1()" type="text" label="Sledeci korak" ></button>
         </div>
       </div>
     </form>
@@ -128,7 +129,7 @@
               <label class="control-label">Ime:</label>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="ime{{i}}" ngModel required>
+              <input type="text" pInputText [(ngModel)]="form2Data.ime" name="ime" />
             </div>
           </div>
         </div>
@@ -138,7 +139,7 @@
             <div class="col-lg-3">
               <label class="control-label">Prezime:</label></div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="prezime{{i}}" ngModel required>
+              <input type="text" pInputText [(ngModel)]="form2Data.prezime" name="prezime" />
             </div>
           </div>
         </div>
@@ -148,7 +149,7 @@
             <div class="col-lg-3">
               <label class="control-label">JMBG:</label></div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="jmbg{{i}}" ngModel required>
+              <input type="text" pInputText [(ngModel)]="form2Data.jmbg" name="jmbg" />
             </div>
           </div>
         </div>
@@ -158,7 +159,7 @@
             <div class="col-lg-3">
               <label class="control-label">Adresa:</label></div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="adresa{{i}}" ngModel required>
+              <input type="text" pInputText [(ngModel)]="form2Data.adresa" name="adresa" />
             </div>
           </div>
         </div>
@@ -168,7 +169,7 @@
             <div class="col-lg-3">
               <label class="control-label">Broj pasosa:</label></div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="brojPasosa{{i}}" ngModel required>
+              <input type="text" pInputText [(ngModel)]="form2Data.brojPasosa" name="brojPasosa" />
             </div>
           </div>
         </div>
@@ -178,8 +179,8 @@
             <div class="col-lg-3">
               <label class="control-label">Datum rodjenja:</label>
             </div>
-            <div class="col-md-4">
-              <p-calendar name="datumRodjenja{{i}}" ngModel  inputStyleClass="calendarStyleClass"></p-calendar>
+            <div class="col-md-4" style="margin-left: -16px">
+             
             </div>
           </div>
         </div>
@@ -190,7 +191,7 @@
               <label class="control-label">Broj telefona:</label>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="brojTelefona{{i}}" ngModel required>
+              <input type="text" pInputText [(ngModel)]="form2Data.brojTelefona" name="brojTelefona" />
             </div>
           </div>
         </div>

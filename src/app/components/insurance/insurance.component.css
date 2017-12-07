@@ -26,5 +26,38 @@
         }
 
 .calendarStyleClass {
-    width: 340px;
+    width: 292px;
+    color: darkblue; 
+    text-align: left; 
 }
+
+.col-lg-3 {
+    text-align: right; 
+}
+
+body {
+    color: darkblue; 
+}
+
+.col-lg-4 .ui-dropdown-label {
+    color: darkblue; 
+    text-align: left; 
+}
+
+.col-lg-4 .ui-dropdown-item {
+    color: darkblue; 
+    text-align: left; 
+}
+
+
+.ui-spinner-input {
+    color: darkblue; 
+}
+
+.ui-button-success {
+    width: 150px; 
+    height: 40px; 
+    margin-right: -347px; 
+    border-radius: 12px; 
+}
+

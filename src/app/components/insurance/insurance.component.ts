@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
+import { InputTextModule } from 'primeng/primeng'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Osoba} from "../../beans/osoba";
 
