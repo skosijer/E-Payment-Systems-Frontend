@@ -13,6 +13,7 @@ import {StepsModule} from 'primeng/primeng';
 import {DropdownModule} from 'primeng/primeng';
 import {SpinnerModule} from 'primeng/primeng';
 import {CalendarModule} from 'primeng/primeng';
+import {DataTableModule,SharedModule} from 'primeng/primeng';
 
 // Component imports
 import { HomeComponent } from './components/home/home.component';
@@ -44,6 +45,8 @@ import { InsuranceComponent } from './components/insurance/insurance.component';
     DropdownModule,
     SpinnerModule,
     CalendarModule,
+    DataTableModule,
+    SharedModule,
     routing
   ],
   providers: [
