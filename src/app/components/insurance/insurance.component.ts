@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
+import { InputTextModule } from 'primeng/primeng'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Osoba} from "../../beans/osoba";
 
@@ -60,7 +61,7 @@ export class InsuranceComponent implements OnInit {
 
   //*********************************************/
 
-  private activeIndex = 2;
+  private activeIndex = 0;
   private groupIterNiz : any[] = [];
   private osobe : Osoba[] = [];
 
@@ -204,7 +205,7 @@ export class InsuranceComponent implements OnInit {
   }
 
   onSubmitStepTwo(form) {
-    console.log(form);
+    this.activeIndex++;
 
   }
 

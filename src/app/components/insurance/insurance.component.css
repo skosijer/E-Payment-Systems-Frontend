@@ -26,9 +26,41 @@
         }
 
 .calendarStyleClass {
-    width: 340px;
+    width: 292px;
+    color: #0081c2;
+    text-align: left; 
 }
 
 .calendar2StyleClass {
     width: 323px;
+}
+
+.col-lg-3 {
+    text-align: right; 
+}
+
+body {
+    color: #0081c2;
+}
+
+.col-lg-4 .ui-dropdown-label {
+    color: #0081c2;
+    text-align: left; 
+}
+
+.col-lg-4 .ui-dropdown-item {
+    color: #0081c2;
+    text-align: left; 
+}
+
+
+.ui-spinner-input {
+    color: #0081c2;
+}
+
+.ui-button-success {
+    width: 150px; 
+    height: 40px; 
+    margin-right: -347px; 
+    border-radius: 12px; 
 }
