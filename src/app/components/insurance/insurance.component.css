@@ -23,12 +23,13 @@
 
         .ui-steps.steps-custom .ui-steps-item .ui-steps-title {
             color: #555555;
+          font-family: Impact;
         }
 
 .calendarStyleClass {
     width: 292px;
     color: #0081c2;
-    text-align: left; 
+    text-align: left;
 }
 
 .calendarStyleClass {
@@ -36,21 +37,23 @@
 }
 
 .col-lg-3 {
-    text-align: right; 
+    text-align: right;
 }
 
 body {
-    color: #0081c2;
+    color: #55535b;
+    font-family: Lato;
+    font-weight: 800;
 }
 
 .col-lg-4 .ui-dropdown-label {
     color: #0081c2;
-    text-align: left; 
+    text-align: left;
 }
 
 .col-lg-4 .ui-dropdown-item {
     color: #0081c2;
-    text-align: left; 
+    text-align: left;
 }
 
 
@@ -58,12 +61,24 @@ body {
     color: #0081c2;
 }
 
-.ui-button-success {
-    width: 150px; 
-    height: 40px; 
-    border-radius: 12px; 
+.ui-button-warning {
+    width: 150px;
+    height: 40px;
+    border-radius: 12px;
+    font-family: 'Lato';
+    font-weight: 200;
 }
 
 .calendar1StyleClass {
-    width: 304px; 
+    width: 304px;
 }
+
+.forms-container{
+  background-image: url("../../../images/luda-slika3.svg");
+  background-size: cover;
+  height: 100%;
+  margin-top: 20px;
+}
+
+
+

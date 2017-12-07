@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
-import { InputTextModule } from 'primeng/primeng'; 
+import { InputTextModule } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Osoba} from "../../beans/osoba";
 
@@ -64,6 +64,9 @@ export class InsuranceComponent implements OnInit {
   private activeIndex = 0;
   private groupIterNiz : any[] = [];
   private osobe : Osoba[] = [];
+
+
+
 
   constructor(private fb: FormBuilder) { }
 
@@ -205,8 +208,28 @@ export class InsuranceComponent implements OnInit {
   }
 
   onSubmitStepTwo(form) {
+    console.log(form);
     this.activeIndex++;
+    let br;
+    if (this.form1.controls['vrstaPaketa'].value == 'individualno')
+      br = 1;
+    else {
+      br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
+    }
 
+    for (let i = 0; i < br; i++) {
+      let osoba = new Osoba();
+      console.log('adresa' + i);
+      console.log(form.controls['adresa' + i].value);
+      osoba.adresa = form.controls['adresa' + i].value;
+      osoba.brojPasosa = form.controls['brojPasosa' + i].value;
+      osoba.brojTelefona = form.controls['brojTelefona' + i].value;
+      osoba.ime = form.controls['ime' + i].value;
+      osoba.JMBG = form.controls['jmbg' + i].value;
+      osoba.prezime = form.controls['prezime' + i].value;
+      this.osobe.push(osoba);
+    }
+    console.log(this.osobe);
   }
 
   previous(){

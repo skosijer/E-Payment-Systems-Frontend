@@ -10,7 +10,8 @@
       "assets": [
         "assets",
         "favicon.ico",
-        "keycloak"
+        "keycloak",
+        "images"
       ],
       "index": "index.html",
       "main": "main.ts",
