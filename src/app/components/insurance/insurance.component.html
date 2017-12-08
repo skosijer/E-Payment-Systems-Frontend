@@ -664,7 +664,7 @@
                 <label class="control-label">Godina proizvodnje:</label><br>
               </div>
               <div class="col-lg-8">
-                <p-calendar formControlName="godinaProizvodnje" [(ngModel)]="form3Data.godinaProizvodnje" inputStyleClass="calendar2StyleClass"></p-calendar>
+                <p-calendar formControlName="godinaProizvodnje" [(ngModel)]="form3Data.godinaProizvodnje" size="35" [showIcon]="true" inputStyleClass="calendarStyleClass"></p-calendar>
               </div>
             </div>
           </div>
@@ -682,7 +682,7 @@
           <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj öasije: </label><br>
+                <label class="control-label">Broj šasije: </label><br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="brojSasije" [(ngModel)]="form3Data.brojSasije" type="text">
@@ -737,7 +737,7 @@
           <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'slepovanje'">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj kilometara za ölepovanje: </label><br>
+                <label class="control-label">Broj kilometara za šlepovanje: </label><br>
               </div>
               <div class="col-lg-8">
                 <p-spinner size="35" formControlName="slepovanje" [(ngModel)]="form3Data.slepovanje" [min]="1"
@@ -759,7 +759,7 @@
           <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'smestaj'">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Smeötaj u hotelu (dani): </label><br>
+                <label class="control-label">Smeštaj u hotelu (dani): </label><br>
               </div>
               <div class="col-lg-8">
                 <p-spinner size="35" formControlName="smestaj" [(ngModel)]="form3Data.smestaj" [min]="1"
@@ -796,7 +796,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-4">
-              <label class="control-label">Povröina stana (m2):</label>
+              <label class="control-label">Površina stana (m2):</label>
             </div>
             <div class="col-lg-8">
               <p-spinner size="35" formControlName="povrsinaStana" [(ngModel)]="form4Data.povrsinaStana" [min]="1"
@@ -901,7 +901,7 @@
 
         <p-column styleClass="col-button" [style]="{width: '65px', 'text-align': 'center'}">
           <ng-template pTemplate="header">
-            <header>Obriöi</header>
+            <header>Obriši</header>
           </ng-template>
           <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
             <button type="button" class="ui-button-danger" (click)="obrisiOsiguranjeVozila(formaOsiguranjaVozila)"
@@ -923,7 +923,7 @@
 
         <p-column styleClass="col-button" [style]="{width: '65px', 'text-align': 'center'}">
           <ng-template pTemplate="header">
-            <header>Obriöi</header>
+            <header>Obriši</header>
           </ng-template>
           <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
             <button type="button" class="ui-button-danger"
