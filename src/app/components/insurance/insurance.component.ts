@@ -24,6 +24,7 @@ export class InsuranceComponent implements OnInit {
   paketiOsiguranja : SelectItem[];
   vrsteAlternativnogPrevoza : SelectItem[];
   osiguranjaStana : SelectItem[];
+  svrhaOsiguranja : SelectItem[]; 
 
   //************************************/
 
@@ -38,7 +39,7 @@ export class InsuranceComponent implements OnInit {
   //Forme za kupovinu polise
 
   form1: FormGroup;
-  form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 0, brojDece: 0, brojStarijih: 0, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1};
+  form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 0, brojDece: 0, brojStarijih: 0, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki'};
 
   form2: FormGroup;
   form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : ""};
@@ -115,6 +116,14 @@ export class InsuranceComponent implements OnInit {
         { label: 'Osiguranje od požara', value: "Požar" }
     ];
 
+    this.svrhaOsiguranja = [
+        { label: 'Turisticki', value: "Turisticki"}, 
+        { label: 'Poslovno-administrativni poslovi', value: "Poslovno-administrativni-poslovi"},
+        { label: 'Poslovno-privremeni rad', value: "Poslovno-privremeni-rad"},
+        { label: 'Sportisti', value: "Sportisti"}, 
+        { label: 'Rekreativni skijasi', value: "Rekreativni-skijasi"}
+    ];
+
     this.osiguranjaVozilaKolone = [
             {field: 'markaITip', header: 'Marka i tip vozila'},
           //{field: 'godinaProizvodnje', header: 'Godina proizvodnje'}, //Potrebno je formatirati ovaj datum na neki nacin
@@ -150,7 +159,8 @@ export class InsuranceComponent implements OnInit {
       brojStarijih: [''],
       /************************************/
       pocetakOsiguranja: ['', Validators.required],
-      trajanjeOsiguranja: ['']
+      trajanjeOsiguranja: [''], 
+      svrhaOsiguranja: ['']
     });
 
     this.form2 = this.fb.group({

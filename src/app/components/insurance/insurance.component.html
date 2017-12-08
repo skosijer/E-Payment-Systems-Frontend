@@ -117,6 +117,20 @@
           </div>
         </div>
       </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Svrha osiguranja</label><br>
+          </div>
+          <div class="col-lg-4">
+            <p-dropdown [options]="svrhaOsiguranja" formControlName="svrhaOsiguranja" [(ngModel)]="form1Data.svrhaOsiguranja" [style]="{'width':'100%'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+
+
       <div class="form-group">
         <label class="col-md-3 control-label"></label>
         <div>
