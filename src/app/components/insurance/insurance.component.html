@@ -4,15 +4,15 @@
   <hr>
   <!-- DIV za prvi korak -->
   <div class="container" style="padding: 40px" *ngIf="activeIndex == 0" align="center">
-    <form [formGroup]="form1" class="form-horizontal">
+    <form [formGroup]="form1" class="form-horizontal step-1-form">
       <div class="form-group">
         <div class="row">
           <div class="col-lg-2"></div>
           <div class="col-lg-3" >
             <label class="control-label" >Region:</label>
           </div>
-          <div class="col-lg-4 destinaionDropdown">
-            <p-dropdown [options]="destinacije" formControlName="destinacija" [(ngModel)]="form1Data.destinacija" [style]="{'width':'100%'}"></p-dropdown>
+          <div class="col-lg-4">
+            <p-dropdown [options]="destinacije" formControlName="destinacija" [(ngModel)]="form1Data.destinacija" [style]="{'width':'400px'}"></p-dropdown>
           </div>
         </div>
       </div>
@@ -23,7 +23,7 @@
             <label class="control-label">Vrsta osiguravajućeg paketa:</label><br>
           </div>
           <div class="col-lg-4">
-            <p-dropdown [options]="vrstePaketa" formControlName="vrstaPaketa" [(ngModel)]="form1Data.vrstaPaketa" [style]="{'width':'100%'}"></p-dropdown>
+            <p-dropdown [options]="vrstePaketa" formControlName="vrstaPaketa" [(ngModel)]="form1Data.vrstaPaketa" [style]="{'width':'400px'}"></p-dropdown>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
               <label class="control-label">Uzrast lica koje putuje: </label><br>
             </div>
             <div class="col-lg-4">
-              <p-dropdown [options]="starost" formControlName="starost" [(ngModel)]="form1Data.starost" [style]="{'width':'100%'}"></p-dropdown>
+              <p-dropdown [options]="starost" formControlName="starost" [(ngModel)]="form1Data.starost" [style]="{'width':'400px'}"></p-dropdown>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
             </div>
             <div class="col-lg-4">
 
-              <p-spinner size="35" formControlName="brojStarijih" [(ngModel)]="form1Data.brojStarijih" [min]="0"
+              <p-spinner formControlName="brojStarijih" [(ngModel)]="form1Data.brojStarijih" [min]="0"
                          [max]="10" ></p-spinner>
 
             </div>
@@ -67,7 +67,7 @@
               <label class="control-label">Broj odraslih (19 - 70 godina):</label><br>
             </div>
             <div class="col-lg-4">
-              <p-spinner size="35" formControlName="brojOdraslih" [(ngModel)]="form1Data.brojOdraslih" [min]="0" [max]="10"></p-spinner>
+              <p-spinner formControlName="brojOdraslih" [(ngModel)]="form1Data.brojOdraslih" [min]="0" [max]="10"></p-spinner>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@
             </div>
             <div class="col-lg-4">
 
-              <p-spinner size="35" formControlName="brojDece" [(ngModel)]="form1Data.brojDece" [min]="0"
+              <p-spinner formControlName="brojDece" [(ngModel)]="form1Data.brojDece" [min]="0"
                          [max]="10" ></p-spinner>
 
             </div>
@@ -95,9 +95,9 @@
             <label class="control-label">Početak osiguranja:</label><br>
           </div>
 
-          <div class="col-lg-4" style="margin-left: -16px">
-            <p-calendar size="35" formControlName="pocetakOsiguranja" [(ngModel)]="form1Data.pocetakOsiguranja"
-             inputStyleClass="calendarStyleClass" [showIcon]="true"  ></p-calendar>
+          <div class="col-lg-4">
+            <p-calendar  formControlName="pocetakOsiguranja" [(ngModel)]="form1Data.pocetakOsiguranja"
+                         styleClass="pocetakOsiguranjaCalendarClass" [showIcon]="true"></p-calendar>
 
 
           </div>
@@ -111,7 +111,7 @@
           </div>
 
           <div class="col-lg-4" >
-            <p-spinner size="34" formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja"
+            <p-spinner formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja"
                        [min]="1" [max]="100"></p-spinner>
 
           </div>
@@ -125,25 +125,11 @@
             <label class="control-label">Svrha osiguranja</label><br>
           </div>
           <div class="col-lg-4">
-            <p-dropdown [options]="svrhaOsiguranja" formControlName="svrhaOsiguranja" [(ngModel)]="form1Data.svrhaOsiguranja" [style]="{'width':'100%'}"></p-dropdown>
+            <p-dropdown [options]="svrhaOsiguranja" formControlName="svrhaOsiguranja" [(ngModel)]="form1Data.svrhaOsiguranja" [style]="{'width':'400px'}"></p-dropdown>
           </div>
         </div>
       </div>
 
-      <div class="form-group" *ngIf="form1.valid">
-        <div class="row">
-          <div class="col-lg-2"></div>
-          <div class="col-lg-3">
-            <label class="control-label">Cena</label><br>
-          </div>
-          <div class="col-lg-4">
-            <div class="ui-inputgroup">
-              <input readonly type="text" pInputText placeholder="Iznos . . .">
-              <button pButton type="button" label="Izracunaj"></button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!--<div class="ui-g-12 ui-md-4">-->
         <!--<div class="ui-inputgroup">-->

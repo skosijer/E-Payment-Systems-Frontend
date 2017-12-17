@@ -81,9 +81,9 @@ export class InsuranceComponent implements OnInit {
 
     this.destinacije = [
       { label: 'Odaberite region', value: null },
-      { label: 'Evropa', value: "EU" },
-      { label: 'Svet', value: "SV" },
-      { label: 'Interkontinentalne', value: 'IN'}
+      { label: 'Evropa - nadoknada stete do 30 000 €', value: "EU" },
+      { label: 'Svet - nadoknada stete do 40 000 €', value: "SV" },
+      { label: 'Interkontinentalne - nadoknada stete do 15 000 €', value: 'IN'}
     ];
 
      this.vrstePaketa = [

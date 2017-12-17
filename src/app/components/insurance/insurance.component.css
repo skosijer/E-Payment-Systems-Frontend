@@ -26,18 +26,22 @@
             font-family: Impact;
         }
 
-.calendarStyleClass {
-    width: 292px;
-    color: #0081c2;
-    text-align: left;
-}
 
-.calendarStyleClass {
-    width: 292px;
-}
+
+
 
 .col-lg-3 {
     text-align: right;
+}
+
+.pocetakOsiguranjaCalendarClass input{
+  width: 370px;
+}
+
+
+.step-1-form .ui-spinner .ui-spinner-input{
+  width: 400px;
+
 }
 
 body {
@@ -166,9 +170,7 @@ body {
   overflow: hidden;
 }
 
-#container {
-  background-color: #dcdcdc;
-}
+
 
 
 
