@@ -24,7 +24,7 @@ export class InsuranceComponent implements OnInit {
   paketiOsiguranja : SelectItem[];
   vrsteAlternativnogPrevoza : SelectItem[];
   osiguranjaStana : SelectItem[];
-  svrhaOsiguranja : SelectItem[]; 
+  svrhaOsiguranja : SelectItem[];
 
   //************************************/
 
@@ -80,9 +80,10 @@ export class InsuranceComponent implements OnInit {
     ];
 
     this.destinacije = [
-      { label: 'Odaberi destinaciju', value: null },
-      { label: 'Srbija', value: "RS" },
-      { label: 'Rusija', value: "RU" }
+      { label: 'Odaberite region', value: null },
+      { label: 'Evropa', value: "EU" },
+      { label: 'Svet', value: "SV" },
+      { label: 'Interkontinentalne', value: 'IN'}
     ];
 
      this.vrstePaketa = [
@@ -117,10 +118,10 @@ export class InsuranceComponent implements OnInit {
     ];
 
     this.svrhaOsiguranja = [
-        { label: 'Turisticki', value: "Turisticki"}, 
+        { label: 'Turisticki', value: "Turisticki"},
         { label: 'Poslovno-administrativni poslovi', value: "Poslovno-administrativni-poslovi"},
         { label: 'Poslovno-privremeni rad', value: "Poslovno-privremeni-rad"},
-        { label: 'Sportisti', value: "Sportisti"}, 
+        { label: 'Sportisti', value: "Sportisti"},
         { label: 'Rekreativni skijasi', value: "Rekreativni-skijasi"}
     ];
 
@@ -159,7 +160,7 @@ export class InsuranceComponent implements OnInit {
       brojStarijih: [''],
       /************************************/
       pocetakOsiguranja: ['', Validators.required],
-      trajanjeOsiguranja: [''], 
+      trajanjeOsiguranja: [''],
       svrhaOsiguranja: ['']
     });
 

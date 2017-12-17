@@ -12,7 +12,7 @@
         }
 
         .ui-steps.steps-custom .ui-steps-item .ui-steps-number {
-            background-color: #0081c2;
+            background-color: #ff928e;
             color: #FFFFFF;
             display: inline-block;
             width: 36px;
@@ -23,7 +23,7 @@
 
         .ui-steps.steps-custom .ui-steps-item .ui-steps-title {
             color: #555555;
-          font-family: Impact;
+            font-family: Impact;
         }
 
 .calendarStyleClass {
@@ -169,6 +169,8 @@ body {
 #container {
   background-color: #dcdcdc;
 }
+
+
 
 
 
