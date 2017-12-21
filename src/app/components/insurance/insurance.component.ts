@@ -35,6 +35,8 @@ export class InsuranceComponent implements OnInit {
 
   osiguranjaNekretnina : any[] = [];
   osiguranjaNekretninaKolone : any[];
+  putnaOsiguranja : any[] = []; 
+  putnaOsiguranjaKolone : any[]; 
 
   //Forme za kupovinu polise
 
@@ -53,12 +55,13 @@ export class InsuranceComponent implements OnInit {
   //**********************************************/
 
   //Boolean vrednosti za medjusobno sakrivanje formi
-
+  showForm2 : boolean = false; 
   showForm3 : boolean = false;
   showForm4 : boolean = false;
 
   private showCarDialog = false;
   private showHomeDialog = false;
+  private showInsuranceDialog = false; 
 
   //*********************************************/
 
@@ -148,6 +151,16 @@ export class InsuranceComponent implements OnInit {
             {field: 'adresaVlasnika', header: 'Adresa vlasnika'}
     ];
 
+    this.putnaOsiguranjaKolone = [
+        {field: 'ime', header: 'Ime'}, 
+        {field: 'jmbg', header: 'JMBG'}, 
+        {field: 'prezime', header: 'Prezime'}, 
+        {field: 'brojPasosa', header: 'Broj pasosa'}, 
+        {field: 'datumRodjenja', header: 'Datum rodjenja'}, 
+        {field: 'adresa', header: 'Adresa'}, 
+        {field: 'brojTelefona', header: 'Broj telefona'}
+    ]; 
+
     this.form1 = this.fb.group({
       destinacija: ['', Validators.required],
       vrstaPaketa: ['', Validators.required],
@@ -208,14 +221,14 @@ export class InsuranceComponent implements OnInit {
     if(this.activeIndex != 1)
         return;
 
-    let br;
-    if(this.form1.controls['vrstaPaketa'].value == 'individualno')
-      br = 1;
-    else
-      br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
-    console.log(br);
-    for (let i = 0; i < br; i++)
-      this.groupIterNiz.push(null);
+    // let br;
+    // if(this.form1.controls['vrstaPaketa'].value == 'individualno')
+    //   br = 1;
+    // else
+    //   br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
+    // console.log(br);
+    // for (let i = 0; i < br; i++)
+    //   this.groupIterNiz.push(null);
   }
 
   onSubmitStepTwo(form) {
@@ -283,12 +296,33 @@ export class InsuranceComponent implements OnInit {
       this.osiguranjaNekretnina =  [...this.osiguranjaNekretnina];
   }
 
+  dodajPutnoOsiguranje()
+  {
+      //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
+      let x = Object.assign({}, this.form2Data);
+      //spread operator za unos kopije objekta u niz
+      this.putnaOsiguranja = [...this.putnaOsiguranja, x];
+      this.showInsuranceDialog = false;
+      this.form2.reset();
+  }
+
+   obrisiPutnoOsiguranje(formaPutnoOsiguranje)
+  {
+      let index = this.putnaOsiguranja.indexOf(formaPutnoOsiguranje);
+      this.putnaOsiguranja.splice(index, 1);
+      this.putnaOsiguranja =  [...this.putnaOsiguranja];
+  }
+
     onShowCarDialog() {
       this.showCarDialog = true;
     }
 
     onShowHomeDialog() {
       this.showHomeDialog = true;
+    }
+
+    onShowInsuranceDialog() {
+      this.showInsuranceDialog = true; 
     }
 
 }
