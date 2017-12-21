@@ -41,8 +41,9 @@
 
 .step-1-form .ui-spinner .ui-spinner-input{
   width: 400px;
-
 }
+
+
 
 body {
     color: #55535b;
@@ -170,6 +171,9 @@ body {
   overflow: hidden;
 }
 
+.checkboxStyle{
+  float: left;
+}
 
 
 

@@ -15,6 +15,7 @@ import {SpinnerModule} from 'primeng/primeng';
 import {CalendarModule} from 'primeng/primeng';
 import {DataTableModule,SharedModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
+import {CheckboxModule} from 'primeng/primeng';
 
 // Component imports
 import { HomeComponent } from './components/home/home.component';
@@ -49,7 +50,8 @@ import { InsuranceComponent } from './components/insurance/insurance.component';
     DataTableModule,
     SharedModule,
     routing,
-      DialogModule
+    DialogModule,
+    CheckboxModule
   ],
   providers: [
     provideAuth({

@@ -35,8 +35,8 @@ export class InsuranceComponent implements OnInit {
 
   osiguranjaNekretnina : any[] = [];
   osiguranjaNekretninaKolone : any[];
-  putnaOsiguranja : any[] = []; 
-  putnaOsiguranjaKolone : any[]; 
+  putnaOsiguranja : any[] = [];
+  putnaOsiguranjaKolone : any[];
 
   //Forme za kupovinu polise
 
@@ -44,7 +44,7 @@ export class InsuranceComponent implements OnInit {
   form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 0, brojDece: 0, brojStarijih: 0, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki'};
 
   form2: FormGroup;
-  form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : ""};
+  form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : "", emailNosioca: ""};
 
   form3: FormGroup;
   form3Data: any = {markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus'};
@@ -55,19 +55,24 @@ export class InsuranceComponent implements OnInit {
   //**********************************************/
 
   //Boolean vrednosti za medjusobno sakrivanje formi
-  showForm2 : boolean = false; 
+  showForm2 : boolean = false;
   showForm3 : boolean = false;
   showForm4 : boolean = false;
 
   private showCarDialog = false;
   private showHomeDialog = false;
-  private showInsuranceDialog = false; 
+  private showInsuranceDialog = false;
 
   //*********************************************/
 
   private activeIndex = 0;
   private groupIterNiz : any[] = [];
   private osobe : Osoba[] = [];
+
+
+  //Podaci nosioca osiguranja!
+  private enterEmailBoolean:boolean = false;
+  private canBeInsuranceHolder:boolean = true;
 
 
 
@@ -152,14 +157,14 @@ export class InsuranceComponent implements OnInit {
     ];
 
     this.putnaOsiguranjaKolone = [
-        {field: 'ime', header: 'Ime'}, 
-        {field: 'jmbg', header: 'JMBG'}, 
-        {field: 'prezime', header: 'Prezime'}, 
-        {field: 'brojPasosa', header: 'Broj pasosa'}, 
-        {field: 'datumRodjenja', header: 'Datum rodjenja'}, 
-        {field: 'adresa', header: 'Adresa'}, 
+        {field: 'ime', header: 'Ime'},
+        {field: 'jmbg', header: 'JMBG'},
+        {field: 'prezime', header: 'Prezime'},
+        {field: 'brojPasosa', header: 'Broj pasosa'},
+        {field: 'datumRodjenja', header: 'Datum rodjenja'},
+        {field: 'adresa', header: 'Adresa'},
         {field: 'brojTelefona', header: 'Broj telefona'}
-    ]; 
+    ];
 
     this.form1 = this.fb.group({
       destinacija: ['', Validators.required],
@@ -184,7 +189,8 @@ export class InsuranceComponent implements OnInit {
       brojPasosa : [''],
       datumRodjenja : [''],
       adresa : [''],
-      brojTelefona : ['']
+      brojTelefona : [''],
+      emailNosioca: ['']
     });
 
     this.form3 = this.fb.group({
@@ -296,21 +302,33 @@ export class InsuranceComponent implements OnInit {
       this.osiguranjaNekretnina =  [...this.osiguranjaNekretnina];
   }
 
-  dodajPutnoOsiguranje()
+  dodajOsiguranika()
   {
       //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
       let x = Object.assign({}, this.form2Data);
       //spread operator za unos kopije objekta u niz
       this.putnaOsiguranja = [...this.putnaOsiguranja, x];
       this.showInsuranceDialog = false;
+
+      //Provera da li je dodati osiguranik nosilac osiguranja
+      if(x.emailNosioca != ''){
+        this.canBeInsuranceHolder = false;
+      }
+
+
       this.form2.reset();
   }
 
-   obrisiPutnoOsiguranje(formaPutnoOsiguranje)
+   obrisiOsiguranika(formaPutnoOsiguranje)
   {
       let index = this.putnaOsiguranja.indexOf(formaPutnoOsiguranje);
       this.putnaOsiguranja.splice(index, 1);
       this.putnaOsiguranja =  [...this.putnaOsiguranja];
+
+
+      if(formaPutnoOsiguranje.emailNosioca != ''){
+        this.canBeInsuranceHolder = true;
+      }
   }
 
     onShowCarDialog() {
@@ -322,7 +340,12 @@ export class InsuranceComponent implements OnInit {
     }
 
     onShowInsuranceDialog() {
-      this.showInsuranceDialog = true; 
+      this.showInsuranceDialog = true;
     }
+
+  nosiocOsiguranjaChange(checked:boolean){
+
+    this.enterEmailBoolean = checked;
+  }
 
 }

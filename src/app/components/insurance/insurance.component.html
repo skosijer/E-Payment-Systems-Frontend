@@ -152,12 +152,12 @@
   <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="center">
 
     <div style="margin-top: 20px;" align="center">
-      <button pButton class="ui-button-primary" type="text" (click)="onShowInsuranceDialog()" label="Putno osiguranje" icon="fa-plus"></button>
+      <button pButton class="ui-button-primary" type="text" (click)="onShowInsuranceDialog()" label="Dodaj osiguranika" icon="fa-plus"></button>
     </div>
 
     <p-dialog [(visible)]="showInsuranceDialog">
       <p-header>
-        Novo putno osiguranje
+        Novi osiguranik
       </p-header>
       <div class="container-fluid">
         <form [formGroup]="form2" class="form-horizontal" style="width: 500px;">
@@ -230,11 +230,37 @@
             </div>
           </div>
 
+          <div class="form-group" *ngIf="canBeInsuranceHolder">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Nosilac osiguranja:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <p-checkbox styleClass="checkboxStyle" name="groupname" value="jeste" (onChange)="nosiocOsiguranjaChange($event)"></p-checkbox>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="enterEmailBoolean && canBeInsuranceHolder">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Email:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" required email formControlName="emailNosioca" [(ngModel)]="form2Data.emailNosioca"
+                       type="text">
+              </div>
+            </div>
+          </div>
+
+
 
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div align="center">
-              <button pButton class="ui-button-primary" type="submit" (click)="dodajPutnoOsiguranje()" label="Dodaj putno osiguranje"></button>
+              <button pButton class="ui-button-primary" type="submit" icon="fa-plus" (click)="dodajOsiguranika()" label="Dodaj"></button>
             </div>
           </div>
         </form>
@@ -254,7 +280,7 @@
             <header>Obriši</header>
           </ng-template>
           <ng-template let-formaPutnoOsiguranje="rowData" pTemplate="body">
-            <button type="button" class="ui-button-danger" (click)="obrisiPutnoOsiguranje(formaPutnoOsiguranje)" pButton icon="fa-times"
+            <button type="button" class="ui-button-danger" (click)="obrisiOsiguranika(formaPutnoOsiguranje)" pButton icon="fa-times"
               iconPos="left"></button>
           </ng-template>
         </p-column>
@@ -264,11 +290,11 @@
 
   <!-- <form (ngSubmit)="onSubmitStepTwo(ff)" #ff="ngForm"   class="form-horizontal">
       <div *ngFor="let b of groupIterNiz; let i = index">
-        <h4 class="pull-left" style="font-family: Impact;color: #55535b">{{'Osiguranik: ['+(i+1)+']'}}</h4><br><hr> 
-        
+        <h4 class="pull-left" style="font-family: Impact;color: #55535b">{{'Osiguranik: ['+(i+1)+']'}}</h4><br><hr>
 
 
-        
+
+
       <div class="form-group">
         <label class="col-md-3 control-label"></label>
         <div>
@@ -279,6 +305,13 @@
     </form>
   </div>
 -->
+
+
+
+
+
+
+
 
 
 
