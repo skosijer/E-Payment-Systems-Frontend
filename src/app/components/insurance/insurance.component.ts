@@ -25,6 +25,8 @@ export class InsuranceComponent implements OnInit {
   vrsteAlternativnogPrevoza : SelectItem[];
   osiguranjaStana : SelectItem[];
   svrhaOsiguranja : SelectItem[];
+  starostiStana : SelectItem[]; 
+  procenjeneVrednostiStana : SelectItem[]; 
 
   //************************************/
 
@@ -35,6 +37,8 @@ export class InsuranceComponent implements OnInit {
 
   osiguranjaNekretnina : any[] = [];
   osiguranjaNekretninaKolone : any[];
+  putnaOsiguranja : any[] = [];
+  putnaOsiguranjaKolone : any[];
 
   //Forme za kupovinu polise
 
@@ -42,7 +46,7 @@ export class InsuranceComponent implements OnInit {
   form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 0, brojDece: 0, brojStarijih: 0, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki'};
 
   form2: FormGroup;
-  form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : ""};
+  form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : "", emailNosioca: ""};
 
   form3: FormGroup;
   form3Data: any = {markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus'};
@@ -53,18 +57,24 @@ export class InsuranceComponent implements OnInit {
   //**********************************************/
 
   //Boolean vrednosti za medjusobno sakrivanje formi
-
+  showForm2 : boolean = false;
   showForm3 : boolean = false;
   showForm4 : boolean = false;
 
   private showCarDialog = false;
   private showHomeDialog = false;
+  private showInsuranceDialog = false;
 
   //*********************************************/
 
   private activeIndex = 0;
   private groupIterNiz : any[] = [];
   private osobe : Osoba[] = [];
+
+
+  //Podaci nosioca osiguranja!
+  private enterEmailBoolean:boolean = false;
+  private canBeInsuranceHolder:boolean = true;
 
 
 
@@ -81,9 +91,9 @@ export class InsuranceComponent implements OnInit {
 
     this.destinacije = [
       { label: 'Odaberite region', value: null },
-      { label: 'Evropa', value: "EU" },
-      { label: 'Svet', value: "SV" },
-      { label: 'Interkontinentalne', value: 'IN'}
+      { label: 'Evropa - nadoknada stete do 30 000 €', value: "EU" },
+      { label: 'Svet - nadoknada stete do 40 000 €', value: "SV" },
+      { label: 'Interkontinentalne - nadoknada stete do 15 000 €', value: 'IN'}
     ];
 
      this.vrstePaketa = [
@@ -117,6 +127,19 @@ export class InsuranceComponent implements OnInit {
         { label: 'Osiguranje od požara', value: "Požar" }
     ];
 
+    this.starostiStana = [
+      { label: 'Do 5 godina', value: "Pet" }, 
+      { label: 'Do 20 godina', value: "Dvadeset" }, 
+      { label: 'Do 50 godina', value: "Pedeset" }, 
+      { label: 'Preko 50 godina', value: "PrekoPedeset" }
+    ]; 
+
+    this.procenjeneVrednostiStana = [
+      { label: 'Do 50.000 €', value: "Pedeset" }, 
+      { label: 'Do 100.000 €', value: "Sto" }, 
+      { label: 'Preko 100.000 €', value: "PrekoSto"}
+    ]; 
+
     this.svrhaOsiguranja = [
         { label: 'Turisticki', value: "Turisticki"},
         { label: 'Poslovno-administrativni poslovi', value: "Poslovno-administrativni-poslovi"},
@@ -148,6 +171,12 @@ export class InsuranceComponent implements OnInit {
             {field: 'adresaVlasnika', header: 'Adresa vlasnika'}
     ];
 
+    this.putnaOsiguranjaKolone = [
+        {field: 'ime', header: 'Ime'},
+        {field: 'jmbg', header: 'JMBG'},
+        {field: 'prezime', header: 'Prezime'}
+    ];
+
     this.form1 = this.fb.group({
       destinacija: ['', Validators.required],
       vrstaPaketa: ['', Validators.required],
@@ -171,7 +200,8 @@ export class InsuranceComponent implements OnInit {
       brojPasosa : [''],
       datumRodjenja : [''],
       adresa : [''],
-      brojTelefona : ['']
+      brojTelefona : [''],
+      emailNosioca: ['']
     });
 
     this.form3 = this.fb.group({
@@ -208,14 +238,22 @@ export class InsuranceComponent implements OnInit {
     if(this.activeIndex != 1)
         return;
 
-    let br;
-    if(this.form1.controls['vrstaPaketa'].value == 'individualno')
-      br = 1;
-    else
-      br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
-    console.log(br);
-    for (let i = 0; i < br; i++)
-      this.groupIterNiz.push(null);
+    // let br;
+    // if(this.form1.controls['vrstaPaketa'].value == 'individualno')
+    //   br = 1;
+    // else
+    //   br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
+    // console.log(br);
+    // for (let i = 0; i < br; i++)
+    //   this.groupIterNiz.push(null);
+  }
+
+  secondStepSubmit()
+  {
+    this.activeIndex++;
+
+    if(this.activeIndex != 2)
+      return; 
   }
 
   onSubmitStepTwo(form) {
@@ -247,6 +285,10 @@ export class InsuranceComponent implements OnInit {
       if(this.activeIndex == 1)
         this.groupIterNiz = [];
       this.activeIndex--;
+  }
+
+  secondStepPrevious() {
+    this.activeIndex--;      
   }
 
   dodajOsiguranjeVozila()
@@ -284,6 +326,35 @@ export class InsuranceComponent implements OnInit {
       this.osiguranjaNekretnina =  [...this.osiguranjaNekretnina];
   }
 
+  dodajOsiguranika()
+  {
+      //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
+      let x = Object.assign({}, this.form2Data);
+      //spread operator za unos kopije objekta u niz
+      this.putnaOsiguranja = [...this.putnaOsiguranja, x];
+      this.showInsuranceDialog = false;
+
+      //Provera da li je dodati osiguranik nosilac osiguranja
+      if(x.emailNosioca != ''){
+        this.canBeInsuranceHolder = false;
+      }
+
+
+      this.form2.reset();
+  }
+
+   obrisiOsiguranika(formaPutnoOsiguranje)
+  {
+      let index = this.putnaOsiguranja.indexOf(formaPutnoOsiguranje);
+      this.putnaOsiguranja.splice(index, 1);
+      this.putnaOsiguranja =  [...this.putnaOsiguranja];
+
+
+      if(formaPutnoOsiguranje.emailNosioca != ''){
+        this.canBeInsuranceHolder = true;
+      }
+  }
+
     onShowCarDialog() {
       this.showCarDialog = true;
     }
@@ -291,5 +362,14 @@ export class InsuranceComponent implements OnInit {
     onShowHomeDialog() {
       this.showHomeDialog = true;
     }
+
+    onShowInsuranceDialog() {
+      this.showInsuranceDialog = true;
+    }
+
+  nosiocOsiguranjaChange(checked:boolean){
+
+    this.enterEmailBoolean = checked;
+  }
 
 }
