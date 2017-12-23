@@ -25,8 +25,8 @@ export class InsuranceComponent implements OnInit {
   vrsteAlternativnogPrevoza : SelectItem[];
   osiguranjaStana : SelectItem[];
   svrhaOsiguranja : SelectItem[];
-  starostiStana : SelectItem[]; 
-  procenjeneVrednostiStana : SelectItem[]; 
+  starostiStana : SelectItem[];
+  procenjeneVrednostiStana : SelectItem[];
 
   //************************************/
 
@@ -91,9 +91,9 @@ export class InsuranceComponent implements OnInit {
 
     this.destinacije = [
       { label: 'Odaberite region', value: null },
-      { label: 'Evropa - nadoknada stete do 30 000 €', value: "EU" },
-      { label: 'Svet - nadoknada stete do 40 000 €', value: "SV" },
-      { label: 'Interkontinentalne - nadoknada stete do 15 000 €', value: 'IN'}
+      { label: 'Evropa - nadoknada stete do 30 000 €', value: "Evropa" },
+      { label: 'Svet - nadoknada stete do 40 000 €', value: "Svet" },
+      { label: 'Interkontinentalne - nadoknada stete do 15 000 €', value: 'Interkontinentalno'}
     ];
 
      this.vrstePaketa = [
@@ -128,17 +128,17 @@ export class InsuranceComponent implements OnInit {
     ];
 
     this.starostiStana = [
-      { label: 'Do 5 godina', value: "Pet" }, 
-      { label: 'Do 20 godina', value: "Dvadeset" }, 
-      { label: 'Do 50 godina', value: "Pedeset" }, 
+      { label: 'Do 5 godina', value: "Pet" },
+      { label: 'Do 20 godina', value: "Dvadeset" },
+      { label: 'Do 50 godina', value: "Pedeset" },
       { label: 'Preko 50 godina', value: "PrekoPedeset" }
-    ]; 
+    ];
 
     this.procenjeneVrednostiStana = [
-      { label: 'Do 50.000 €', value: "Pedeset" }, 
-      { label: 'Do 100.000 €', value: "Sto" }, 
+      { label: 'Do 50.000 €', value: "Pedeset" },
+      { label: 'Do 100.000 €', value: "Sto" },
       { label: 'Preko 100.000 €', value: "PrekoSto"}
-    ]; 
+    ];
 
     this.svrhaOsiguranja = [
         { label: 'Turisticki', value: "Turisticki"},
@@ -253,7 +253,7 @@ export class InsuranceComponent implements OnInit {
     this.activeIndex++;
 
     if(this.activeIndex != 2)
-      return; 
+      return;
   }
 
   onSubmitStepTwo(form) {
@@ -288,7 +288,7 @@ export class InsuranceComponent implements OnInit {
   }
 
   secondStepPrevious() {
-    this.activeIndex--;      
+    this.activeIndex--;
   }
 
   dodajOsiguranjeVozila()

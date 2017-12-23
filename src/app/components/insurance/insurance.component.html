@@ -317,19 +317,7 @@
 -->
 
 
-
-
-
-
-
-
-
-
-
-
-
   <!--DIV ZA TRECI KORAK-->
-
   <div *ngIf="activeIndex == 2">
 
     <div align="center" style="margin-top: 30px;">
@@ -519,7 +507,7 @@
             <div class="col-lg-4">
               <label class="control-label">Procenjena vrednost stana:</label>
             </div>
-            <div class="col-lg-8">              
+            <div class="col-lg-8">
               <p-dropdown [options]="procenjeneVrednostiStana" formControlName="procenjenaVrednostStana" [(ngModel)]="form4Data.procenjenaVrednostStana" [style]="{'width':'100%'}"></p-dropdown>
             </div>
           </div>
@@ -634,120 +622,86 @@
     </div>
   </div>
 
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
 
-
-  <div class="container" *ngIf="activeIndex==3">
-    <div class="row">
-
-      <div class="receipt-main">
-
-        <div class="receipt-left">
-          <h1>Racun</h1>
-        </div>
-
-        <div>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Osiguranje</th>
-                <th>Cena</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="col-md-9">Medjunarodno putno osiguranje</td>
-                <td class="col-md-3">
-                  <i class="fa fa-inr"></i> 15,000/-</td>
-              </tr>
-              <tr>
-                <td class="col-md-9">Osiguranje vozila</td>
-                <td class="col-md-3">
-                  <i class="fa fa-inr"></i> 6,00/-</td>
-              </tr>
-              <tr>
-                <td class="col-md-9">Osiguranje nekretnine</td>
-                <td class="col-md-3">
-                  <i class="fa fa-inr"></i> 35,00/-</td>
-              </tr>
-              <tr>
-                <td class="text-right">
-                  <p>
-                    <strong>Total Amount: </strong>
-                  </p>
-                  <p>
-                    <strong>Late Fees: </strong>
-                  </p>
-                  <p>
-                    <strong>Payable Amount: </strong>
-                  </p>
-                  <p>
-                    <strong>Balance Due: </strong>
-                  </p>
-                </td>
-                <td>
-                  <p>
-                    <strong>
-                      <i class="fa fa-inr"></i> 65,500/-</strong>
-                  </p>
-                  <p>
-                    <strong>
-                      <i class="fa fa-inr"></i> 500/-</strong>
-                  </p>
-                  <p>
-                    <strong>
-                      <i class="fa fa-inr"></i> 1300/-</strong>
-                  </p>
-                  <p>
-                    <strong>
-                      <i class="fa fa-inr"></i> 9500/-</strong>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-
-                <td class="text-right">
-                  <h2>
-                    <strong>Total: </strong>
-                  </h2>
-                </td>
-                <td class="text-left text-danger">
-                  <h2>
-                    <strong>
-                      <i class="fa fa-inr"></i> 31.566/-</strong>
-                  </h2>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="row">
-          <div class="receipt-header receipt-header-mid receipt-footer">
-            <div class="col-xs-8 col-sm-8 col-md-8 text-left">
-              <div class="receipt-right">
-                <p>
-                  <b>Date :</b> 08 Dec 2017</p>
-                <h5 style="color: rgb(140, 140, 140);">Thank you for your business!</h5>
-              </div>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4">
-              <div class="receipt-left">
-                <h1>Signature</h1>
-              </div>
-            </div>
+  <div *ngIf="activeIndex == 3">
+    <div class="box-shadow container" >
+        <h3 align="center">Osiguranje - broj xxx</h3>
+        <hr>
+        <h4>Osigurana lica</h4> <br>
+          <div class="container">
+            <p-dataTable [value]="putnaOsiguranja">
+              <p-column field="ime" header="Ime"></p-column>
+              <p-column field="prezime" header="Prezime"></p-column>
+              <p-column field="jmbg" header="JMBG"></p-column>
+              <p-column field="brojPasosa" header="Broj pasoša"></p-column>
+              <p-column field="adresa" header="Adresa"></p-column>
+            </p-dataTable>
           </div>
+      <br>
+        <h5>Nosilac osiguranja</h5>
+      <br>
+      <h5>Putno osiguranje</h5> <br>
+      <div class="container">
+          <p>
+            Osiguranje važi za region <mark>{{form1Data.destinacija}}</mark>.
+            Datum početka važenja je <mark>{{form1Data.pocetakOsiguranja | date: 'dd.MM.yyyy.'}}</mark>, u trajanju od <mark>{{form1Data.trajanjeOsiguranja}}</mark> dan/a.
+          </p>
+        <p>
+          Paket osiguranja je <mark>{{form1Data.vrstaPaketa}}</mark> osiguranje. Svrha putovanja je <mark>{{form1Data.svrhaOsiguranja}}</mark>.
+        </p>
+      </div>
+      <br>
+        <div *ngIf="osiguranjaNekretnina.length !== 0">
+        <h5>Osiguranja nekretnina</h5>
+          <div class="container">
+            <p-dataTable [value]="osiguranjaNekretnina">
+              <p-header>Podaci o vlasniku</p-header>
+              <p-column field="imeVlasnika" header="Ime"></p-column>
+              <p-column field="prezimeVlasnika" header="Prezime"></p-column>
+              <p-column field="jmbgVlasnika" header="JMBG"></p-column>
+              <p-column field="adresaVlasnika" header="Adresa"></p-column>
+            </p-dataTable>
+            <br>
+            <p-dataTable [value]="osiguranjaNekretnina">
+              <p-header>Podaci o nekretnini</p-header>
+              <p-column field="povrsinaStana" header="Površina"></p-column>
+              <p-column field="starostStana" header="Starost"></p-column>
+              <p-column field="procenjenaVrednostStana" header="Procenjena vrednost"></p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      <hr>
+      <br>
+      <div *ngIf="osiguranjaVozila.length !== 0">
+        <h5>Osiguranja vozila</h5>
+        <div class="container">
+          <p-dataTable [value]="osiguranjaVozila">
+            <p-header>Podaci o vlasniku</p-header>
+            <p-column field="imeVlasnika" header="Ime"></p-column>
+            <p-column field="prezimeVlasnika" header="Prezime"></p-column>
+            <p-column field="jmbgVlasnika" header="JMBG"></p-column>
+            <p-column field="adresaVlasnika" header="Adresa"></p-column>
+          </p-dataTable>
+          <br>
+          <p-dataTable [value]="osiguranjaVozila">
+            <p-header>Podaci o vozilu</p-header>
+            <p-column field="markaITip" header="Marka i tip"></p-column>
+            <p-column field="godinaProizvodnje" header="Godina proizvodnje"></p-column>
+            <p-column field="brojTablica" header="Broj tablica"></p-column>
+            <p-column field="brojSasije" header="Broj šasije"></p-column>
+          </p-dataTable>
         </div>
 
       </div>
+
     </div>
   </div>
-
-
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
 </div>
