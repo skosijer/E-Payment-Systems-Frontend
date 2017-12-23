@@ -175,6 +175,11 @@ body {
   float: left;
 }
 
+.step1_button_div .ui-dialog-titlebar{
+  background: red;
+  color: white;
+}
+
 
 
 
