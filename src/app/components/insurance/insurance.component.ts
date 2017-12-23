@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
 import { InputTextModule } from 'primeng/primeng';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
 import {Osoba} from "../../beans/osoba";
 
 
@@ -67,7 +67,7 @@ export class InsuranceComponent implements OnInit {
 
   //*********************************************/
 
-  private activeIndex = 0;
+  private activeIndex = 3;
   private groupIterNiz : any[] = [];
   private osobe : Osoba[] = [];
 
@@ -75,6 +75,11 @@ export class InsuranceComponent implements OnInit {
   //Podaci nosioca osiguranja!
   private enterEmailBoolean:boolean = false;
   private canBeInsuranceHolder:boolean = true;
+
+
+  /*****************/
+  private showBrojLicaMessage1:boolean = false;
+  private showBrojLicaMessage2:boolean = false;
 
 
 
@@ -184,14 +189,16 @@ export class InsuranceComponent implements OnInit {
       starost: [''],
       /******************************************/
       //polja vezana samo za grupno osiguranje
-      brojOdraslih: [''],
-      brojDece: [''],
-      brojStarijih: [''],
+      brojOdraslih: ['', Validators.required],
+      brojDece: ['', Validators.required],
+      brojStarijih: ['', Validators.required],
       /************************************/
       pocetakOsiguranja: ['', Validators.required],
-      trajanjeOsiguranja: [''],
+      trajanjeOsiguranja: ['', Validators.required],
       svrhaOsiguranja: ['']
     });
+
+
 
     this.form2 = this.fb.group({
       ime : [''],
@@ -233,10 +240,30 @@ export class InsuranceComponent implements OnInit {
 
   stepSubmit()
   {
+
+    if(this.form1.controls['vrstaPaketa'].value == 'grupno'){
+      if(this.form1.controls['brojOdraslih'].value == 0 && this.form1.controls['brojStarijih'].value == 0
+        && this.form1.controls['brojDece'].value == 0){
+        //alert('Postovani, izabrali ste grupno osiguranje, molimo Vas da unesete broj odgovarajucih lica.');
+        this.showBrojLicaMessage1 = true;
+        return;
+      }else{
+        let num = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojStarijih'].value + this.form1.controls['brojDece'].value;
+        if(num < 2){
+          this.showBrojLicaMessage2 = true;
+          return;
+        }
+      }
+    }
+
+    console.log(this.form1.controls['trajanjeOsiguranja'].value);
+
     this.activeIndex++;
 
     if(this.activeIndex != 1)
         return;
+
+
 
     // let br;
     // if(this.form1.controls['vrstaPaketa'].value == 'individualno')

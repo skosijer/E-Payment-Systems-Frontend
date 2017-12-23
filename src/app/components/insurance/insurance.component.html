@@ -116,7 +116,7 @@
           </div>
 
           <div class="col-lg-4">
-            <p-spinner formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja" [min]="1" [max]="100"></p-spinner>
+            <p-spinner readonly formControlName="trajanjeOsiguranja" [(ngModel)]="form1Data.trajanjeOsiguranja" [min]="1" [max]="100"></p-spinner>
 
           </div>
         </div>
@@ -138,13 +138,36 @@
 
       <div class="form-group">
         <label class="col-md-3 control-label"></label>
-        <div>
+        <div class="step1_button_div">
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
 
+
+          <p-dialog [(visible)]="showBrojLicaMessage1">
+            <p-header>
+              Postovani
+            </p-header>
+            <div class="container-fluid" style="font-family: Lato">
+              Izabrali ste grupno osiguranje, <br>
+              Molimo Vas da unesete broj lica po uzrastu. <br>
+              Hvala!
+            </div>
+          </p-dialog>
+
+          <p-dialog [(visible)]="showBrojLicaMessage2">
+            <p-header>
+              Postovani
+            </p-header>
+            <div class="container-fluid" style="font-family: Lato">
+              Izabrali ste grupno osiguranje, <br>
+              Molimo Vas da unesete broj lica veci ili jednak 2. <br>
+              Hvala!
+            </div>
+          </p-dialog>
         </div>
       </div>
     </form>
   </div>
+
 
   <!-- DIV za drugi korak -->
   <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="center">
@@ -701,7 +724,7 @@
         </div>
 
       </div>
-
+      <button class="ui-button-success" style="display: block; margin: 0 auto;">PayPal</button>
     </div>
   </div>
 </div>
