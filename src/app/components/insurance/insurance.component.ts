@@ -213,7 +213,7 @@ export class InsuranceComponent implements OnInit {
 
     this.form3 = this.fb.group({
       markaITip : [''],
-      godinaProizvodnje : [''],
+      godinaProizvodnje : ['', [Validators.pattern('[01-9]{4}'), Validators.required]],
       brojTablica : [''],
       brojSasije : [''],
       imeVlasnika: [''],
@@ -320,6 +320,7 @@ export class InsuranceComponent implements OnInit {
 
   dodajOsiguranjeVozila()
   {
+      console.log(this.form3);
       //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
       let x = Object.assign({}, this.form3Data);
       //spread operator za unos kopije objekta u niz

@@ -169,9 +169,6 @@
   </div>
 
 
-
-
-
   <!-- DIV za drugi korak -->
   <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="center">
 
@@ -357,14 +354,16 @@
   <!--DIV ZA TRECI KORAK-->
 
   <div *ngIf="activeIndex == 2">
-    <div style="margin-top: 20px;" align="center">
-      <button pButton class="ui-button-primary" type="text" (click)="onShowCarDialog()" label="Osiguranje vozila" icon="fa-plus"></button>
-      <button pButton class="ui-button-primary" type="text" (click)="onShowHomeDialog()" label="Osiguranje nekretnine" icon="fa-plus"></button>
-    </div>
 
     <div align="center" style="margin-top: 30px;">
-      <h3 *ngIf="osiguranjaNekretnina.length == 0 && osiguranjaVozila.length == 0">Ukoliko niste zainteresovani za dodatna osiguranja stisnite dugme 'Sledeci korak'</h3>
+      <h3>Na brz i jednostavan način odaberite neka od dodatnih osiguranja</h3>
     </div>
+
+    <div style="margin-top: 20px;" align="center">
+      <button pButton class="ui-button-primary" type="text" (click)="onShowCarDialog()"
+              label="Osiguranje vozila" icon="fa-car"></button>
+      <button pButton class="ui-button-primary" type="text" (click)="onShowHomeDialog()"
+              label="Osiguranje nekretnine" icon="fa-home"></button>
 
     <!-- Dijalozi za dodavanje novih osiguranja -->
     <p-dialog [(visible)]="showCarDialog">
@@ -390,7 +389,7 @@
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-calendar formControlName="godinaProizvodnje" [(ngModel)]="form3Data.godinaProizvodnje" size="35" [showIcon]="true" inputStyleClass="calendarStyleClass"></p-calendar>
+                <input class="form-control" formControlName="godinaProizvodnje" [(ngModel)]="form3Data.godinaProizvodnje" type="text">
               </div>
             </div>
           </div>
@@ -774,4 +773,5 @@
   <br>
   <br>
   <br>
+</div>
 </div>
