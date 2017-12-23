@@ -249,8 +249,7 @@
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" required email formControlName="emailNosioca" [(ngModel)]="form2Data.emailNosioca"
-                       type="text">
+                <input class="form-control" required email formControlName="emailNosioca" [(ngModel)]="form2Data.emailNosioca" type="text">
               </div>
             </div>
           </div>
@@ -285,6 +284,19 @@
           </ng-template>
         </p-column>
       </p-dataTable>
+    </div>
+
+
+
+
+
+
+    <div class="form-group" align="center">
+      <label class="col-md-3 control-label"></label>
+      <div>
+        <button pButton class="ui-button-warning" type="text" (click)="secondStepPrevious()" label="Prethodni korak"></button>
+        <button pButton class="ui-button-warning" type="submit" (click)="secondStepSubmit()" label="Sledeci korak"></button>
+      </div>
     </div>
   </div>
 
@@ -495,21 +507,20 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-4">
-              <label class="control-label">Starost stana (godine):</label>
+              <label class="control-label">Starost stana:</label>
             </div>
             <div class="col-lg-8">
-              <p-spinner size="35" formControlName="starostStana" [(ngModel)]="form4Data.starostStana" [min]="1" [max]="200"></p-spinner>
+              <p-dropdown [options]="starostiStana" formControlName="starostStana" [(ngModel)]="form4Data.starostStana" [style]="{'width':'100%'}"></p-dropdown>
             </div>
           </div>
         </div>
         <div class="form-group">
           <div class="row">
             <div class="col-lg-4">
-              <label class="control-label">Procenjena vrednost stana (RSD):</label>
+              <label class="control-label">Procenjena vrednost stana:</label>
             </div>
-            <div class="col-lg-8">
-              <p-spinner size="35" formControlName="procenjenaVrednostStana" [(ngModel)]="form4Data.procenjenaVrednostStana" [min]="0"
-                [max]="10"></p-spinner>
+            <div class="col-lg-8">              
+              <p-dropdown [options]="procenjeneVrednostiStana" formControlName="procenjenaVrednostStana" [(ngModel)]="form4Data.procenjenaVrednostStana" [style]="{'width':'100%'}"></p-dropdown>
             </div>
           </div>
         </div>

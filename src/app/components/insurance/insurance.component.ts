@@ -25,6 +25,8 @@ export class InsuranceComponent implements OnInit {
   vrsteAlternativnogPrevoza : SelectItem[];
   osiguranjaStana : SelectItem[];
   svrhaOsiguranja : SelectItem[];
+  starostiStana : SelectItem[]; 
+  procenjeneVrednostiStana : SelectItem[]; 
 
   //************************************/
 
@@ -125,6 +127,19 @@ export class InsuranceComponent implements OnInit {
         { label: 'Osiguranje od požara', value: "Požar" }
     ];
 
+    this.starostiStana = [
+      { label: 'Do 5 godina', value: "Pet" }, 
+      { label: 'Do 20 godina', value: "Dvadeset" }, 
+      { label: 'Do 50 godina', value: "Pedeset" }, 
+      { label: 'Preko 50 godina', value: "PrekoPedeset" }
+    ]; 
+
+    this.procenjeneVrednostiStana = [
+      { label: 'Do 50.000 €', value: "Pedeset" }, 
+      { label: 'Do 100.000 €', value: "Sto" }, 
+      { label: 'Preko 100.000 €', value: "PrekoSto"}
+    ]; 
+
     this.svrhaOsiguranja = [
         { label: 'Turisticki', value: "Turisticki"},
         { label: 'Poslovno-administrativni poslovi', value: "Poslovno-administrativni-poslovi"},
@@ -159,11 +174,7 @@ export class InsuranceComponent implements OnInit {
     this.putnaOsiguranjaKolone = [
         {field: 'ime', header: 'Ime'},
         {field: 'jmbg', header: 'JMBG'},
-        {field: 'prezime', header: 'Prezime'},
-        {field: 'brojPasosa', header: 'Broj pasosa'},
-        {field: 'datumRodjenja', header: 'Datum rodjenja'},
-        {field: 'adresa', header: 'Adresa'},
-        {field: 'brojTelefona', header: 'Broj telefona'}
+        {field: 'prezime', header: 'Prezime'}
     ];
 
     this.form1 = this.fb.group({
@@ -237,6 +248,14 @@ export class InsuranceComponent implements OnInit {
     //   this.groupIterNiz.push(null);
   }
 
+  secondStepSubmit()
+  {
+    this.activeIndex++;
+
+    if(this.activeIndex != 2)
+      return; 
+  }
+
   onSubmitStepTwo(form) {
     console.log(form);
     this.activeIndex++;
@@ -266,6 +285,10 @@ export class InsuranceComponent implements OnInit {
       if(this.activeIndex == 1)
         this.groupIterNiz = [];
       this.activeIndex--;
+  }
+
+  secondStepPrevious() {
+    this.activeIndex--;      
   }
 
   dodajOsiguranjeVozila()
