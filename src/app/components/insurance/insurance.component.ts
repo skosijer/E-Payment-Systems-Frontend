@@ -5,6 +5,7 @@ import { InputTextModule } from 'primeng/primeng';
 import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
 import {Osoba} from "../../beans/osoba";
 import {InsuranceDataService} from "./insurance-data.service";
+import {Rizik} from "../../beans/rizik";
 
 
 @Component({
@@ -101,10 +102,11 @@ export class InsuranceComponent implements OnInit {
   ngOnInit() {
 
 
-    this.insuranceDataService.getRegions().subscribe(
+    this.insuranceDataService.getStarosneGrupe().subscribe(
       (data) => {
         console.log(data['_body']);
-
+        let rizici : Rizik[] = JSON.parse(data['_body']);
+        console.log(rizici);
       }
     );
 

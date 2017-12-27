@@ -10,8 +10,8 @@ export class InsuranceDataService {
   constructor(private http:Http) { }
 
 
-  public getRegions(){
-    return this.http.get(this.url+'dmz-insurance-forms/test');
+  public getStarosneGrupe(){
+    return this.http.get(this.url+'dmzMain/dobaviStarosneGrupe');
   }
 
 }
