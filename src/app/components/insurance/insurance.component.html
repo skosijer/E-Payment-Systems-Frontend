@@ -176,6 +176,141 @@
       <button pButton class="ui-button-primary" type="text" (click)="onShowInsuranceDialog()" label="Dodaj osiguranika" icon="fa-plus"></button>
     </div>
 
+    <!-- KRECE DIV KADA NIJE UNEO NOSIOCA: -->
+
+    <p-dialog [(visible)]="showNosilacDialog">
+      <p-header>
+        Izaberite nosioca osiguranja
+      </p-header>
+      <div class="container-fluid">
+        <form [formGroup]="formNosilac" class="form-horizontal" style="width: 500px;">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-1"></div>
+              <div class="col-lg-4">
+                <label class="control-label pull-left">Nosilac osiguranja:</label>
+              </div>
+              <div class="col-md-3">
+                <p-radioButton formControlName="potencijalniNosilac" name="group1" inputId="opt1" value="osiguranik" label="Osiguranik" [(ngModel)]="potencijalniNosilac"></p-radioButton>
+              </div>
+              <div class="col-md-3">
+                <p-radioButton formControlName="potencijalniNosilac" name="group1" inputId="opt2" value="drugo_lice" label="Drugo lice" [(ngModel)]="potencijalniNosilac"></p-radioButton>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'osiguranik'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Izaberite nosioca: </label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <p-dropdown [options]="osobe_labels" formControlName="osobe" [(ngModel)]="formNosilacData.osobe"></p-dropdown>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'osiguranik' && potencijalniNosilac !== 'drugo_lice'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Email:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" required email formControlName="emailNosioca" [(ngModel)]="formNosilacData.emailNosioca" type="text">
+              </div>
+            </div>
+          </div>
+
+
+
+    <!--dajhbhasdgjJHJHJHDHGDJHS-->
+
+
+
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Ime:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" required [(ngModel)]="formNosilacData.ime" type="text" formControlName="ime">
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Prezime:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" formControlName="prezime" required [(ngModel)]="formNosilacData.prezime" type="text">
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">JMBG:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" minlength="13" maxlength="13" required formControlName="jmbg" [(ngModel)]="formNosilacData.jmbg" type="text">
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Adresa:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" required formControlName="adresa" [(ngModel)]="formNosilacData.adresa" type="text">
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Broj pasosa:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" required minlength="7" maxlength="7" formControlName="brojPasosa" [(ngModel)]="formNosilacData.brojPasosa"
+                       type="text">
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label">Broj telefona:</label>
+                <br>
+              </div>
+              <div class="col-lg-8">
+                <input class="form-control" required pattern="[0-9]" formControlName="brojTelefona" [(ngModel)]="formNosilacData.brojTelefona"
+                       type="text">
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div align="center">
+              <button pButton class="ui-button-primary" type="submit" icon="fa-plus" (click)="dodajNosioca()" label="Dodaj"></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </p-dialog>
+
+    <!-- GOTOV -->
+
     <p-dialog [(visible)]="showInsuranceDialog">
       <p-header>
         Novi osiguranik
@@ -288,12 +423,12 @@
     </p-dialog>
 
     <!--PRIKAZ PODATAKA O PUTNIM OSIGURANJIMA-->
-    <div style="margin-top: 20px" [hidden]="putnaOsiguranja.length === 0">
-      <p-dataTable [value]="putnaOsiguranja" [responsive]="true" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]">
+    <div style="margin-top: 20px" [hidden]="osobe.length === 0">
+      <p-dataTable [value]="osobe" [responsive]="true" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]">
 
         <p-header>Putna osiguranja</p-header>
         <!-- ako zelis da dodas search polja ubaci [filter]="true" filterPlaceholder="Search" -->
-        <p-column *ngFor="let col of putnaOsiguranjaKolone" [field]="col.field" [header]="col.header"></p-column>
+        <p-column *ngFor="let col of osobeKolone" [field]="col.field" [header]="col.header"></p-column>
 
         <p-column styleClass="col-button" [style]="{width: '65px', 'text-align': 'center'}">
           <ng-template pTemplate="header">

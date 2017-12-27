@@ -7,4 +7,5 @@ export class Osoba{
   public brojTelefona : string;
   public brojPasosa : string;
   public datumRodjenja : Date = new Date();
+  public email:string;
 }

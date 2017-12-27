@@ -16,6 +16,7 @@ import {CalendarModule} from 'primeng/primeng';
 import {DataTableModule,SharedModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
 import {CheckboxModule} from 'primeng/primeng';
+import {RadioButtonModule} from 'primeng/primeng';
 
 // Component imports
 import { HomeComponent } from './components/home/home.component';
@@ -25,6 +26,7 @@ import {KeycloakGuard} from "./guard/guard";
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { InsuranceComponent } from './components/insurance/insurance.component';
+import {InsuranceDataService} from "./components/insurance/insurance-data.service";
 
 
 
@@ -51,7 +53,8 @@ import { InsuranceComponent } from './components/insurance/insurance.component';
     SharedModule,
     routing,
     DialogModule,
-    CheckboxModule
+    CheckboxModule,
+    RadioButtonModule
   ],
   providers: [
     provideAuth({
@@ -60,7 +63,8 @@ import { InsuranceComponent } from './components/insurance/insurance.component';
       tokenGetter: () => {
         return window['_keycloak'].token;
       }
-    }), KeycloakService, KeycloakGuard
+    }), KeycloakService, KeycloakGuard,
+    InsuranceDataService
   ],
   bootstrap: [AppComponent]
 })
