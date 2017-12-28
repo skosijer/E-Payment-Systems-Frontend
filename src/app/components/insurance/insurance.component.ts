@@ -3,9 +3,10 @@ import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
 import { InputTextModule } from 'primeng/primeng';
 import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
-import {Osoba} from "../../beans/osoba";
+import {Osoba, TipNosioca} from "../../beans/osoba";
 import {InsuranceDataService} from "./insurance-data.service";
 import {Rizik} from "../../beans/rizik";
+import {Nosilac} from "../../beans/nosilac_osiguranja";
 
 
 @Component({
@@ -532,13 +533,16 @@ export class InsuranceComponent implements OnInit {
     if(this.drugoLiceNosilac == null){
       for(let osoba of this.osobe){
         if(osoba.email){
-          console.log(osoba);
+          let nosilac:Nosilac = new Nosilac();
+          nosilac.osoba = osoba;
+          nosilac.tip = TipNosioca.OSIGURANIK;
           return osoba;
         }
       }
     }
-    console.log(this.drugoLiceNosilac);
-    return this.drugoLiceNosilac;
+    let nosilac:Nosilac = new Nosilac();
+    nosilac.osoba = this.drugoLiceNosilac;
+    nosilac.tip = TipNosioca.DRUGO_LICE;
   }
 
 

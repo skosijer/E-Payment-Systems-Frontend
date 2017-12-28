@@ -9,3 +9,8 @@ export class Osoba{
   public datumRodjenja : Date = new Date();
   public email:string;
 }
+
+export enum TipNosioca{
+  OSIGURANIK,
+  DRUGO_LICE
+}
