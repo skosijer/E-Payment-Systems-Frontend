@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
 import { InputTextModule } from 'primeng/primeng';
-import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormArray, FormControl} from '@angular/forms';
 import {Osoba, TipNosioca} from "../../beans/osoba";
 import {InsuranceDataService} from "./insurance-data.service";
 import {Rizik} from "../../beans/rizik";
@@ -22,9 +22,11 @@ export class InsuranceComponent implements OnInit {
 
   items: MenuItem[];
   itemsTwo: MenuItem[];
-  destinacije: SelectItem[];
+  destinacije: SelectItem[] = [{ label: 'Odaberite region', value: null }];
   vrstePaketa: SelectItem[];
-  starost: SelectItem[];
+  starostLabela: SelectItem[] = [];
+  starosti : Rizik[] = [];
+  regioni : Rizik[] = [];
   paketiOsiguranja : SelectItem[];
   vrsteAlternativnogPrevoza : SelectItem[];
   osiguranjaStana : SelectItem[];
@@ -47,7 +49,7 @@ export class InsuranceComponent implements OnInit {
   //Forme za kupovinu polise
 
   form1: FormGroup;
-  form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", brojOdraslih: 0, brojDece: 0, brojStarijih: 0, pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki'};
+  form1Data: any = {destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki'};
 
   form2: FormGroup;
   form2Data: any = {ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : "", emailNosioca: ""};
@@ -107,12 +109,36 @@ export class InsuranceComponent implements OnInit {
 
     this.insuranceDataService.getStarosneGrupe().subscribe(
       (data) => {
-        console.log(data['_body']);
-        let rizici : Rizik[] = JSON.parse(data['_body']);
-        console.log(rizici);
+        this.starosti = JSON.parse(data['_body']);
+
+        for(let i = 0; i < this.starosti.length; i++) {
+          let s = {
+            label : this.starosti[i].vrednost, value : this.starosti[i].id
+          };
+          this.starostLabela.push(s);
+          let str = this.starosti[i].vrednost;
+          let ss = {
+            str : 1
+          };
+          this.form1Data.str = 1;
+
+          this.form1.addControl(this.starosti[i].vrednost,new FormControl(''));
+        }
       }
     );
 
+    this.insuranceDataService.getRegioni().subscribe(
+      (data) => {
+        this.regioni = JSON.parse(data['_body']);
+
+        for(let i = 0; i < this.regioni.length; i++) {
+          let s = {
+            label : this.regioni[i].vrednost, value : this.regioni[i].id
+          };
+          this.destinacije.push(s);
+        }
+      }
+    );
 
 
     this.items = [
@@ -122,22 +148,9 @@ export class InsuranceComponent implements OnInit {
       { label: 'Placanje' }
     ];
 
-    this.destinacije = [
-      { label: 'Odaberite region', value: null },
-      { label: 'Evropa - nadoknada stete do 30 000 €', value: "Evropa" },
-      { label: 'Svet - nadoknada stete do 40 000 €', value: "Svet" },
-      { label: 'Interkontinentalne - nadoknada stete do 15 000 €', value: 'Interkontinentalno'}
-    ];
-
      this.vrstePaketa = [
       { label: 'Individualno', value: "individualno" },
       { label: 'Grupno', value: "grupno" }
-    ];
-
-    this.starost = [
-        { label: 'Deca (0 - 18 godina)', value: "deca" },
-        { label: 'Odrasli (19 - 70 godina)', value: "odrasli" },
-        { label: 'Starija lica (preko 70 godina)', value: "stariji" }
     ];
 
     this.paketiOsiguranja = [
@@ -221,12 +234,6 @@ export class InsuranceComponent implements OnInit {
       vrstaPaketa: ['', Validators.required],
       //polje vezano samo za individualno osiguranje
       starost: [''],
-      /******************************************/
-      //polja vezana samo za grupno osiguranje
-      brojOdraslih: ['', Validators.required],
-      brojDece: ['', Validators.required],
-      brojStarijih: ['', Validators.required],
-      /************************************/
       pocetakOsiguranja: ['', Validators.required],
       trajanjeOsiguranja: ['', Validators.required],
       svrhaOsiguranja: ['']
@@ -286,10 +293,15 @@ export class InsuranceComponent implements OnInit {
     });
   }
 
+  printForm() {
+    console.log(this.form1);
+  }
+
   stepSubmit()
   {
-
-    if(this.form1.controls['vrstaPaketa'].value == 'grupno'){
+    console.log(this.form1);
+    // VALIDACIJE PROMENITI JER SE DINAMICKI KREIRA FORMA
+    /*if(this.form1.controls['vrstaPaketa'].value == 'grupno'){
       if(this.form1.controls['brojOdraslih'].value == 0 && this.form1.controls['brojStarijih'].value == 0
         && this.form1.controls['brojDece'].value == 0){
         this.msgs = [];
@@ -306,7 +318,7 @@ export class InsuranceComponent implements OnInit {
       }
     }else{
       this.brojOsiguranika = 1;
-    }
+    } */
 
     this.activeIndex++;
 

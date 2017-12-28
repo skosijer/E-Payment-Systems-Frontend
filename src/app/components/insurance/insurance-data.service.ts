@@ -14,4 +14,8 @@ export class InsuranceDataService {
     return this.http.get(this.url+'dmzMain/dobaviStarosneGrupe');
   }
 
+  public getRegioni() {
+    return this.http.get(this.url+'dmzMain/dobaviRegione');
+  }
+
 }

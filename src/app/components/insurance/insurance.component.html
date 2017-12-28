@@ -39,7 +39,7 @@
               <br>
             </div>
             <div class="col-lg-4">
-              <p-dropdown [options]="starost" formControlName="starost" [(ngModel)]="form1Data.starost" [style]="{'width':'400px'}"></p-dropdown>
+              <p-dropdown [options]="starostLabela" formControlName="starost" [(ngModel)]="form1Data.starost" [style]="{'width':'400px'}"></p-dropdown>
             </div>
           </div>
         </div>
@@ -48,7 +48,21 @@
 
       <!--Tri dodatna polja pri odabiru grupnog osiguravajuceg paketa-->
       <div [hidden]="form1.value.vrstaPaketa === 'individualno'">
-        <div class="form-group">
+        <div class="form-group" *ngFor="let s of starosti">
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <label class="control-label">{{s.vrednost}}</label>
+              <br>
+            </div>
+            <div class="col-lg-4">
+
+              <p-spinner formControlName="{{s.vrednost}}" ngModel [min]="0" [max]="10"></p-spinner>
+
+            </div>
+          </div>
+        </div>
+        <!--<div class="form-group">
           <div class="row">
             <div class="col-lg-2"></div>
             <div class="col-lg-3">
@@ -57,7 +71,8 @@
             </div>
             <div class="col-lg-4">
 
-              <p-spinner formControlName="brojStarijih" [(ngModel)]="form1Data.brojStarijih" [min]="0" [max]="10"></p-spinner>
+              <p-spinner formControlName="brojStarijih" [(ngModel)]="form1Data.brojStarijih" [min]="0"
+                         [max]="10"></p-spinner>
 
             </div>
           </div>
@@ -70,7 +85,8 @@
               <br>
             </div>
             <div class="col-lg-4">
-              <p-spinner formControlName="brojOdraslih" [(ngModel)]="form1Data.brojOdraslih" [min]="0" [max]="10"></p-spinner>
+              <p-spinner formControlName="brojOdraslih" [(ngModel)]="form1Data.brojOdraslih" [min]="0"
+                         [max]="10"></p-spinner>
             </div>
           </div>
         </div>
@@ -87,7 +103,7 @@
 
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
       <!--****************************************************************-->
 
@@ -140,7 +156,6 @@
         <label class="col-md-3 control-label"></label>
         <div class="step1_button_div">
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
-
           <p-growl [(value)]="msgs"></p-growl>
 
         </div>
