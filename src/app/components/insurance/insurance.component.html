@@ -141,28 +141,8 @@
         <div class="step1_button_div">
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
 
+          <p-growl [(value)]="msgs"></p-growl>
 
-          <p-dialog [(visible)]="showBrojLicaMessage1">
-            <p-header>
-              Postovani
-            </p-header>
-            <div class="container-fluid" style="font-family: Lato">
-              Izabrali ste grupno osiguranje, <br>
-              Molimo Vas da unesete broj lica po uzrastu. <br>
-              Hvala!
-            </div>
-          </p-dialog>
-
-          <p-dialog [(visible)]="showBrojLicaMessage2">
-            <p-header>
-              Postovani
-            </p-header>
-            <div class="container-fluid" style="font-family: Lato">
-              Izabrali ste grupno osiguranje, <br>
-              Molimo Vas da unesete broj lica veci ili jednak 2. <br>
-              Hvala!
-            </div>
-          </p-dialog>
         </div>
       </div>
     </form>
@@ -172,10 +152,9 @@
   <!-- DIV za drugi korak -->
   <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="center">
 
-    <button (click)="findNosilac()">ajdhashjd</button>
 
     <div style="margin-top: 20px;" align="center">
-      <button pButton class="ui-button-primary" type="text" (click)="onShowInsuranceDialog()" label="Dodaj osiguranika" icon="fa-plus"></button>
+      <button pButton class="ui-button-primary" type="text" [disabled]="brojOsiguranika == 0" (click)="onShowInsuranceDialog()" label="Dodaj osiguranika {{'('+brojOsiguranika+')'}}" icon="fa-plus"></button>
     </div>
 
     <!-- KRECE DIV KADA NIJE UNEO NOSIOCA: -->
@@ -424,7 +403,7 @@
       </div>
     </p-dialog>
 
-    <!--PRIKAZ PODATAKA O PUTNIM OSIGURANJIMA-->
+    <!--PRIKAZ PODATAKA O OSIGURANICIMA-->
     <div style="margin-top: 20px" [hidden]="osobe.length === 0">
       <p-dataTable [value]="osobe" [responsive]="true" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]">
 
@@ -437,7 +416,7 @@
             <header>Obriši</header>
           </ng-template>
           <ng-template let-formaPutnoOsiguranje="rowData" pTemplate="body">
-            <button type="button" class="ui-button-danger" (click)="obrisiOsiguranika(formaPutnoOsiguranje)" pButton icon="fa-times"
+            <button type="button" class="ui-button-danger" (click)="obrisiOsiguranika(formaPutnoOsiguranje)" pButton icon="fa-trash"
               iconPos="left"></button>
           </ng-template>
         </p-column>
@@ -457,24 +436,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <form (ngSubmit)="onSubmitStepTwo(ff)" #ff="ngForm"   class="form-horizontal">
-      <div *ngFor="let b of groupIterNiz; let i = index">
-        <h4 class="pull-left" style="font-family: Impact;color: #55535b">{{'Osiguranik: ['+(i+1)+']'}}</h4><br><hr>
-
-
-
-
-      <div class="form-group">
-        <label class="col-md-3 control-label"></label>
-        <div>
-          <button pButton class="ui-button-warning" type="text" (click)="previous()" label="Prethodni korak"></button>
-          <button pButton class="ui-button-warning" type="submit" label="Sledeci korak"></button>
-        </div>
-      </div>
-    </form>
-  </div>
--->
 
 
   <!--DIV ZA TRECI KORAK-->

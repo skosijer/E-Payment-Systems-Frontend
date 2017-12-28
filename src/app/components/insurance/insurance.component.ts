@@ -7,6 +7,7 @@ import {Osoba, TipNosioca} from "../../beans/osoba";
 import {InsuranceDataService} from "./insurance-data.service";
 import {Rizik} from "../../beans/rizik";
 import {Nosilac} from "../../beans/nosilac_osiguranja";
+import {Message} from 'primeng/primeng';
 
 
 @Component({
@@ -61,10 +62,6 @@ export class InsuranceComponent implements OnInit {
   formNosilacData: any = {potencijalniNosilac: "", osobe: "", ime : "", jmbg : "",prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona : "", emailNosioca: ""};
   //**********************************************/
 
-  //Boolean vrednosti za medjusobno sakrivanje formi
-  showForm2 : boolean = false;
-  showForm3 : boolean = false;
-  showForm4 : boolean = false;
 
   private showCarDialog = false;
   private showHomeDialog = false;
@@ -83,17 +80,22 @@ export class InsuranceComponent implements OnInit {
   private canBeInsuranceHolder:boolean = true;
 
 
-  /*****************/
-  private showBrojLicaMessage1:boolean = false;
-  private showBrojLicaMessage2:boolean = false;
+  /*******PODACI ZA NOSIOCA**********/
+
   private showNosilacDialog:boolean = false;
-
-
   potencijalniNosilac:string;
   private osobe_labels: SelectItem[]=[{
     label:'Izaberite nosioca osiguranja', value:null
   }];
-  private drugoLiceNosilac:Osoba = null;
+  private nosilac:Nosilac = null;
+
+
+  /*Poruke za ne validnu prvu formu*/
+  msgs: Message[] = [];
+
+
+  //PODACI ZA BROJ OSIGURANIKA ZA DRUGI KORAK
+  private brojOsiguranika:number;
 
 
 
@@ -290,35 +292,26 @@ export class InsuranceComponent implements OnInit {
     if(this.form1.controls['vrstaPaketa'].value == 'grupno'){
       if(this.form1.controls['brojOdraslih'].value == 0 && this.form1.controls['brojStarijih'].value == 0
         && this.form1.controls['brojDece'].value == 0){
-        //alert('Postovani, izabrali ste grupno osiguranje, molimo Vas da unesete broj odgovarajucih lica.');
-        this.showBrojLicaMessage1 = true;
+        this.msgs = [];
+        this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite odgovarajuci broj lica.'});
         return;
       }else{
         let num = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojStarijih'].value + this.form1.controls['brojDece'].value;
+        this.brojOsiguranika = num;
         if(num < 2){
-          this.showBrojLicaMessage2 = true;
+          this.msgs = [];
+          this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite odgovarajuci broj lica.'});
           return;
         }
       }
+    }else{
+      this.brojOsiguranika = 1;
     }
-
-    console.log(this.form1.controls['trajanjeOsiguranja'].value);
 
     this.activeIndex++;
 
     if(this.activeIndex != 1)
         return;
-
-
-
-    // let br;
-    // if(this.form1.controls['vrstaPaketa'].value == 'individualno')
-    //   br = 1;
-    // else
-    //   br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
-    // console.log(br);
-    // for (let i = 0; i < br; i++)
-    //   this.groupIterNiz.push(null);
   }
 
   secondStepSubmit()
@@ -355,31 +348,6 @@ export class InsuranceComponent implements OnInit {
         this.osobe_labels.push(temp);
       }
     }
-  }
-
-  onSubmitStepTwo(form) {
-    console.log(form);
-    this.activeIndex++;
-    let br;
-    if (this.form1.controls['vrstaPaketa'].value == 'individualno')
-      br = 1;
-    else {
-      br = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojDece'].value + this.form1.controls['brojStarijih'].value;
-    }
-
-    for (let i = 0; i < br; i++) {
-      let osoba = new Osoba();
-      console.log('adresa' + i);
-      console.log(form.controls['adresa' + i].value);
-      osoba.adresa = form.controls['adresa' + i].value;
-      osoba.brojPasosa = form.controls['brojPasosa' + i].value;
-      osoba.brojTelefona = form.controls['brojTelefona' + i].value;
-      osoba.ime = form.controls['ime' + i].value;
-      osoba.JMBG = form.controls['jmbg' + i].value;
-      osoba.prezime = form.controls['prezime' + i].value;
-      this.osobe.push(osoba);
-    }
-    console.log(this.osobe);
   }
 
   previous(){
@@ -449,32 +417,40 @@ export class InsuranceComponent implements OnInit {
         this.canBeInsuranceHolder = false;
         osoba.email = x.emailNosioca;
         this.osobe = [...this.osobe,osoba];
+        this.nosilac = new Nosilac(osoba, TipNosioca.OSIGURANIK);
       }else{
         this.osobe = [...this.osobe,osoba];
       }
 
-
-
+      this.brojOsiguranika--;
       this.form2.reset();
   }
 
-   obrisiOsiguranika(formaPutnoOsiguranje)
+   obrisiOsiguranika(osiguranik)
   {
 
     let osoba:Osoba = new Osoba();
     for(var i = 0;i < this.osobe.length; i++){
-      if(this.osobe[i].JMBG == formaPutnoOsiguranje.jmbg){
+      if(this.osobe[i].JMBG == osiguranik.jmbg){
         osoba = this.osobe[i];
         break;
       }
     }
 
       let index = this.osobe.indexOf(osoba);
+
+      if(this.nosilac){
+        if(this.nosilac.osoba.JMBG === osoba.JMBG){
+          this.nosilac = null;
+        }
+      }
+
       this.osobe.splice(index, 1);
       this.osobe =  [...this.osobe];
+      this.brojOsiguranika++;
 
 
-      if(formaPutnoOsiguranje.emailNosioca != ''){
+      if(osiguranik.emailNosioca != ''){
         this.canBeInsuranceHolder = true;
       }
   }
@@ -504,21 +480,24 @@ export class InsuranceComponent implements OnInit {
           if(x.osobe === this.osobe[i].JMBG){
 
             this.osobe[i].email = x.emailNosioca;
+            this.nosilac = new Nosilac(this.osobe[i], TipNosioca.OSIGURANIK);
             this.canBeInsuranceHolder = false;
             break;
           }
         }
       }
     }else{
-      this.drugoLiceNosilac = new Osoba();
-      this.drugoLiceNosilac.ime = x.ime;
-      this.drugoLiceNosilac.adresa = x.adresa;
-      this.drugoLiceNosilac.brojPasosa = x.brojPasosa;
-      this.drugoLiceNosilac.JMBG = x.jmbg;
-      this.drugoLiceNosilac.brojTelefona = x.brojTelefona;
-      this.drugoLiceNosilac.datumRodjenja = x.datumRodjenja;
-      this.drugoLiceNosilac.prezime = x.prezime;
-      this.drugoLiceNosilac.email = x.emailNosioca;
+
+      let osoba:Osoba = new Osoba();
+      osoba.ime = x.ime;
+      osoba.adresa = x.adresa;
+      osoba.brojPasosa = x.brojPasosa;
+      osoba.JMBG = x.jmbg;
+      osoba.brojTelefona = x.brojTelefona;
+      osoba.datumRodjenja = x.datumRodjenja;
+      osoba.prezime = x.prezime;
+      osoba.email = x.emailNosioca;
+      this.nosilac = new Nosilac(osoba, TipNosioca.DRUGO_LICE);
       this.canBeInsuranceHolder = false;
     }
     this.showNosilacDialog = false;
@@ -526,23 +505,6 @@ export class InsuranceComponent implements OnInit {
 
     if(this.activeIndex != 2)
       return;
-
-  }
-
-  findNosilac() {
-    if(this.drugoLiceNosilac == null){
-      for(let osoba of this.osobe){
-        if(osoba.email){
-          let nosilac:Nosilac = new Nosilac();
-          nosilac.osoba = osoba;
-          nosilac.tip = TipNosioca.OSIGURANIK;
-          return osoba;
-        }
-      }
-    }
-    let nosilac:Nosilac = new Nosilac();
-    nosilac.osoba = this.drugoLiceNosilac;
-    nosilac.tip = TipNosioca.DRUGO_LICE;
   }
 
 

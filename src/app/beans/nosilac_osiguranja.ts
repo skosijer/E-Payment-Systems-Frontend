@@ -3,7 +3,8 @@ export class Nosilac{
   public osoba:Osoba;
   public tip:TipNosioca;
 
-  constructor(){
-
+  constructor(osoba:Osoba, tipNosioca:TipNosioca){
+      this.osoba = osoba;
+      this.tip = tipNosioca;
   }
 }

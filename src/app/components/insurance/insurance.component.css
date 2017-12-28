@@ -83,6 +83,7 @@ body {
   background-size: cover;
   height: 100%;
   margin-top: 20px;
+  min-height: 600px;
 }
 
 /*POMOZI BOZE*/

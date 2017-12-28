@@ -17,6 +17,7 @@ import {DataTableModule,SharedModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
 import {CheckboxModule} from 'primeng/primeng';
 import {RadioButtonModule} from 'primeng/primeng';
+import {GrowlModule} from 'primeng/primeng';
 
 // Component imports
 import { HomeComponent } from './components/home/home.component';
@@ -54,7 +55,8 @@ import {InsuranceDataService} from "./components/insurance/insurance-data.servic
     routing,
     DialogModule,
     CheckboxModule,
-    RadioButtonModule
+    RadioButtonModule,
+    GrowlModule
   ],
   providers: [
     provideAuth({
