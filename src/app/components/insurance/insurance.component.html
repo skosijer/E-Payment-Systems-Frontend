@@ -172,6 +172,8 @@
   <!-- DIV za drugi korak -->
   <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="center">
 
+    <button (click)="findNosilac()">ajdhashjd</button>
+
     <div style="margin-top: 20px;" align="center">
       <button pButton class="ui-button-primary" type="text" (click)="onShowInsuranceDialog()" label="Dodaj osiguranika" icon="fa-plus"></button>
     </div>
@@ -206,7 +208,7 @@
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-dropdown [options]="osobe_labels" formControlName="osobe" [(ngModel)]="formNosilacData.osobe"></p-dropdown>
+                <p-dropdown [options]="osobe_labels" [style]="{'width':'300px'}" formControlName="osobe" [(ngModel)]="formNosilacData.osobe"></p-dropdown>
               </div>
             </div>
           </div>

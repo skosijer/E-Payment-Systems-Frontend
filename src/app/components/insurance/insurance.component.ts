@@ -92,7 +92,7 @@ export class InsuranceComponent implements OnInit {
   private osobe_labels: SelectItem[]=[{
     label:'Izaberite nosioca osiguranja', value:null
   }];
-  private drugoLineNosilac:Osoba = null;
+  private drugoLiceNosilac:Osoba = null;
 
 
 
@@ -329,22 +329,22 @@ export class InsuranceComponent implements OnInit {
 
     let counter:number = 0;
     for(var i = 0;i < this.osobe.length; i++){
-      console.log(this.osobe[i].email);
+
       if(this.osobe[i].email !== undefined){
         counter++;
-        console.log('V');
         break;
       }
     }
 
     if(counter > 0){
       this.activeIndex++;
-      console.log('D');
 
       if(this.activeIndex != 2)
         return;
     }else{
-      console.log('E');
+      this.osobe_labels = [{
+        label:'Izaberite nosioca osiguranja', value:null
+      }];
       this.showNosilacDialog = true;
       for(var i = 0;i < this.osobe.length; i++){
 
@@ -503,20 +503,22 @@ export class InsuranceComponent implements OnInit {
           if(x.osobe === this.osobe[i].JMBG){
 
             this.osobe[i].email = x.emailNosioca;
+            this.canBeInsuranceHolder = false;
             break;
           }
         }
       }
     }else{
-      this.drugoLineNosilac = new Osoba();
-      this.drugoLineNosilac.ime = x.ime;
-      this.drugoLineNosilac.adresa = x.adresa;
-      this.drugoLineNosilac.brojPasosa = x.brojPasosa;
-      this.drugoLineNosilac.JMBG = x.jmbg;
-      this.drugoLineNosilac.brojTelefona = x.brojTelefona;
-      this.drugoLineNosilac.datumRodjenja = x.datumRodjenja;
-      this.drugoLineNosilac.prezime = x.prezime;
-      this.drugoLineNosilac.email = x.emailNosioca;
+      this.drugoLiceNosilac = new Osoba();
+      this.drugoLiceNosilac.ime = x.ime;
+      this.drugoLiceNosilac.adresa = x.adresa;
+      this.drugoLiceNosilac.brojPasosa = x.brojPasosa;
+      this.drugoLiceNosilac.JMBG = x.jmbg;
+      this.drugoLiceNosilac.brojTelefona = x.brojTelefona;
+      this.drugoLiceNosilac.datumRodjenja = x.datumRodjenja;
+      this.drugoLiceNosilac.prezime = x.prezime;
+      this.drugoLiceNosilac.email = x.emailNosioca;
+      this.canBeInsuranceHolder = false;
     }
     this.showNosilacDialog = false;
     this.activeIndex++;
@@ -524,6 +526,19 @@ export class InsuranceComponent implements OnInit {
     if(this.activeIndex != 2)
       return;
 
+  }
+
+  findNosilac() {
+    if(this.drugoLiceNosilac == null){
+      for(let osoba of this.osobe){
+        if(osoba.email){
+          console.log(osoba);
+          return osoba;
+        }
+      }
+    }
+    console.log(this.drugoLiceNosilac);
+    return this.drugoLiceNosilac;
   }
 
 
