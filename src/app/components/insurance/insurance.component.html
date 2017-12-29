@@ -224,15 +224,15 @@
     <!--dajhbhasdgjJHJHJHDHGDJHS-->
 
 
-
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCss('ime')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Ime:</label>
+                <label class="control-label required">Ime:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" required [(ngModel)]="formNosilacData.ime" type="text" formControlName="ime">
+                <app-field-error-display [displayError]="isFieldValid('ime')" errorMsg="Ime osiguranika je obavezno."></app-field-error-display>    
               </div>
             </div>
           </div>
