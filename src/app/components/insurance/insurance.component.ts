@@ -1,4 +1,3 @@
-import { JmbgValidators } from './../validators/jmbg.validators';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
@@ -311,8 +310,8 @@ export class InsuranceComponent implements OnInit {
       adresaVlasnika: ['', Validators.required]
     });
 
-//     console.log('FORM 2');
-// console.log(this.form2);
+    console.log('FORM 2');
+    console.log(this.form2);
 
     this.formNosilac = this.fb.group({
       potencijalniNosilac: [''],
