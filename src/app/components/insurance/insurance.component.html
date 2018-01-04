@@ -165,11 +165,12 @@
 
 
   <!-- DIV za drugi korak -->
-  <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="center">
+  <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="right">
 
 
     <div style="margin-top: 20px;" align="center">
-      <button pButton class="ui-button-primary" type="text" [disabled]="brojOsiguranika == 0" (click)="onShowInsuranceDialog()" label="Dodaj osiguranika {{'('+brojOsiguranika+')'}}" icon="fa-plus"></button>
+      <button pButton class="ui-button-primary" type="text" [disabled]="brojOsiguranika == 0" (click)="onShowInsuranceDialog()"
+        label="Dodaj osiguranika {{'('+brojOsiguranika+')'}}" icon="fa-plus"></button>
     </div>
 
     <!-- KRECE DIV KADA NIJE UNEO NOSIOCA: -->
@@ -207,24 +208,25 @@
             </div>
           </div>
 
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'osiguranik' && potencijalniNosilac !== 'drugo_lice'">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'osiguranik' && potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('emailNosioca')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Email:</label>
+                <label class="control-label required">Email:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" required email formControlName="emailNosioca" [(ngModel)]="formNosilacData.emailNosioca" type="text">
+                <app-field-error-display [displayError]="isFieldValidFormNosilac('emailNosioca')" errorMsg="Unesite validnu email adresu (npr: p@p.com)."></app-field-error-display>
               </div>
             </div>
           </div>
 
 
 
-    <!--dajhbhasdgjJHJHJHDHGDJHS-->
+          <!--dajhbhasdgjJHJHJHDHGDJHS-->
 
 
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCss('ime')">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('ime')">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Ime:</label>
@@ -232,52 +234,57 @@
               </div>
               <div class="col-lg-8">
                 <input class="form-control" required [(ngModel)]="formNosilacData.ime" type="text" formControlName="ime">
-                <app-field-error-display [displayError]="isFieldValid('ime')" errorMsg="Ime osiguranika je obavezno."></app-field-error-display>    
+                <app-field-error-display [displayError]="isFieldValidFormNosilac('ime')" errorMsg="Ime nosioca osiguranja je obavezno."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('prezime')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Prezime:</label>
+                <label class="control-label required">Prezime:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="prezime" required [(ngModel)]="formNosilacData.prezime" type="text">
+                <app-field-error-display [displayError]="isFieldValidFormNosilac('prezime')" errorMsg="Prezime nosioca osiguranja je obavezno."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('jmbg')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">JMBG:</label>
+                <label class="control-label required">JMBG:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" minlength="13" maxlength="13" required formControlName="jmbg" [(ngModel)]="formNosilacData.jmbg" type="text">
+                <input class="form-control" minlength="13" maxlength="13" required formControlName="jmbg" [(ngModel)]="formNosilacData.jmbg"
+                  type="text">
+                <app-field-error-display [displayError]="isFieldValidFormNosilac('jmbg')" errorMsg="Unesite validan JMBG nosioca osiguranja."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('adresa')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Adresa:</label>
+                <label class="control-label required">Adresa:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" required formControlName="adresa" [(ngModel)]="formNosilacData.adresa" type="text">
+                <app-field-error-display [displayError]="isFieldValidFormNosilac('adresa')" errorMsg="Adresa nosioca osiguranja je obavezna."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('brojPasosa')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj pasosa:</label>
+                <label class="control-label required">Broj pasosa:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" required minlength="7" maxlength="7" formControlName="brojPasosa" [(ngModel)]="formNosilacData.brojPasosa"
-                       type="text">
+                <input class="form-control" required minlength="9" maxlength="9" formControlName="brojPasosa" [(ngModel)]="formNosilacData.brojPasosa"
+                  type="text">
+                <app-field-error-display [displayError]="isFieldValidFormNosilac('brojPasosa')" errorMsg="Broj pasosa nosioca osiguranja je obavezan. Unesite tacno 9 cifara."></app-field-error-display>
               </div>
             </div>
           </div>
@@ -289,7 +296,7 @@
               </div>
               <div class="col-lg-8">
                 <input class="form-control" required pattern="[0-9]" formControlName="brojTelefona" [(ngModel)]="formNosilacData.brojTelefona"
-                       type="text">
+                  type="text">
               </div>
             </div>
           </div>
@@ -313,59 +320,64 @@
       </p-header>
       <div class="container-fluid">
         <form [formGroup]="form2" class="form-horizontal" style="width: 500px;">
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm2('ime')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Ime:</label>
+                <label class="control-label required">Ime:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" required [(ngModel)]="form2Data.ime" type="text" formControlName="ime">
+                <app-field-error-display [displayError]="isFieldValidForm2('ime')" errorMsg="Ime osiguranika je obavezno."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm2('prezime')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Prezime:</label>
+                <label class="control-label required">Prezime:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" formControlName="prezime" required [(ngModel)]="form2Data.prezime" type="text">
+                <input class="form-control" required formControlName="prezime" [(ngModel)]="form2Data.prezime" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm2('prezime')" errorMsg="Prezime osiguranika je obavezno."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm2('jmbg')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">JMBG:</label>
+                <label class="control-label required">JMBG:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" minlength="13" maxlength="13" required formControlName="jmbg" [(ngModel)]="form2Data.jmbg" type="text">
+                <input class="form-control" formControlName="jmbg" minlength="13" maxlength="13" required [(ngModel)]="form2Data.jmbg" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm2('jmbg')" errorMsg="Unesite validan JMBG osiguranika."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm2('adresa')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Adresa:</label>
+                <label class="control-label required">Adresa:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" required formControlName="adresa" [(ngModel)]="form2Data.adresa" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm2('adresa')" errorMsg="Adresa osiguranika je obavezna."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm2('brojPasosa')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj pasosa:</label>
+                <label class="control-label required">Broj pasosa:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" required minlength="7" maxlength="7" formControlName="brojPasosa" [(ngModel)]="form2Data.brojPasosa"
+                <input class="form-control" required minlength="9" maxlength="9" formControlName="brojPasosa" [(ngModel)]="form2Data.brojPasosa"
                   type="text">
+                <app-field-error-display [displayError]="isFieldValidForm2('brojPasosa')" errorMsg="Broj pasosa osiguranika je obavezan. Unesite tacno 9 cifara."></app-field-error-display>
               </div>
             </div>
           </div>
@@ -376,8 +388,7 @@
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" required pattern="[0-9]" formControlName="brojTelefona" [(ngModel)]="form2Data.brojTelefona"
-                  type="text">
+                <input class="form-control" pattern="[0-9]" formControlName="brojTelefona" [(ngModel)]="form2Data.brojTelefona" type="text">
               </div>
             </div>
           </div>
@@ -394,14 +405,15 @@
             </div>
           </div>
 
-          <div class="form-group" *ngIf="enterEmailBoolean && canBeInsuranceHolder">
+          <div class="form-group" *ngIf="enterEmailBoolean && canBeInsuranceHolder" [ngClass]="displayFieldCssForm2('emailNosioca')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Email:</label>
+                <label class="control-label required">Email:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" required email formControlName="emailNosioca" [(ngModel)]="form2Data.emailNosioca" type="text">
+                <input class="form-control" email formControlName="emailNosioca" [(ngModel)]="form2Data.emailNosioca" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm2('emailNosioca')" errorMsg="Unesite validnu email adresu (npr: p@p.com)."></app-field-error-display>
               </div>
             </div>
           </div>
@@ -411,7 +423,8 @@
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div align="center">
-              <button pButton class="ui-button-primary" type="submit" icon="fa-plus" (click)="dodajOsiguranika()" label="Dodaj"></button>
+              <button pButton [disabled]="!form2.valid" class="ui-button-primary" type="submit" icon="fa-plus" (click)="dodajOsiguranika()"
+                label="Dodaj"></button>
             </div>
           </div>
         </form>
@@ -454,17 +467,16 @@
 
 
   <!--DIV ZA TRECI KORAK-->
-  <div *ngIf="activeIndex == 2">
+  <div *ngIf="activeIndex == 2" class="container" style="padding: 20px" align="right">
 
     <div align="center" style="margin-top: 30px;">
       <h3>Na brz i jednostavan način odaberite neka od dodatnih osiguranja</h3>
     </div>
 
     <div style="margin-top: 20px;" align="center">
-      <button pButton class="ui-button-primary" type="text" (click)="onShowCarDialog()"
-              label="Osiguranje vozila" icon="fa-car"></button>
-      <button pButton class="ui-button-primary" type="text" (click)="onShowHomeDialog()"
-              label="Osiguranje nekretnine" icon="fa-home"></button>
+      <button pButton class="ui-button-primary" type="text" (click)="onShowCarDialog()" label="Osiguranje vozila" icon="fa-car"></button>
+      <button pButton class="ui-button-primary" type="text" (click)="onShowHomeDialog()" label="Osiguranje nekretnine" icon="fa-home"></button>
+    </div>
 
     <!-- Dijalozi za dodavanje novih osiguranja -->
     <p-dialog [(visible)]="showCarDialog">
@@ -473,86 +485,93 @@
       </p-header>
       <div class="container-fluid">
         <form [formGroup]="form3" class="form-horizontal" style="width: 500px;">
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm3('markaITip')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Marka i tip vozila:</label>
+                <label class="control-label required">Marka i tip vozila:</label>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="markaITip" [(ngModel)]="form3Data.markaITip" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm3('markaITip')" errorMsg="Marka i tip vozila su obavezni."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm3('godinaProizvodnje')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Godina proizvodnje:</label>
+                <label class="control-label required">Godina proizvodnje:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="godinaProizvodnje" [(ngModel)]="form3Data.godinaProizvodnje" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm3('godinaProizvodnje')" errorMsg="Godina proizvodnje vozila je obavezna."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm3('brojTablica')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj tablica: </label>
+                <label class="control-label required">Broj tablica:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="brojTablica" [(ngModel)]="form3Data.brojTablica" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm3('brojTablica')" errorMsg="Broj tablica vozila je obavezan."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm3('brojSasije')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj šasije: </label>
+                <label class="control-label required">Broj šasije:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="brojSasije" [(ngModel)]="form3Data.brojSasije" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm3('brojSasije')" errorMsg="Broj sasije je obavezan."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm3('imeVlasnika')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Ime vlasnika: </label>
+                <label class="control-label required">Ime vlasnika:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="imeVlasnika" [(ngModel)]="form3Data.imeVlasnika" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm3('imeVlasnika')" errorMsg="Ime vlasnika vozila je obavezno."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm3('prezimeVlasnika')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Prezime vlasnika: </label>
+                <label class="control-label required">Prezime vlasnika:</label>
                 <br>
               </div>
               <div class="col-lg-8">
                 <input class="form-control" formControlName="prezimeVlasnika" [(ngModel)]="form3Data.prezimeVlasnika" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm3('prezimeVlasnika')" errorMsg="Prezime vlasnika vozila je obavezno."></app-field-error-display>
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="displayFieldCssForm3('jmbgVlasnika')">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">JMBG Vlasnika: </label>
+                <label class="control-label required">JMBG Vlasnika:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <input class="form-control" formControlName="jmbgVlasnika" [(ngModel)]="form3Data.jmbgVlasnika" type="text">
+                <input class="form-control" required minlength="13" maxlength="13" formControlName="jmbgVlasnika" [(ngModel)]="form3Data.jmbgVlasnika" type="text">
+                <app-field-error-display [displayError]="isFieldValidForm3('jmbgVlasnika')" errorMsg="Unesite validan JMBG vlasnika vozila."></app-field-error-display>
               </div>
             </div>
           </div>
           <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Paket osiguranja: </label>
+                <label class="control-label">Paket osiguranja:</label>
                 <br>
               </div>
               <div class="col-lg-8">
@@ -644,7 +663,8 @@
               <label class="control-label">Procenjena vrednost stana:</label>
             </div>
             <div class="col-lg-8">
-              <p-dropdown [options]="procenjeneVrednostiStana" formControlName="procenjenaVrednostStana" [(ngModel)]="form4Data.procenjenaVrednostStana" [style]="{'width':'100%'}"></p-dropdown>
+              <p-dropdown [options]="procenjeneVrednostiStana" formControlName="procenjenaVrednostStana" [(ngModel)]="form4Data.procenjenaVrednostStana"
+                [style]="{'width':'100%'}"></p-dropdown>
             </div>
           </div>
         </div>
@@ -658,45 +678,50 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="displayFieldCssForm4('imeVlasnika')">
           <div class="row">
             <div class="col-lg-4">
-              <label class="control-label">Ime vlasnika:</label>
+              <label class="control-label required">Ime vlasnika:</label>
             </div>
             <div class="col-lg-8">
-              <input class="form-control" formControlName="imeVlasnika" [(ngModel)]="form4Data.imeVlasnika" type="text">
+              <input class="form-control" required formControlName="imeVlasnika" [(ngModel)]="form4Data.imeVlasnika" type="text">
+              <app-field-error-display [displayError]="isFieldValidForm4('imeVlasnika')" errorMsg="Ime vlasnika nekretnine je obavezno."></app-field-error-display>
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="displayFieldCssForm4('prezimeVlasnika')">
           <div class="row">
             <div class="col-lg-4">
-              <label class="control-label">Prezime vlasnika: </label>
+              <label class="control-label required">Prezime vlasnika: </label>
               <br>
             </div>
             <div class="col-lg-8">
-              <input class="form-control" formControlName="prezimeVlasnika" [(ngModel)]="form4Data.prezimeVlasnika" type="text">
+              <input class="form-control" required formControlName="prezimeVlasnika" [(ngModel)]="form4Data.prezimeVlasnika" type="text">
+              <app-field-error-display [displayError]="isFieldValidForm4('prezimeVlasnika')" errorMsg="Prezime vlasnika nekretnine je obavezno."></app-field-error-display>
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="displayFieldCssForm4('jmbgVlasnika')">
           <div class="row">
             <div class="col-lg-4">
-              <label class="control-label">JMBG Vlasnika: </label>
+              <label class="control-label required">JMBG Vlasnika: </label>
               <br>
             </div>
             <div class="col-lg-8">
-              <input class="form-control" formControlName="jmbgVlasnika" [(ngModel)]="form4Data.jmbgVlasnika" type="text">
+              <input class="form-control" required minlength="13" maxlength="13" formControlName="jmbgVlasnika" [(ngModel)]="form4Data.jmbgVlasnika"
+                type="text">
+              <app-field-error-display [displayError]="isFieldValidForm4('jmbgVlasnika')" errorMsg="Unesite validan JMBG vlasnika nekretnine."></app-field-error-display>
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="displayFieldCssForm4('adresaVlasnika')">
           <div class="row">
             <div class="col-lg-4">
-              <label class="control-label">Adresa vlasnika:</label>
+              <label class="control-label required">Adresa vlasnika:</label>
             </div>
             <div class="col-lg-8">
-              <input class="form-control" formControlName="adresaVlasnika" [(ngModel)]="form4Data.adresaVlasnika" type="text">
+              <input class="form-control" required formControlName="adresaVlasnika" [(ngModel)]="form4Data.adresaVlasnika" type="text">
+              <app-field-error-display [displayError]="isFieldValidForm4('adresaVlasnika')" errorMsg="Adresa vlasnika nekretnine je obavezna."></app-field-error-display>
             </div>
           </div>
         </div>
@@ -767,77 +792,82 @@
   <br>
 </div>
 
-  <div *ngIf="activeIndex == 3">
-    <div class="box-shadow container" >
-        <h3 align="center">Osiguranje - broj xxx</h3>
-        <hr>
-        <h4>Osigurana lica</h4> <br>
-          <div class="container">
-            <p-dataTable [value]="putnaOsiguranja">
-              <p-column field="ime" header="Ime"></p-column>
-              <p-column field="prezime" header="Prezime"></p-column>
-              <p-column field="jmbg" header="JMBG"></p-column>
-              <p-column field="brojPasosa" header="Broj pasoša"></p-column>
-              <p-column field="adresa" header="Adresa"></p-column>
-            </p-dataTable>
-          </div>
-      <br>
-        <h5>Nosilac osiguranja</h5>
-      <br>
-      <h5>Putno osiguranje</h5> <br>
-      <div class="container">
-          <p>
-            Osiguranje važi za region <mark>{{form1Data.destinacija}}</mark>.
-            Datum početka važenja je <mark>{{form1Data.pocetakOsiguranja | date: 'dd.MM.yyyy.'}}</mark>, u trajanju od <mark>{{form1Data.trajanjeOsiguranja}}</mark> dan/a.
-          </p>
-        <p>
-          Paket osiguranja je <mark>{{form1Data.vrstaPaketa}}</mark> osiguranje. Svrha putovanja je <mark>{{form1Data.svrhaOsiguranja}}</mark>.
-        </p>
-      </div>
-      <br>
-        <div *ngIf="osiguranjaNekretnina.length !== 0">
-        <h5>Osiguranja nekretnina</h5>
-          <div class="container">
-            <p-dataTable [value]="osiguranjaNekretnina">
-              <p-header>Podaci o vlasniku</p-header>
-              <p-column field="imeVlasnika" header="Ime"></p-column>
-              <p-column field="prezimeVlasnika" header="Prezime"></p-column>
-              <p-column field="jmbgVlasnika" header="JMBG"></p-column>
-              <p-column field="adresaVlasnika" header="Adresa"></p-column>
-            </p-dataTable>
-            <br>
-            <p-dataTable [value]="osiguranjaNekretnina">
-              <p-header>Podaci o nekretnini</p-header>
-              <p-column field="povrsinaStana" header="Površina"></p-column>
-              <p-column field="starostStana" header="Starost"></p-column>
-              <p-column field="procenjenaVrednostStana" header="Procenjena vrednost"></p-column>
-            </p-dataTable>
-          </div>
-        </div>
-      <hr>
-      <br>
-      <div *ngIf="osiguranjaVozila.length !== 0">
-        <h5>Osiguranja vozila</h5>
-        <div class="container">
-          <p-dataTable [value]="osiguranjaVozila">
-            <p-header>Podaci o vlasniku</p-header>
-            <p-column field="imeVlasnika" header="Ime"></p-column>
-            <p-column field="prezimeVlasnika" header="Prezime"></p-column>
-            <p-column field="jmbgVlasnika" header="JMBG"></p-column>
-            <p-column field="adresaVlasnika" header="Adresa"></p-column>
-          </p-dataTable>
-          <br>
-          <p-dataTable [value]="osiguranjaVozila">
-            <p-header>Podaci o vozilu</p-header>
-            <p-column field="markaITip" header="Marka i tip"></p-column>
-            <p-column field="godinaProizvodnje" header="Godina proizvodnje"></p-column>
-            <p-column field="brojTablica" header="Broj tablica"></p-column>
-            <p-column field="brojSasije" header="Broj šasije"></p-column>
-          </p-dataTable>
-        </div>
-
-      </div>
-      <button class="ui-button-success" style="display: block; margin: 0 auto;">PayPal</button>
+<div *ngIf="activeIndex == 3">
+  <div class="box-shadow container">
+    <h3 align="center">Osiguranje - broj xxx</h3>
+    <hr>
+    <h4>Osigurana lica</h4>
+    <br>
+    <div class="container">
+      <p-dataTable [value]="putnaOsiguranja">
+        <p-column field="ime" header="Ime"></p-column>
+        <p-column field="prezime" header="Prezime"></p-column>
+        <p-column field="jmbg" header="JMBG"></p-column>
+        <p-column field="brojPasosa" header="Broj pasoša"></p-column>
+        <p-column field="adresa" header="Adresa"></p-column>
+      </p-dataTable>
     </div>
+    <br>
+    <h5>Nosilac osiguranja</h5>
+    <br>
+    <h5>Putno osiguranje</h5>
+    <br>
+    <div class="container">
+      <p>
+        Osiguranje važi za region
+        <mark>{{form1Data.destinacija}}</mark>. Datum početka važenja je
+        <mark>{{form1Data.pocetakOsiguranja | date: 'dd.MM.yyyy.'}}</mark>, u trajanju od
+        <mark>{{form1Data.trajanjeOsiguranja}}</mark> dan/a.
+      </p>
+      <p>
+        Paket osiguranja je
+        <mark>{{form1Data.vrstaPaketa}}</mark> osiguranje. Svrha putovanja je
+        <mark>{{form1Data.svrhaOsiguranja}}</mark>.
+      </p>
+    </div>
+    <br>
+    <div *ngIf="osiguranjaNekretnina.length !== 0">
+      <h5>Osiguranja nekretnina</h5>
+      <div class="container">
+        <p-dataTable [value]="osiguranjaNekretnina">
+          <p-header>Podaci o vlasniku</p-header>
+          <p-column field="imeVlasnika" header="Ime"></p-column>
+          <p-column field="prezimeVlasnika" header="Prezime"></p-column>
+          <p-column field="jmbgVlasnika" header="JMBG"></p-column>
+          <p-column field="adresaVlasnika" header="Adresa"></p-column>
+        </p-dataTable>
+        <br>
+        <p-dataTable [value]="osiguranjaNekretnina">
+          <p-header>Podaci o nekretnini</p-header>
+          <p-column field="povrsinaStana" header="Površina"></p-column>
+          <p-column field="starostStana" header="Starost"></p-column>
+          <p-column field="procenjenaVrednostStana" header="Procenjena vrednost"></p-column>
+        </p-dataTable>
+      </div>
+    </div>
+    <hr>
+    <br>
+    <div *ngIf="osiguranjaVozila.length !== 0">
+      <h5>Osiguranja vozila</h5>
+      <div class="container">
+        <p-dataTable [value]="osiguranjaVozila">
+          <p-header>Podaci o vlasniku</p-header>
+          <p-column field="imeVlasnika" header="Ime"></p-column>
+          <p-column field="prezimeVlasnika" header="Prezime"></p-column>
+          <p-column field="jmbgVlasnika" header="JMBG"></p-column>
+          <p-column field="adresaVlasnika" header="Adresa"></p-column>
+        </p-dataTable>
+        <br>
+        <p-dataTable [value]="osiguranjaVozila">
+          <p-header>Podaci o vozilu</p-header>
+          <p-column field="markaITip" header="Marka i tip"></p-column>
+          <p-column field="godinaProizvodnje" header="Godina proizvodnje"></p-column>
+          <p-column field="brojTablica" header="Broj tablica"></p-column>
+          <p-column field="brojSasije" header="Broj šasije"></p-column>
+        </p-dataTable>
+      </div>
+
+    </div>
+    <button class="ui-button-success" style="display: block; margin: 0 auto;">PayPal</button>
   </div>
 </div>

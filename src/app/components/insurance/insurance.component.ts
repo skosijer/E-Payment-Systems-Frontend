@@ -1,3 +1,4 @@
+import { JmbgValidators } from './../validators/jmbg.validators';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
@@ -101,6 +102,9 @@ export class InsuranceComponent implements OnInit {
 
 
   private form2SubmitAttempt: boolean;
+  private form3SubmitAttempt: boolean;
+  private form4SubmitAttempt: boolean;
+  private formNosilacSubmitAttempt: boolean; 
 
   constructor(private fb: FormBuilder, private insuranceDataService: InsuranceDataService) { }
 
@@ -270,27 +274,25 @@ export class InsuranceComponent implements OnInit {
       svrhaOsiguranja: ['']
     });
 
-
-
     this.form2 = this.fb.group({
-      ime: [''],
-      prezime: [''],
-      jmbg: ['', JmbgValidators.proveraContrBr],
-      brojPasosa: [''],
+      ime: ['', Validators.required],
+      prezime: ['', Validators.required],
+      jmbg: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13), JmbgValidators.proveraContrBr]],
+      brojPasosa: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
       datumRodjenja: [''],
-      adresa: [''],
+      adresa: ['', Validators.required],
       brojTelefona: [''],
       emailNosioca: ['']
     });
 
     this.form3 = this.fb.group({
-      markaITip: [''],
+      markaITip: ['', Validators.required],
       godinaProizvodnje: ['', [Validators.pattern('[01-9]{4}'), Validators.required]],
-      brojTablica: [''],
-      brojSasije: [''],
-      imeVlasnika: [''],
-      prezimeVlasnika: [''],
-      jmbgVlasnika: [''],
+      brojTablica: ['', Validators.required],
+      brojSasije: ['', Validators.required],
+      imeVlasnika: ['', Validators.required],
+      prezimeVlasnika: ['', Validators.required],
+      jmbgVlasnika: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13), JmbgValidators.proveraContrBr]],
       paketOsiguranja: ['', Validators.required],
       slepovanje: [''],
       popravka: [''],
@@ -299,28 +301,30 @@ export class InsuranceComponent implements OnInit {
     });
 
     this.form4 = this.fb.group({
-      povrsinaStana: [''],
-      starostStana: [''],
-      procenjenaVrednostStana: [''],
-      osiguranjeStana: [''],
-      imeVlasnika: [''],
-      prezimeVlasnika: [''],
-      jmbgVlasnika: [''],
-      adresaVlasnika: ['']
+      povrsinaStana: ['', Validators.required],
+      starostStana: ['', Validators.required],
+      procenjenaVrednostStana: ['', Validators.required],
+      osiguranjeStana: ['', Validators.required],
+      imeVlasnika: ['', Validators.required],
+      prezimeVlasnika: ['', Validators.required],
+      jmbgVlasnika: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13), JmbgValidators.proveraContrBr]],
+      adresaVlasnika: ['', Validators.required]
     });
 
+//     console.log('FORM 2');
+// console.log(this.form2);
 
     this.formNosilac = this.fb.group({
       potencijalniNosilac: [''],
       osobe: [''],
-      ime: [''],
-      prezime: [''],
-      jmbg: [''],
-      brojPasosa: [''],
+      ime: ['', Validators.required],
+      prezime: ['', Validators.required],
+      jmbg: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13), JmbgValidators.proveraContrBr]],
+      brojPasosa: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
       datumRodjenja: [''],
-      adresa: [''],
+      adresa: ['', Validators.required],
       brojTelefona: [''],
-      emailNosioca: ['']
+      emailNosioca: ['', [Validators.required, Validators.email]]
     });
   }
 
@@ -335,7 +339,7 @@ export class InsuranceComponent implements OnInit {
       if(this.form1.controls['brojOdraslih'].value == 0 && this.form1.controls['brojStarijih'].value == 0
         && this.form1.controls['brojDece'].value == 0){
         this.msgs = [];
-        this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite odgovarajuci broj lica.'});
+        this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite odgovarajuci[] broj lica.'});
         return;
       }else{
         let num = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojStarijih'].value + this.form1.controls['brojDece'].value;
@@ -403,6 +407,7 @@ export class InsuranceComponent implements OnInit {
 
   dodajOsiguranjeVozila() {
     console.log(this.form3);
+    this.form3SubmitAttempt = true;
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
     let x = Object.assign({}, this.form3Data);
     //spread operator za unos kopije objekta u niz
@@ -418,6 +423,7 @@ export class InsuranceComponent implements OnInit {
   }
 
   dodajOsiguranjeNekretnine() {
+    this.form4SubmitAttempt = true; 
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
     let x = Object.assign({}, this.form4Data);
     //spread operator za unos kopije objekta u niz
@@ -511,6 +517,7 @@ export class InsuranceComponent implements OnInit {
   }
 
   dodajNosioca() {
+    this.formNosilacSubmitAttempt = true; 
     let x = Object.assign({}, this.formNosilacData);
     if (this.potencijalniNosilac === 'osiguranik') {
       if (x.osobe != '') {
@@ -545,16 +552,75 @@ export class InsuranceComponent implements OnInit {
       return;
   }
 
+  get ime() {
+    return this.form2.get('ime');
+  }
 
-  isFieldValid(field: string) {
+  get prezime() {
+    return this.form2.get('prezime');
+  }
+
+  get jmbg() {
+    return this.form2.get('jmbg');
+  }
+
+  get adresa() {
+    return this.form2.get('adresa');
+  }
+
+  get brojPasosa() {
+    return this.form2.get('brojPasosa');
+  }
+
+  get emailNosioca() {
+    return this.form2.get('emailNosioca');
+  }
+
+  isFieldValidForm2(field: string) {
     return (!this.form2.get(field).valid && this.form2.get(field).touched) ||
       (this.form2.get(field).untouched && this.form2SubmitAttempt);
   }
 
-  displayFieldCss(field: string) {
+  displayFieldCssForm2(field: string) {
     return {
-      'has-error': this.isFieldValid(field),
-      'has-feedback': this.isFieldValid(field)
+      'has-error': this.isFieldValidForm2(field),
+      'has-feedback': this.isFieldValidForm2(field)
+    }
+  }
+
+  isFieldValidForm3(field: string) {
+    return (!this.form3.get(field).valid && this.form3.get(field).touched) ||
+      (this.form3.get(field).untouched && this.form3SubmitAttempt);
+  }
+
+  displayFieldCssForm3(field: string) {
+    return {
+      'has-error': this.isFieldValidForm3(field),
+      'has-feedback': this.isFieldValidForm3(field)
+    }
+  }
+
+  isFieldValidForm4(field: string) {
+    return (!this.form4.get(field).valid && this.form4.get(field).touched) ||
+      (this.form4.get(field).untouched && this.form4SubmitAttempt);
+  }
+
+  displayFieldCssForm4(field: string) {
+    return {
+      'has-error': this.isFieldValidForm4(field),
+      'has-feedback': this.isFieldValidForm4(field)
+    }
+  }
+
+  isFieldValidFormNosilac(field: string) {
+    return (!this.formNosilac.get(field).valid && this.formNosilac.get(field).touched) ||
+      (this.formNosilac.get(field).untouched && this.formNosilacSubmitAttempt);
+  }
+
+  displayFieldCssFormNosilac(field: string) {
+    return {
+      'has-error': this.isFieldValidFormNosilac(field),
+      'has-feedback': this.isFieldValidFormNosilac(field)
     }
   }
 

@@ -13,25 +13,38 @@ export class JmbgValidators {
 
     static proveraContrBr(control: AbstractControl): ValidationErrors | null {
 
-            if((control.value as string).length == 13) {
+           
+
+            if((control.value as string) != null && (control.value as string).length == 13) {
                 let konCif = "765432765432";
                 let raz = 0;
         
-                for (let i = 1; i <= 12; i++) {
+                for (let i = 0; i <= 12; i++) {
                     raz = raz + Number((control.value as string).substr(i, 1)) * Number(konCif.substr(i, 1));
+                    // console.log('JMBG');
+                    // console.log((control.value as string).substr(i, 1));
+                    // console.log('BROJ');
+                    // console.log(konCif.substr(i, 1));
                 }
     
+                // console.log(raz);
                 raz = 11 - (raz % 11);
-                console.log(raz);
-                let num = Number((control.value as string).substr(13, 1));
-                console.log(num);
+                // console.log('RAZ');
+                // console.log(raz);
+                let num = Number((control.value as string).substr(12, 1));
+                // console.log('NUM');
+                // console.log(num);
                 if (raz != 10 && ((raz % 11) === num)) {
-                    return { 'proveraContrBr': true };
-                }
-                else {
+                    // console.log("TO JE TO");
                     return null;
                 }
-            }
+                else {
+                    return { proveraContrBr: true }; 
+                }   
+            }  
+            else {
+                return null; 
+            }     
     }
         
 
