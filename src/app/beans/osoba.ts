@@ -2,7 +2,7 @@ export class Osoba{
   public id : number;
   public ime : string;
   public prezime : string;
-  public JMBG : string;
+  public jmbg : string;
   public adresa : string;
   public brojTelefona : string;
   public brojPasosa : string;

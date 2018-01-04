@@ -54,13 +54,16 @@ export class InsuranceComponent implements OnInit {
   form1Data: any = { destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki' };
 
   form2: FormGroup;
-  form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
+  //form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
+  form2Data: any = { ime: "Stevan", jmbg: "2409994340053", prezime: "Kosijer", brojPasosa: "123456789", datumRodjenja: null, adresa: "MGorkog 2C", brojTelefona: "184848", emailNosioca: "stk@gmk.com" };
 
   form3: FormGroup;
-  form3Data: any = { markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
+  //form3Data: any = { markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
+  form3Data: any = { markaITip: "191919", godinaProizvodnje: "1950", brojTablica: "21442", brojSasije: "421", imeVlasnika: 'Ludak', prezimeVlasnika: 'Ludacina', jmbgVlasnika: '2409994340053', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
 
   form4: FormGroup;
-  form4Data: any = { povrsinaStana: "", starostStana: "", procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: '' };
+  //form4Data: any = { povrsinaStana: "", starostStana: "", procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: '' };
+  form4Data: any = { povrsinaStana: "525", starostStana: "5252", procenjenaVrednostStana: "1255", osiguranjeStana: "", imeVlasnika: 'Predrag', prezimeVlasnika: 'Preludovic', jmbgVlasnika: '2409994340053', adresaVlasnika: 'Murovac 2' };
 
   formNosilac: FormGroup;
   formNosilacData: any = { potencijalniNosilac: "", osobe: "", ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
@@ -103,7 +106,7 @@ export class InsuranceComponent implements OnInit {
   private form2SubmitAttempt: boolean;
   private form3SubmitAttempt: boolean;
   private form4SubmitAttempt: boolean;
-  private formNosilacSubmitAttempt: boolean; 
+  private formNosilacSubmitAttempt: boolean;
 
   constructor(private fb: FormBuilder, private insuranceDataService: InsuranceDataService) { }
 
@@ -258,7 +261,7 @@ export class InsuranceComponent implements OnInit {
     ];
     this.osobeKolone = [
       { field: 'ime', header: 'Ime' },
-      { field: 'JMBG', header: 'JMBG' },
+      { field: 'jmbg', header: 'JMBG' },
       { field: 'prezime', header: 'Prezime' }
     ];
 
@@ -387,8 +390,8 @@ export class InsuranceComponent implements OnInit {
       for (var i = 0; i < this.osobe.length; i++) {
 
         let temp: SelectItem = { label: '', value: '' };
-        temp.label = this.osobe[i].ime + ' ' + this.osobe[i].prezime + ' |JMBG:' + this.osobe[i].JMBG;
-        temp.value = this.osobe[i].JMBG;
+        temp.label = this.osobe[i].ime + ' ' + this.osobe[i].prezime + ' |JMBG:' + this.osobe[i].jmbg;
+        temp.value = this.osobe[i].jmbg;
         this.osobe_labels.push(temp);
       }
     }
@@ -422,7 +425,7 @@ export class InsuranceComponent implements OnInit {
   }
 
   dodajOsiguranjeNekretnine() {
-    this.form4SubmitAttempt = true; 
+    this.form4SubmitAttempt = true;
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
     let x = Object.assign({}, this.form4Data);
     //spread operator za unos kopije objekta u niz
@@ -441,7 +444,7 @@ export class InsuranceComponent implements OnInit {
 
     this.form2SubmitAttempt = true;
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
-    
+
     let x = Object.assign({}, this.form2Data);
     //spread operator za unos kopije objekta u niz
 
@@ -451,7 +454,7 @@ export class InsuranceComponent implements OnInit {
     osoba.ime = x.ime;
     osoba.adresa = x.adresa;
     osoba.brojPasosa = x.brojPasosa;
-    osoba.JMBG = x.jmbg;
+    osoba.jmbg = x.jmbg;
     osoba.brojTelefona = x.brojTelefona;
     osoba.datumRodjenja = x.datumRodjenja;
     osoba.prezime = x.prezime;
@@ -474,7 +477,7 @@ export class InsuranceComponent implements OnInit {
 
     let osoba: Osoba = new Osoba();
     for (var i = 0; i < this.osobe.length; i++) {
-      if (this.osobe[i].JMBG == osiguranik.jmbg) {
+      if (this.osobe[i].jmbg == osiguranik.jmbg) {
         osoba = this.osobe[i];
         break;
       }
@@ -483,7 +486,7 @@ export class InsuranceComponent implements OnInit {
     let index = this.osobe.indexOf(osoba);
 
     if (this.nosilac) {
-      if (this.nosilac.osoba.JMBG === osoba.JMBG) {
+      if (this.nosilac.osoba.jmbg === osoba.jmbg) {
         this.nosilac = null;
       }
     }
@@ -516,12 +519,12 @@ export class InsuranceComponent implements OnInit {
   }
 
   dodajNosioca() {
-    this.formNosilacSubmitAttempt = true; 
+    this.formNosilacSubmitAttempt = true;
     let x = Object.assign({}, this.formNosilacData);
     if (this.potencijalniNosilac === 'osiguranik') {
       if (x.osobe != '') {
         for (var i = 0; i < this.osobe.length; i++) {
-          if (x.osobe === this.osobe[i].JMBG) {
+          if (x.osobe === this.osobe[i].jmbg) {
 
             this.osobe[i].email = x.emailNosioca;
             this.nosilac = new Nosilac(this.osobe[i], TipNosioca.OSIGURANIK);
@@ -536,7 +539,7 @@ export class InsuranceComponent implements OnInit {
       osoba.ime = x.ime;
       osoba.adresa = x.adresa;
       osoba.brojPasosa = x.brojPasosa;
-      osoba.JMBG = x.jmbg;
+      osoba.jmbg = x.jmbg;
       osoba.brojTelefona = x.brojTelefona;
       osoba.datumRodjenja = x.datumRodjenja;
       osoba.prezime = x.prezime;
