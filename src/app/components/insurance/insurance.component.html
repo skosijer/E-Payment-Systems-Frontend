@@ -57,7 +57,7 @@
             </div>
             <div class="col-lg-4">
 
-              <p-spinner formControlName="{{s.vrednost}}" ngModel [min]="0" [max]="10"></p-spinner>
+              <p-spinner formControlName="{{s.vrednost}}" [ngModel]="valueOfEachAgeGroup(s.vrednost)" [min]="0" [max]="10"></p-spinner>
 
             </div>
           </div>
@@ -459,7 +459,7 @@
     <div class="form-group" align="center">
       <label class="col-md-3 control-label"></label>
       <div>
-        <button pButton class="ui-button-warning" type="text" (click)="secondStepPrevious()" label="Prethodni korak"></button>
+        <button pButton class="ui-button-warning" type="text" (click)="previous()" label="Prethodni korak"></button>
         <button pButton class="ui-button-warning" type="submit" (click)="secondStepSubmit()" label="Sledeci korak"></button>
       </div>
     </div>

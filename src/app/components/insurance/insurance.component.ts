@@ -9,6 +9,7 @@ import { Rizik } from "../../beans/rizik";
 import { Nosilac } from "../../beans/nosilac_osiguranja";
 import { Message } from 'primeng/primeng';
 import { JmbgValidators } from "../../components/validators/jmbg.validators";
+import {isNullOrUndefined} from "util";
 
 
 
@@ -51,11 +52,11 @@ export class InsuranceComponent implements OnInit {
   //Forme za kupovinu polise
 
   form1: FormGroup;
-  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", starost: "odrasli", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki' };
+  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki' };
 
   form2: FormGroup;
   //form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
-  form2Data: any = { ime: "Stevan", jmbg: "2409994340053", prezime: "Kosijer", brojPasosa: "123456789", datumRodjenja: null, adresa: "MGorkog 2C", brojTelefona: "184848", emailNosioca: "stk@gmk.com" };
+  form2Data: any = { ime: "Stevan", jmbg: "2409994340053", prezime: "Kosijer", brojPasosa: "123456789", datumRodjenja: null, adresa: "MGorkog 2C", brojTelefona: "184848" };
 
   form3: FormGroup;
   //form3Data: any = { markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
@@ -77,7 +78,6 @@ export class InsuranceComponent implements OnInit {
   //*********************************************/
 
   private activeIndex = 0;
-  private groupIterNiz: any[] = [];
   private osobe: Osoba[] = [];
   private osobeKolone: any[] = [];
 
@@ -330,12 +330,32 @@ export class InsuranceComponent implements OnInit {
     });
   }
 
-  printForm() {
-    console.log(this.form1);
-  }
-
   stepSubmit() {
     console.log(this.form1);
+    if(this.form1.controls['vrstaPaketa'].value == 'grupno') {
+      this.brojOsiguranika = 0;
+      for(let i = 0; i < this.starosti.length; i++) {
+        console.log(this.form1.controls[this.starosti[i].vrednost].value);
+        if(this.form1.controls[this.starosti[i].vrednost].value != "") {
+          this.brojOsiguranika += this.form1.controls[this.starosti[i].vrednost].value;
+          this.form1Data[this.starosti[i].vrednost] = this.form1.controls[this.starosti[i].vrednost].value;
+        } else {
+          this.form1Data[this.starosti[i].vrednost] = 0;
+        }
+      }
+      console.log(this.brojOsiguranika);
+      if(this.brojOsiguranika < 2) {
+        this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite starosti osoba.'});
+        return;
+      }
+    } else {
+      this.brojOsiguranika = 1;
+        if(this.form1.controls['starost'].value == null) {
+          this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite starost.'});
+          return;
+        }
+    }
+
     // VALIDACIJE PROMENITI JER SE DINAMICKI KREIRA FORMA
     /*if(this.form1.controls['vrstaPaketa'].value == 'grupno'){
       if(this.form1.controls['brojOdraslih'].value == 0 && this.form1.controls['brojStarijih'].value == 0
@@ -369,8 +389,8 @@ export class InsuranceComponent implements OnInit {
 
 
     let counter: number = 0;
-    for (var i = 0; i < this.osobe.length; i++) {
-
+    for (let i = 0; i < this.osobe.length; i++) {
+      console.log(this.osobe[i].email);
       if (this.osobe[i].email !== undefined) {
         counter++;
         break;
@@ -387,7 +407,7 @@ export class InsuranceComponent implements OnInit {
         label: 'Izaberite nosioca osiguranja', value: null
       }];
       this.showNosilacDialog = true;
-      for (var i = 0; i < this.osobe.length; i++) {
+      for (let i = 0; i < this.osobe.length; i++) {
 
         let temp: SelectItem = { label: '', value: '' };
         temp.label = this.osobe[i].ime + ' ' + this.osobe[i].prezime + ' |JMBG:' + this.osobe[i].jmbg;
@@ -397,13 +417,19 @@ export class InsuranceComponent implements OnInit {
     }
   }
 
-  previous() {
-    if (this.activeIndex == 1)
-      this.groupIterNiz = [];
-    this.activeIndex--;
+  valueOfEachAgeGroup(grupa) {
+    if (!isNullOrUndefined(this.form1Data[grupa]))
+      return this.form1Data[grupa];
+    return 0;
   }
 
-  secondStepPrevious() {
+
+  previous() {
+    if(this.activeIndex == 1 && this.form1.controls['vrstaPaketa'].value == 'grupno') {
+      for(let i = 0; i < this.starosti.length; i++) {
+        this.form1.controls[this.starosti[i].vrednost].setValue(this.form1Data[this.starosti[i].vrednost]);
+      }
+    }
     this.activeIndex--;
   }
 
