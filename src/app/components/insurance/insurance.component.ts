@@ -52,11 +52,11 @@ export class InsuranceComponent implements OnInit {
   //Forme za kupovinu polise
 
   form1: FormGroup;
-  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: 'Turisticki' };
+  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: null };
 
   form2: FormGroup;
-  //form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
-  form2Data: any = { ime: "Stevan", jmbg: "2409994340053", prezime: "Kosijer", brojPasosa: "123456789", datumRodjenja: null, adresa: "MGorkog 2C", brojTelefona: "184848" };
+  form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
+  //form2Data: any = { ime: "Stevan", jmbg: "2409994340053", prezime: "Kosijer", brojPasosa: "123456789", datumRodjenja: null, adresa: "MGorkog 2C", brojTelefona: "184848" };
 
   form3: FormGroup;
   //form3Data: any = { markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
@@ -139,7 +139,7 @@ export class InsuranceComponent implements OnInit {
 
         for (let i = 0; i < this.regioni.length; i++) {
           let s = {
-            label: this.regioni[i].vrednost, value: this.regioni[i].id
+            label: this.regioni[i].vrednost, value: this.regioni[i].vrednost
           };
           this.destinacije.push(s);
         }
@@ -332,6 +332,7 @@ export class InsuranceComponent implements OnInit {
 
   stepSubmit() {
     console.log(this.form1);
+    this.msgs = [];
     if(this.form1.controls['vrstaPaketa'].value == 'grupno') {
       this.brojOsiguranika = 0;
       for(let i = 0; i < this.starosti.length; i++) {
@@ -345,41 +346,35 @@ export class InsuranceComponent implements OnInit {
       }
       console.log(this.brojOsiguranika);
       if(this.brojOsiguranika < 2) {
-        this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite starosti osoba.'});
+        this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas unesite broj osoba veci od 1!'});
         return;
       }
+
+      if(this.osobe.length > 0){
+        this.brojOsiguranika = this.brojOsiguranika - this.osobe.length;
+      }
+
     } else {
       this.brojOsiguranika = 1;
         if(this.form1.controls['starost'].value == null) {
-          this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite starost.'});
+          this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas odaberite uzrast lica koje putuje!'});
           return;
         }
     }
 
-    // VALIDACIJE PROMENITI JER SE DINAMICKI KREIRA FORMA
-    /*if(this.form1.controls['vrstaPaketa'].value == 'grupno'){
-      if(this.form1.controls['brojOdraslih'].value == 0 && this.form1.controls['brojStarijih'].value == 0
-        && this.form1.controls['brojDece'].value == 0){
-        this.msgs = [];
-        this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite odgovarajuci[] broj lica.'});
-        return;
-      }else{
-        let num = this.form1.controls['brojOdraslih'].value + this.form1.controls['brojStarijih'].value + this.form1.controls['brojDece'].value;
-        this.brojOsiguranika = num;
-        if(num < 2){
-          this.msgs = [];
-          this.msgs.push({severity:'error', summary:'Paznja!', detail:'Molim Vas unesite odgovarajuci broj lica.'});
-          return;
-        }
-      }
-    }else{
-      this.brojOsiguranika = 1;
-    } */
+    if(this.form1.controls['svrhaOsiguranja'].value == null){
+      this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas odaberite svrhu osiguranja!'});
+      return;
+    }
 
     this.activeIndex++;
 
     if (this.activeIndex != 1)
       return;
+  }
+
+  vrstaPaketaChange(){
+    this.osobe = [];
   }
 
   secondStepSubmit() {
