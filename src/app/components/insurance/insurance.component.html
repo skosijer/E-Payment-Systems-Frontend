@@ -1,9 +1,10 @@
 <div class="container-fluid forms-container">
   <p-steps [model]="items" [(activeIndex)]="activeIndex" styleClass="steps-custom"></p-steps>
+  <p-growl [(value)]="msgs"></p-growl>
   <br>
   <hr>
   <!-- DIV za prvi korak -->
-  <div class="container" style="padding: 40px" *ngIf="activeIndex == 0" align="center">
+  <div class="container" style="padding: 40px" *ngIf="activeIndex == 0">
     <form [formGroup]="form1" class="form-horizontal step-1-form">
       <div class="form-group">
         <div class="row">
@@ -111,11 +112,10 @@
       </div>
 
 
-      <div class="form-group">
+      <div class="form-group" align="center">
         <label class="col-md-3 control-label"></label>
         <div class="step1_button_div">
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
-          <p-growl [(value)]="msgs"></p-growl>
 
         </div>
       </div>
@@ -124,7 +124,7 @@
 
 
   <!-- DIV za drugi korak -->
-  <div class="container" style="padding: 20px" *ngIf="activeIndex == 1" align="right">
+  <div class="container" style="padding: 20px" *ngIf="activeIndex == 1">
 
 
     <div style="margin-top: 20px;" align="center">
@@ -167,7 +167,7 @@
             </div>
           </div>
 
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'osiguranik' && potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('emailNosioca')">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'osiguranik' && potencijalniNosilac !== 'drugo_lice'">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Email:</label>
@@ -185,7 +185,7 @@
           <!--dajhbhasdgjJHJHJHDHGDJHS-->
 
 
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('ime')">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Ime:</label>
@@ -197,7 +197,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('prezime')">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Prezime:</label>
@@ -209,7 +209,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('jmbg')">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">JMBG:</label>
@@ -222,7 +222,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('adresa')">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Adresa:</label>
@@ -234,7 +234,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'" [ngClass]="displayFieldCssFormNosilac('brojPasosa')">
+          <div class="form-group" [hidden]="potencijalniNosilac !== 'drugo_lice'">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Broj pasosa:</label>
@@ -279,7 +279,7 @@
       </p-header>
       <div class="container-fluid">
         <form [formGroup]="form2" class="form-horizontal" style="width: 500px;">
-          <div class="form-group" [ngClass]="displayFieldCssForm2('ime')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Ime:</label>
@@ -291,7 +291,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm2('prezime')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Prezime:</label>
@@ -303,7 +303,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm2('jmbg')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">JMBG:</label>
@@ -315,7 +315,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm2('adresa')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Adresa:</label>
@@ -327,7 +327,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm2('brojPasosa')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Broj pasosa:</label>
@@ -364,7 +364,7 @@
             </div>
           </div>
 
-          <div class="form-group" *ngIf="enterEmailBoolean && canBeInsuranceHolder" [ngClass]="displayFieldCssForm2('emailNosioca')">
+          <div class="form-group" *ngIf="enterEmailBoolean && canBeInsuranceHolder">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Email:</label>
@@ -376,7 +376,6 @@
               </div>
             </div>
           </div>
-
 
 
           <div class="form-group">
@@ -430,7 +429,7 @@
 
 
   <!--DIV ZA TRECI KORAK-->
-  <div *ngIf="activeIndex == 2" class="container" style="padding: 20px" align="right">
+  <div *ngIf="activeIndex == 2" class="container" style="padding: 20px">
 
     <div align="center" style="margin-top: 30px;">
       <h3>Na brz i jednostavan način odaberite neka od dodatnih osiguranja</h3>
@@ -448,7 +447,7 @@
       </p-header>
       <div class="container-fluid">
         <form [formGroup]="form3" class="form-horizontal" style="width: 500px;">
-          <div class="form-group" [ngClass]="displayFieldCssForm3('markaITip')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Marka i tip vozila:</label>
@@ -459,7 +458,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm3('godinaProizvodnje')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Godina proizvodnje:</label>
@@ -471,7 +470,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm3('brojTablica')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Broj tablica:</label>
@@ -483,7 +482,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm3('brojSasije')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Broj šasije:</label>
@@ -495,7 +494,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm3('imeVlasnika')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Ime vlasnika:</label>
@@ -507,7 +506,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm3('prezimeVlasnika')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">Prezime vlasnika:</label>
@@ -519,7 +518,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group" [ngClass]="displayFieldCssForm3('jmbgVlasnika')">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
                 <label class="control-label required">JMBG Vlasnika:</label>
@@ -641,7 +640,7 @@
             </div>
           </div>
         </div>
-        <div class="form-group" [ngClass]="displayFieldCssForm4('imeVlasnika')">
+        <div class="form-group">
           <div class="row">
             <div class="col-lg-4">
               <label class="control-label required">Ime vlasnika:</label>
@@ -652,7 +651,7 @@
             </div>
           </div>
         </div>
-        <div class="form-group" [ngClass]="displayFieldCssForm4('prezimeVlasnika')">
+        <div class="form-group">
           <div class="row">
             <div class="col-lg-4">
               <label class="control-label required">Prezime vlasnika: </label>
@@ -664,7 +663,7 @@
             </div>
           </div>
         </div>
-        <div class="form-group" [ngClass]="displayFieldCssForm4('jmbgVlasnika')">
+        <div class="form-group">
           <div class="row">
             <div class="col-lg-4">
               <label class="control-label required">JMBG Vlasnika: </label>
@@ -677,7 +676,7 @@
             </div>
           </div>
         </div>
-        <div class="form-group" [ngClass]="displayFieldCssForm4('adresaVlasnika')">
+        <div class="form-group">
           <div class="row">
             <div class="col-lg-4">
               <label class="control-label required">Adresa vlasnika:</label>
@@ -833,6 +832,15 @@
       </div>
       <button class="ui-button-success" style="display: block; margin: 0 auto;">PayPal</button>
     </div>
+
+    <div class="container" align="center">
+      <label class="col-md-3 control-label"></label>
+      <div class="step1_button_div">
+        <button pButton class="ui-button-warning" (click)="step4Back()" type="submit" label="Prethodni korak"></button>
+      </div>
+    </div>
+
+
   </div>
 </div>
 

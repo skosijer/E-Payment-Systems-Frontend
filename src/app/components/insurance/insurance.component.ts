@@ -101,12 +101,8 @@ export class InsuranceComponent implements OnInit {
 
   //PODACI ZA BROJ OSIGURANIKA ZA DRUGI KORAK
   private brojOsiguranika: number;
+  private ukupnoOsiguranika:number = 0;
 
-
-  private form2SubmitAttempt: boolean;
-  private form3SubmitAttempt: boolean;
-  private form4SubmitAttempt: boolean;
-  private formNosilacSubmitAttempt: boolean;
 
   constructor(private fb: FormBuilder, private insuranceDataService: InsuranceDataService) { }
 
@@ -237,9 +233,9 @@ export class InsuranceComponent implements OnInit {
       { field: 'brojTablica', header: 'Broj tablica' },
       { field: 'brojSasije', header: 'Broj šasije' },
       { field: 'paketOsiguranja', header: 'Paket osiguranja' },
-      { field: 'slepovanje', header: 'Šlepovanje (KM)' },
-      { field: 'popravka', header: 'Popravka (RSD)' },
-      { field: 'smestaj', header: 'Smeštaj (dana)' },
+      //{ field: 'slepovanje', header: 'Šlepovanje (KM)' },
+      //{ field: 'popravka', header: 'Popravka (RSD)' },
+      //{ field: 'smestaj', header: 'Smeštaj (dana)' },
       { field: 'prevoz', header: 'Prevoz' }
     ];
 
@@ -345,6 +341,7 @@ export class InsuranceComponent implements OnInit {
         }
       }
       console.log(this.brojOsiguranika);
+      this.ukupnoOsiguranika = this.brojOsiguranika;
       if(this.brojOsiguranika < 2) {
         this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas unesite broj osoba veci od 1!'});
         return;
@@ -356,6 +353,7 @@ export class InsuranceComponent implements OnInit {
 
     } else {
       this.brojOsiguranika = 1;
+      this.ukupnoOsiguranika = 1;
         if(this.form1.controls['starost'].value == null) {
           this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas odaberite uzrast lica koje putuje!'});
           return;
@@ -378,10 +376,18 @@ export class InsuranceComponent implements OnInit {
   }
 
   secondStepSubmit() {
-    if (this.osobe.length < 1) {
+
+    this.msgs = [];
+
+    if(this.osobe.length < this.ukupnoOsiguranika){
+      this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas unesite osiguranike!'});
       return;
     }
 
+    if(this.osobe.length == this.ukupnoOsiguranika && this.nosilac != null){
+      this.activeIndex++;
+      return;
+    }
 
     let counter: number = 0;
     for (let i = 0; i < this.osobe.length; i++) {
@@ -430,7 +436,6 @@ export class InsuranceComponent implements OnInit {
 
   dodajOsiguranjeVozila() {
     console.log(this.form3);
-    this.form3SubmitAttempt = true;
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
     let x = Object.assign({}, this.form3Data);
     //spread operator za unos kopije objekta u niz
@@ -446,7 +451,6 @@ export class InsuranceComponent implements OnInit {
   }
 
   dodajOsiguranjeNekretnine() {
-    this.form4SubmitAttempt = true;
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
     let x = Object.assign({}, this.form4Data);
     //spread operator za unos kopije objekta u niz
@@ -463,7 +467,6 @@ export class InsuranceComponent implements OnInit {
 
   dodajOsiguranika() {
 
-    this.form2SubmitAttempt = true;
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
 
     let x = Object.assign({}, this.form2Data);
@@ -519,6 +522,7 @@ export class InsuranceComponent implements OnInit {
 
     if (osiguranik.emailNosioca != '') {
       this.canBeInsuranceHolder = true;
+      this.enterEmailBoolean = false;
     }
   }
 
@@ -531,16 +535,23 @@ export class InsuranceComponent implements OnInit {
   }
 
   onShowInsuranceDialog() {
+    this.form2.controls['emailNosioca'].setValue('');
+    this.form2Data.emailNosioca = '';
+    this.form2.controls['emailNosioca'].setErrors(null);
     this.showInsuranceDialog = true;
   }
 
   nosiocOsiguranjaChange(checked: boolean) {
 
     this.enterEmailBoolean = checked;
+    if(this.enterEmailBoolean == false){
+      this.form2.controls['emailNosioca'].setValue('');
+      this.form2Data.emailNosioca = '';
+      this.form2.controls['emailNosioca'].setErrors(null);
+    }
   }
 
   dodajNosioca() {
-    this.formNosilacSubmitAttempt = true;
     let x = Object.assign({}, this.formNosilacData);
     if (this.potencijalniNosilac === 'osiguranik') {
       if (x.osobe != '') {
@@ -575,76 +586,28 @@ export class InsuranceComponent implements OnInit {
       return;
   }
 
-  get ime() {
-    return this.form2.get('ime');
-  }
-
-  get prezime() {
-    return this.form2.get('prezime');
-  }
-
-  get jmbg() {
-    return this.form2.get('jmbg');
-  }
-
-  get adresa() {
-    return this.form2.get('adresa');
-  }
-
-  get brojPasosa() {
-    return this.form2.get('brojPasosa');
-  }
-
-  get emailNosioca() {
-    return this.form2.get('emailNosioca');
-  }
 
   isFieldValidForm2(field: string) {
-    return (!this.form2.get(field).valid && this.form2.get(field).touched) ||
-      (this.form2.get(field).untouched && this.form2SubmitAttempt);
-  }
-
-  displayFieldCssForm2(field: string) {
-    return {
-      'has-error': this.isFieldValidForm2(field),
-      'has-feedback': this.isFieldValidForm2(field)
-    }
+    return (!this.form2.controls[field].valid && this.form2.controls[field].touched);
   }
 
   isFieldValidForm3(field: string) {
-    return (!this.form3.get(field).valid && this.form3.get(field).touched) ||
-      (this.form3.get(field).untouched && this.form3SubmitAttempt);
-  }
-
-  displayFieldCssForm3(field: string) {
-    return {
-      'has-error': this.isFieldValidForm3(field),
-      'has-feedback': this.isFieldValidForm3(field)
-    }
+    return (!this.form3.controls[field].valid && this.form3.controls[field].touched);
   }
 
   isFieldValidForm4(field: string) {
-    return (!this.form4.get(field).valid && this.form4.get(field).touched) ||
-      (this.form4.get(field).untouched && this.form4SubmitAttempt);
+    return (!this.form4.controls[field].valid && this.form4.controls[field].touched);
   }
 
-  displayFieldCssForm4(field: string) {
-    return {
-      'has-error': this.isFieldValidForm4(field),
-      'has-feedback': this.isFieldValidForm4(field)
-    }
-  }
 
   isFieldValidFormNosilac(field: string) {
-    return (!this.formNosilac.get(field).valid && this.formNosilac.get(field).touched) ||
-      (this.formNosilac.get(field).untouched && this.formNosilacSubmitAttempt);
+    return (!this.formNosilac.controls[field].valid && this.formNosilac.controls[field].touched);
   }
 
-  displayFieldCssFormNosilac(field: string) {
-    return {
-      'has-error': this.isFieldValidFormNosilac(field),
-      'has-feedback': this.isFieldValidFormNosilac(field)
-    }
+  step4Back(){
+    this.activeIndex--;
   }
+
+
 
 }
