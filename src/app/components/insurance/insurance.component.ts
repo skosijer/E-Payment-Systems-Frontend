@@ -608,6 +608,13 @@ export class InsuranceComponent implements OnInit {
     this.activeIndex--;
   }
 
+  buy() {
+    console.log(this.osobe);
+    console.log(this.nosilac);
+    console.log(this.form1Data);
+    console.log(this.osiguranjaNekretnina);
+    console.log(this.osiguranjaVozila);
+  }
 
 
 }
