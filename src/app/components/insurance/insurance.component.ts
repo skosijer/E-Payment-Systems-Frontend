@@ -10,6 +10,8 @@ import { Nosilac } from "../../beans/nosilac_osiguranja";
 import { Message } from 'primeng/primeng';
 import { JmbgValidators } from "../../components/validators/jmbg.validators";
 import {isNullOrUndefined} from "util";
+import {OsiguranjeDTO} from "../../beans/osiguranjeDTO";
+import {Osiguranik} from "../../beans/osiguranik";
 
 
 
@@ -609,11 +611,32 @@ export class InsuranceComponent implements OnInit {
   }
 
   buy() {
-    console.log(this.osobe);
-    console.log(this.nosilac);
-    console.log(this.form1Data);
-    console.log(this.osiguranjaNekretnina);
-    console.log(this.osiguranjaVozila);
+    let send = new OsiguranjeDTO();
+    send.destinacija = this.form1Data.destinacija;
+    send.pocetakOsiguranja = this.form1Data.pocetakOsiguranja;
+    send.svrhaOsiguranja = this.form1Data.svrhaOsiguranja;
+    send.trajanjeOsiguranja = this.form1Data.trajanjeOsiguranja;
+    send.emailNosioca = this.nosilac.osoba.email;
+    send.nosilac = this.nosilac.osoba;
+    send.nekretnine = this.osiguranjaNekretnina;
+    for(let i = 0; i < this.osiguranjaNekretnina.length; i++) {
+
+    }
+    send.vozila = this.osiguranjaVozila;
+    send.nosilacJeOsiguranik = (this.nosilac.tip == TipNosioca.OSIGURANIK);
+    for(let i=0; i < this.osobe.length; i++) {
+      let temoOs = new Osiguranik();
+      temoOs.brojPasosa = this.osobe[i].brojPasosa;
+      temoOs.brojTelefona = this.osobe[i].brojTelefona;
+      temoOs.osoba = this.osobe[i];
+      send.osiguranici.push(temoOs);
+    }
+    this.insuranceDataService.saveInsurance(send).subscribe(
+      () => {
+        console.log('proso mali');
+      }
+    );
+
   }
 
 

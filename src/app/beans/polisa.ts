@@ -7,7 +7,7 @@ export class Polisa {
   public doo : Date = new Date();
   public brOsoba : number;
   public email : string;
-  public osiguranik : Osiguranik = new Osiguranik();
+  public osiguranici : Osiguranik[] = [];
   public osiguravac : Osiguravac = new Osiguravac();
 
 }
