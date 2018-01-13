@@ -30,6 +30,7 @@ import { InsuranceComponent } from './components/insurance/insurance.component';
 import {InsuranceDataService} from "./components/insurance/insurance-data.service";
 
 import { FieldErrorDisplayComponent } from './components/field-error-display/field-error-display.component';
+import { PaypalComponent } from './paypal/paypal.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { FieldErrorDisplayComponent } from './components/field-error-display/fie
     NavbarComponent,
     FooterComponent,
     InsuranceComponent,
-    FieldErrorDisplayComponent
+    FieldErrorDisplayComponent,
+    PaypalComponent
   ],
   imports: [
     BrowserModule,

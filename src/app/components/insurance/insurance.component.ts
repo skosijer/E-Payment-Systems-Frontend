@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
-import { InputTextModule } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Osoba, TipNosioca } from "../../beans/osoba";
 import { InsuranceDataService } from "./insurance-data.service";
@@ -110,6 +109,7 @@ export class InsuranceComponent implements OnInit {
 
   ngOnInit() {
 
+    this.activeIndex = 3;
 
     this.insuranceDataService.getStarosneGrupe().subscribe(
       (data) => {

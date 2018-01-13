@@ -748,7 +748,7 @@
 
   <div *ngIf="activeIndex == 3" style="padding: 15px">
     <div class="box-shadow container">
-      <h3 align="center">Dokument osiguranja</h3>
+      <h3 align="center" style="padding-top: 15px">Dokument osiguranja</h3>
       <hr>
       <h4>Osigurana lica</h4>
       <br>
@@ -830,7 +830,11 @@
         </div>
 
       </div>
-      <button class="ui-button-success" style="display: block; margin: 0 auto;">PayPal</button>
+
+      <p align="center">
+        <app-paypal style="position: center" [amount]="5000"></app-paypal>
+      </p>
+
     </div>
 
     <div class="container" align="center">
