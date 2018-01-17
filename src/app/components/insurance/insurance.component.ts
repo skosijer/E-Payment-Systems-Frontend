@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { Osoba, TipNosioca } from "../../beans/osoba";
+import {Osoba, TipNosioca, TipOsobe} from "../../beans/osoba";
 import { InsuranceDataService } from "./insurance-data.service";
 import { Rizik } from "../../beans/rizik";
 import { Nosilac } from "../../beans/nosilac_osiguranja";
@@ -11,6 +11,8 @@ import { JmbgValidators } from "../../components/validators/jmbg.validators";
 import {isNullOrUndefined} from "util";
 import {OsiguranjeDTO} from "../../beans/osiguranjeDTO";
 import {Osiguranik} from "../../beans/osiguranik";
+import {PolisaDTO} from "../../beans/dtos/polisa.dto";
+import {TipRizika} from "../../beans/tipRizlika";
 
 
 
@@ -109,8 +111,6 @@ export class InsuranceComponent implements OnInit {
 
   ngOnInit() {
 
-    this.activeIndex = 3;
-
     this.insuranceDataService.getStarosneGrupe().subscribe(
       (data) => {
         this.starosti = JSON.parse(data['_body']);
@@ -151,7 +151,7 @@ export class InsuranceComponent implements OnInit {
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = val[0];
+          temp.value = rizici[i].vrednost;
           this.svrhaOsiguranja.push(temp);
         }
       }
@@ -164,7 +164,7 @@ export class InsuranceComponent implements OnInit {
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = val[0];
+          temp.value = rizici[i].vrednost;
           this.paketiOsiguranja.push(temp);
         }
       }
@@ -177,7 +177,7 @@ export class InsuranceComponent implements OnInit {
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = val[0];
+          temp.value = rizici[i].vrednost;
           this.starostiStana.push(temp);
         }
       }
@@ -190,7 +190,7 @@ export class InsuranceComponent implements OnInit {
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = val[0];
+          temp.value = rizici[i].vrednost;
           this.procenjeneVrednostiStana.push(temp);
         }
       }
@@ -203,7 +203,7 @@ export class InsuranceComponent implements OnInit {
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = val[0];
+          temp.value = rizici[i].vrednost;
           this.osiguranjaStana.push(temp);
         }
       }
@@ -366,6 +366,9 @@ export class InsuranceComponent implements OnInit {
       this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas odaberite svrhu osiguranja!'});
       return;
     }
+
+    console.log(this.form1Data);
+    console.log(this.starosti);
 
     this.activeIndex++;
 
@@ -611,6 +614,31 @@ export class InsuranceComponent implements OnInit {
   }
 
   buy() {
+
+    let polisa = new PolisaDTO();
+    polisa.osiguranici = this.osobe;
+    polisa.nosilac = this.nosilac.osoba;
+    if(this.nosilac.tip == TipNosioca.OSIGURANIK){
+      polisa.nosilac.tipOsobe = TipOsobe.OSIGURANIK;
+    }else{
+      polisa.nosilac.tipOsobe = TipOsobe.DRUGO_LICE;
+    }
+
+    let rizik1:Rizik = new Rizik();
+    rizik1.vrednost = this.form1Data.destinacija;
+    let rizik2:Rizik = new Rizik();
+
+
+    //DODATI DA ISCITAVA RIZIKE IZ promenljive <starosti>
+
+
+    rizik2.vrednost = this.form1Data.starost;
+    let rizik3:Rizik = new Rizik();
+    rizik3.vrednost = this.form1Data.destinacija;
+    let rizik4:Rizik = new Rizik();
+    rizik4.vrednost = this.form1Data.destinacija;
+
+
     let send = new OsiguranjeDTO();
     send.destinacija = this.form1Data.destinacija;
     send.pocetakOsiguranja = this.form1Data.pocetakOsiguranja;
@@ -631,11 +659,11 @@ export class InsuranceComponent implements OnInit {
       temoOs.osoba = this.osobe[i];
       send.osiguranici.push(temoOs);
     }
-    this.insuranceDataService.saveInsurance(send).subscribe(
-      () => {
-        console.log('proso mali');
-      }
-    );
+    // this.insuranceDataService.saveInsurance(send).subscribe(
+    //   () => {
+    //     console.log('proso mali');
+    //   }
+    // );
 
   }
 

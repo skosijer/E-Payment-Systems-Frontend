@@ -8,7 +8,7 @@ export class Vozilo {
   public godProizvodnje : Date = new Date();
   public regTablice : number;
   public brSasije : number;
-  public osoba : Osoba = new Osoba();
+  public vlasnik : Osoba = new Osoba();
   public polisa : Polisa = new Polisa();
   public marka : Marka = new Marka();
   public model : Model = new Model();
