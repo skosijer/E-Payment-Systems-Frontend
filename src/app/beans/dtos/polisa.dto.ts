@@ -8,6 +8,9 @@ export class PolisaDTO{
   public nosilac:Osoba = new Osoba();
   public nekretnine:NekretninaDTO[]=[];
   public vozila:VoziloDTO[]=[];
+  public trajanjeOsiguranja:number;
+  public vrstaPaketa:string;
+  public pocetakOsiguranja:Date;
 
   constructor(){
 

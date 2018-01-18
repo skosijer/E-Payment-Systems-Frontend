@@ -13,6 +13,8 @@ import {OsiguranjeDTO} from "../../beans/osiguranjeDTO";
 import {Osiguranik} from "../../beans/osiguranik";
 import {PolisaDTO} from "../../beans/dtos/polisa.dto";
 import {TipRizika} from "../../beans/tipRizlika";
+import {VoziloDTO} from "../../beans/dtos/vozilo.dto";
+import {NekretninaDTO} from "../../beans/dtos/nekretnina.dto";
 
 
 
@@ -117,7 +119,7 @@ export class InsuranceComponent implements OnInit {
 
         for (let i = 0; i < this.starosti.length; i++) {
           let s = {
-            label: this.starosti[i].vrednost, value: this.starosti[i].id
+            label: this.starosti[i].vrednost, value: this.starosti[i].vrednost
           };
           this.starostLabela.push(s);
           let str = this.starosti[i].vrednost;
@@ -531,6 +533,13 @@ export class InsuranceComponent implements OnInit {
     }
   }
 
+  thirdStepSubmit(){
+
+    console.log(this.osiguranjaVozila);
+    console.log(this.osiguranjaNekretnina);
+    this.activeIndex++;
+  }
+
   onShowCarDialog() {
     this.showCarDialog = true;
   }
@@ -624,47 +633,81 @@ export class InsuranceComponent implements OnInit {
       polisa.nosilac.tipOsobe = TipOsobe.DRUGO_LICE;
     }
 
-    let rizik1:Rizik = new Rizik();
-    rizik1.vrednost = this.form1Data.destinacija;
-    let rizik2:Rizik = new Rizik();
+    let riziciPutno:Rizik[]=[];
 
-
-    //DODATI DA ISCITAVA RIZIKE IZ promenljive <starosti>
-
-
-    rizik2.vrednost = this.form1Data.starost;
-    let rizik3:Rizik = new Rizik();
-    rizik3.vrednost = this.form1Data.destinacija;
-    let rizik4:Rizik = new Rizik();
-    rizik4.vrednost = this.form1Data.destinacija;
-
-
-    let send = new OsiguranjeDTO();
-    send.destinacija = this.form1Data.destinacija;
-    send.pocetakOsiguranja = this.form1Data.pocetakOsiguranja;
-    send.svrhaOsiguranja = this.form1Data.svrhaOsiguranja;
-    send.trajanjeOsiguranja = this.form1Data.trajanjeOsiguranja;
-    send.emailNosioca = this.nosilac.osoba.email;
-    send.nosilac = this.nosilac.osoba;
-    send.nekretnine = this.osiguranjaNekretnina;
-    for(let i = 0; i < this.osiguranjaNekretnina.length; i++) {
-
+    riziciPutno[0] = new Rizik();
+    riziciPutno[0].vrednost = this.form1Data.destinacija;
+    let temp:number = 1;
+    if(this.form1Data.vrstaPaketa == "individualno"){
+      riziciPutno[temp] = new Rizik();
+      riziciPutno[temp].vrednost = this.form1Data.starost;
+      riziciPutno[temp].kolicina = 1;
+      temp++;
+    }else{
+      for(var i = 0; i < this.starosti.length; i++){
+        let tipRizikaString:string = this.starosti[i].vrednost;
+        let broj:number = this.form1Data[tipRizikaString];
+        if(broj > 0){
+          riziciPutno[temp] = new Rizik();
+          riziciPutno[temp].vrednost = tipRizikaString;
+          riziciPutno[temp].kolicina = broj;
+          temp++;
+        }
+      }
     }
-    send.vozila = this.osiguranjaVozila;
-    send.nosilacJeOsiguranik = (this.nosilac.tip == TipNosioca.OSIGURANIK);
-    for(let i=0; i < this.osobe.length; i++) {
-      let temoOs = new Osiguranik();
-      temoOs.brojPasosa = this.osobe[i].brojPasosa;
-      temoOs.brojTelefona = this.osobe[i].brojTelefona;
-      temoOs.osoba = this.osobe[i];
-      send.osiguranici.push(temoOs);
-    }
-    // this.insuranceDataService.saveInsurance(send).subscribe(
-    //   () => {
-    //     console.log('proso mali');
-    //   }
-    // );
 
+    riziciPutno[temp] = new Rizik();
+    riziciPutno[temp].vrednost = this.form1Data.svrhaOsiguranja;
+    temp++;
+
+    polisa.riziciPutno = riziciPutno;
+    polisa.vrstaPaketa = this.form1Data.vrstaPaketa;
+    polisa.trajanjeOsiguranja = this.form1Data.trajanjeOsiguranja;
+    polisa.pocetakOsiguranja = this.form1Data.pocetakOsiguranja;
+
+    let vozila:VoziloDTO[] = [];
+
+    for(var i = 0; i < this.osiguranjaVozila.length; i++){
+      vozila[i] = new VoziloDTO();
+      vozila[i].vlasnik.ime = this.osiguranjaVozila[i].imeVlasnika;
+      vozila[i].vlasnik.prezime = this.osiguranjaVozila[i].prezimeVlasnika;
+      vozila[i].vlasnik.jmbg = this.osiguranjaVozila[i].jmbgVlasnika;
+
+      vozila[i].brojSasije = this.osiguranjaVozila[i].brojSasije;
+      vozila[i].brojTablica = this.osiguranjaVozila[i].brojTablica;
+      vozila[i].godinaProizvodnje = this.osiguranjaVozila[i].godinaProizvodnje;
+      vozila[i].markaTip = this.osiguranjaVozila[i].markaITip;
+      //POTREBNO JE DODATI RIZIKE
+      //TREBA PROMENITI CEO HTML ZA VOZILA JER RIZICI NISU INTERPRETIRANI KAKO TREBA
+    }
+
+    polisa.vozila = vozila;
+    let nekretnine:NekretninaDTO[]=[];
+    //KOD NEKRERTNINA ISTO U HTML-U NEKI RIZICI NISU DOBRO ODRADJENI (npr povrsina stana)
+
+    for(var i = 0; i < this.osiguranjaNekretnina.length; i++){
+      nekretnine[i] = new NekretninaDTO();
+      nekretnine[i].vlasnik.ime = this.osiguranjaNekretnina[i].imeVlasnika;
+      nekretnine[i].vlasnik.adresa = this.osiguranjaNekretnina[i].adresaVlasnika;
+      nekretnine[i].vlasnik.jmbg = this.osiguranjaNekretnina[i].jmbgVlasnika;
+      nekretnine[i].vlasnik.prezime = this.osiguranjaNekretnina[i].prezimeVlasnika;
+
+      nekretnine[i].rizici[0] = new Rizik();
+      nekretnine[i].rizici[0].vrednost = this.osiguranjaNekretnina[i].povrsinaStana;
+
+      nekretnine[i].rizici[1] = new Rizik();
+      nekretnine[i].rizici[1].vrednost = this.osiguranjaNekretnina[i].starostStana;
+
+      nekretnine[i].rizici[2] = new Rizik();
+      nekretnine[i].rizici[2].vrednost = this.osiguranjaNekretnina[i].osiguranjeStana;
+
+      nekretnine[i].rizici[3] = new Rizik();
+      nekretnine[i].rizici[3].vrednost = this.osiguranjaNekretnina[i].procenjenaVrednostStana;
+    }
+
+    polisa.nekretnine = nekretnine;
+
+    console.log(polisa);
   }
 
 
