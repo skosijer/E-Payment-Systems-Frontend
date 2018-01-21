@@ -6,7 +6,7 @@ import {OsiguranjeDTO} from "../../beans/osiguranjeDTO";
 export class InsuranceDataService {
 
 
-  private url = 'http://localhost:8080/';
+  private url = 'https://localhost:8080/';
 
   constructor(private http:Http) { }
 
