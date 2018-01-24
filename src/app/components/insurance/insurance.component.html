@@ -21,6 +21,17 @@
         <div class="row">
           <div class="col-lg-2"></div>
           <div class="col-lg-3">
+            <label class="control-label">Osiguranje do iznosa:</label>
+          </div>
+          <div class="col-lg-4">
+            <p-dropdown [options]="osiguranjaDoIznosa" formControlName="osiguranDoIznosa" [(ngModel)]="form1Data.osiguranDoIznosa" [style]="{'width':'400px'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
             <label class="control-label">Vrsta osiguravajućeg paketa:</label>
             <br>
           </div>
@@ -541,53 +552,50 @@
               </div>
             </div>
           </div>
-          <!--Opciona polja u zavisnosti od izbora paketa osiguranja-->
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'slepovanje'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj kilometara za šlepovanje: </label>
+                <label class="control-label">Slepovanje do kilometraze:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-spinner size="35" formControlName="slepovanje" [(ngModel)]="form3Data.slepovanje" [min]="1" [max]="10000"></p-spinner>
+                <p-dropdown [options]="slepovanjaDoKm" formControlName="slepovanje" [(ngModel)]="form3Data.slepovanje" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'popravka'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Cena popravke (dinari): </label>
+                <label class="control-label">Popravka do cene:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-spinner size="35" formControlName="popravka" [(ngModel)]="form3Data.popravka" [min]="1" [max]="1000000"></p-spinner>
+                <p-dropdown [options]="popravkeDoCene" formControlName="popravka" [(ngModel)]="form3Data.popravka" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'smestaj'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Smeštaj u hotelu (dani): </label>
+                <label class="control-label">Smestaj u hotelu (dani):</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-spinner size="35" formControlName="smestaj" [(ngModel)]="form3Data.smestaj" [min]="1" [max]="1000000"></p-spinner>
+                <p-dropdown [options]="smestajiDoDana" formControlName="smestaj" [(ngModel)]="form3Data.smestaj" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'prevoz'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Vrsta alternativnog prevoza: </label>
+                <label class="control-label">Alternativni prevoz:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-dropdown [options]="vrsteAlternativnogPrevoza" formControlName="prevoz" [(ngModel)]="form3Data.prevoz" [style]="{'width':'100%'}"></p-dropdown>
+                <p-dropdown [options]="alternativniPrevozi" formControlName="prevoz" [(ngModel)]="form3Data.prevoz" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-          <!--**********************************************************-->
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div align="center">
@@ -605,7 +613,7 @@
               <label class="control-label">Površina stana (m2):</label>
             </div>
             <div class="col-lg-8">
-              <p-spinner size="35" formControlName="povrsinaStana" [(ngModel)]="form4Data.povrsinaStana" [min]="1" [max]="5000"></p-spinner>
+              <p-dropdown [options]="povrsineStana" formControlName="povrsinaStana" [(ngModel)]="form4Data.povrsinaStana" [style]="{'width':'100%'}"></p-dropdown>
             </div>
           </div>
         </div>

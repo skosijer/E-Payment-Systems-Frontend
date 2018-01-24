@@ -35,12 +35,22 @@ export class InsuranceComponent implements OnInit {
   starostLabela: SelectItem[] = [];
   starosti: Rizik[] = [];
   regioni: Rizik[] = [];
+  osiguranjaDoIznosaRizik:Rizik[]=[];
   paketiOsiguranja: SelectItem[] = [{ label: 'Izaberite paket osiguranja', value: null }];
+  slepovanjaDoKm: SelectItem[] = [{ label: 'Izaberite slepovanje [km]', value: null }];
+  popravkeDoCene: SelectItem[] = [{ label: 'Izaberite popravku [cena]', value: null }];
+  smestajiDoDana: SelectItem[] = [{ label: 'Izaberite smestaj [dana]', value: null }];
+  alternativniPrevozi: SelectItem[] = [{ label: 'Izaberite alternativni prevoz', value: null }];
   vrsteAlternativnogPrevoza: SelectItem[];
   osiguranjaStana: SelectItem[] = [{ label: 'Izaberite osiguranje stana', value: null }];
   svrhaOsiguranja: SelectItem[] = [{ label: 'Izaberite svrhu osiguranja', value: null }];
   starostiStana: SelectItem[] = [{ label: 'Izaberite starost stana', value: null }];
+  povrsineStana: SelectItem[] = [{ label: 'Izaberite povrsinu stana', value: null }];
   procenjeneVrednostiStana: SelectItem[] = [{ label: 'Izaberite starost stana', value: null }];
+
+
+  /*DODATI PODACI */
+  osiguranjaDoIznosa: SelectItem[] = [{ label: 'Odaberite nadoknadu', value: null }];
 
   //************************************/
 
@@ -57,7 +67,7 @@ export class InsuranceComponent implements OnInit {
   //Forme za kupovinu polise
 
   form1: FormGroup;
-  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: null };
+  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: null, osiguranDoIznosa: ""};
 
   form2: FormGroup;
   form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
@@ -159,15 +169,76 @@ export class InsuranceComponent implements OnInit {
       }
     );
 
+
+    this.insuranceDataService.getOsiguranjaDoIznosa().subscribe(
+      (data) => {
+        this.osiguranjaDoIznosaRizik = JSON.parse(data['_body']);
+
+        for (let i = 0; i < this.osiguranjaDoIznosaRizik.length; i++) {
+          let s = {
+            label: this.osiguranjaDoIznosaRizik[i].vrednost, value: this.osiguranjaDoIznosaRizik[i].vrednost
+          };
+          this.osiguranjaDoIznosa.push(s);
+        }
+      }
+    );
+
     this.insuranceDataService.getPaketiOsiguranja().subscribe(
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
-          let val: string[] = rizici[i].vrednost.split(" ");
           temp.value = rizici[i].vrednost;
           this.paketiOsiguranja.push(temp);
+        }
+      }
+    );
+
+    this.insuranceDataService.getSlepovanje().subscribe(
+      (data) => {
+        let rizici: Rizik[] = JSON.parse(data['_body']);
+        for (var i = 0; i < rizici.length; i++) {
+          let temp: SelectItem = { label: '', value: '' };
+          temp.label = rizici[i].vrednost;
+          temp.value = rizici[i].vrednost;
+          this.slepovanjaDoKm.push(temp);
+        }
+      }
+    );
+
+    this.insuranceDataService.getPopravka().subscribe(
+      (data) => {
+        let rizici: Rizik[] = JSON.parse(data['_body']);
+        for (var i = 0; i < rizici.length; i++) {
+          let temp: SelectItem = { label: '', value: '' };
+          temp.label = rizici[i].vrednost;
+          temp.value = rizici[i].vrednost;
+          this.popravkeDoCene.push(temp);
+        }
+      }
+    );
+
+    this.insuranceDataService.getPrevoz().subscribe(
+      (data) => {
+        let rizici: Rizik[] = JSON.parse(data['_body']);
+        for (var i = 0; i < rizici.length; i++) {
+          let temp: SelectItem = { label: '', value: '' };
+          temp.label = rizici[i].vrednost;
+          temp.value = rizici[i].vrednost;
+          this.alternativniPrevozi.push(temp);
+        }
+      }
+    );
+
+    this.insuranceDataService.getSmestaj().subscribe(
+      (data) => {
+        let rizici: Rizik[] = JSON.parse(data['_body']);
+        for (var i = 0; i < rizici.length; i++) {
+          let temp: SelectItem = { label: '', value: '' };
+          temp.label = rizici[i].vrednost;
+          temp.value = rizici[i].vrednost;
+          this.smestajiDoDana.push(temp);
         }
       }
     );
@@ -207,6 +278,18 @@ export class InsuranceComponent implements OnInit {
           let val: string[] = rizici[i].vrednost.split(" ");
           temp.value = rizici[i].vrednost;
           this.osiguranjaStana.push(temp);
+        }
+      }
+    );
+
+    this.insuranceDataService.getPovrsina().subscribe(
+      (data) => {
+        let rizici: Rizik[] = JSON.parse(data['_body']);
+        for (var i = 0; i < rizici.length; i++) {
+          let temp: SelectItem = { label: '', value: '' };
+          temp.label = rizici[i].vrednost;
+          temp.value = rizici[i].vrednost;
+          this.povrsineStana.push(temp);
         }
       }
     );
@@ -273,7 +356,8 @@ export class InsuranceComponent implements OnInit {
       starost: [''],
       pocetakOsiguranja: ['', Validators.required],
       trajanjeOsiguranja: ['', Validators.required],
-      svrhaOsiguranja: ['']
+      svrhaOsiguranja: [''],
+      osiguranDoIznosa: ['']
     });
 
     this.form2 = this.fb.group({
@@ -637,7 +721,9 @@ export class InsuranceComponent implements OnInit {
 
     riziciPutno[0] = new Rizik();
     riziciPutno[0].vrednost = this.form1Data.destinacija;
-    let temp:number = 1;
+    riziciPutno[1] = new Rizik();
+    riziciPutno[1].vrednost = this.form1Data.osiguranDoIznosa;
+    let temp:number = 2;
     if(this.form1Data.vrstaPaketa == "individualno"){
       riziciPutno[temp] = new Rizik();
       riziciPutno[temp].vrednost = this.form1Data.starost;
@@ -677,13 +763,25 @@ export class InsuranceComponent implements OnInit {
       vozila[i].brojTablica = this.osiguranjaVozila[i].brojTablica;
       vozila[i].godinaProizvodnje = this.osiguranjaVozila[i].godinaProizvodnje;
       vozila[i].markaTip = this.osiguranjaVozila[i].markaITip;
-      //POTREBNO JE DODATI RIZIKE
-      //TREBA PROMENITI CEO HTML ZA VOZILA JER RIZICI NISU INTERPRETIRANI KAKO TREBA
+
+      vozila[i].rizici[0] = new Rizik();
+      vozila[i].rizici[0].vrednost = this.osiguranjaVozila[i].paketOsiguranja;
+
+      vozila[i].rizici[1] = new Rizik();
+      vozila[i].rizici[1].vrednost = this.osiguranjaVozila[i].slepovanje;
+
+      vozila[i].rizici[2] = new Rizik();
+      vozila[i].rizici[2].vrednost = this.osiguranjaVozila[i].popravka;
+
+      vozila[i].rizici[3] = new Rizik();
+      vozila[i].rizici[3].vrednost = this.osiguranjaVozila[i].smestaj;
+
+      vozila[i].rizici[4] = new Rizik();
+      vozila[i].rizici[4].vrednost = this.osiguranjaVozila[i].prevoz;
     }
 
     polisa.vozila = vozila;
     let nekretnine:NekretninaDTO[]=[];
-    //KOD NEKRERTNINA ISTO U HTML-U NEKI RIZICI NISU DOBRO ODRADJENI (npr povrsina stana)
 
     for(var i = 0; i < this.osiguranjaNekretnina.length; i++){
       nekretnine[i] = new NekretninaDTO();

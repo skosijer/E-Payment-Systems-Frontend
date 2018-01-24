@@ -38,6 +38,30 @@ export class InsuranceDataService {
     return this.http.get(this.url + 'dmzMain/dobaviOsiguranjaStana');
   }
 
+  public getOsiguranjaDoIznosa(){
+    return this.http.get(this.url + 'dmzMain/getOsiguranjaDoIznosa');
+  }
+
+  public getSlepovanje(){
+    return this.http.get(this.url + 'dmzMain/getSlepovanje');
+  }
+
+  public getPopravka(){
+    return this.http.get(this.url + 'dmzMain/getPopravka');
+  }
+
+  public getPrevoz(){
+    return this.http.get(this.url + 'dmzMain/getPrevoz');
+  }
+
+  public getSmestaj(){
+    return this.http.get(this.url + 'dmzMain/getSmestaj');
+  }
+
+  public getPovrsina(){
+    return this.http.get(this.url + 'dmzMain/getPovrsina');
+  }
+
   public saveInsurance(osiguranjeDTO : OsiguranjeDTO) {
     const headers = new Headers();
     headers.append('Content-Type' , 'application/json');
