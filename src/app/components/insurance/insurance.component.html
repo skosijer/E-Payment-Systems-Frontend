@@ -785,14 +785,14 @@
       <div class="container">
         <p>
           Osiguranje važi za region
-          <mark>{{form1Data.destinacija}}</mark>. Datum početka važenja je
+          <mark id="{{form1Data.destinacija}}"></mark>. Datum početka važenja je
           <mark>{{form1Data.pocetakOsiguranja | date: 'dd.MM.yyyy.'}}</mark>, u trajanju od
           <mark>{{form1Data.trajanjeOsiguranja}}</mark> dan/a.
         </p>
         <p>
           Paket osiguranja je
           <mark>{{form1Data.vrstaPaketa}}</mark> osiguranje. Svrha putovanja je
-          <mark>{{form1Data.svrhaOsiguranja}}</mark>.
+          <mark id="{{form1Data.svrhaOsiguranja}}"></mark>.
         </p>
       </div>
       <br>

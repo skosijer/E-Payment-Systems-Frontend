@@ -49,6 +49,10 @@ export class InsuranceComponent implements OnInit {
   procenjeneVrednostiStana: SelectItem[] = [{ label: 'Izaberite starost stana', value: null }];
 
 
+  /*Svi rizici u sistemu I podaci dodatne promenljive potrebne da bi se sve lepo prikazivalo u cetvrtom koraku */
+  sviRizici:Rizik[] = [];
+
+
   /*DODATI PODACI */
   osiguranjaDoIznosa: SelectItem[] = [{ label: 'Odaberite nadoknadu', value: null }];
 
@@ -128,8 +132,9 @@ export class InsuranceComponent implements OnInit {
         this.starosti = JSON.parse(data['_body']);
 
         for (let i = 0; i < this.starosti.length; i++) {
+          this.sviRizici.push(this.starosti[i]);
           let s = {
-            label: this.starosti[i].vrednost, value: this.starosti[i].vrednost
+            label: this.starosti[i].vrednost, value: this.starosti[i].idRizik
           };
           this.starostLabela.push(s);
           let str = this.starosti[i].vrednost;
@@ -148,8 +153,9 @@ export class InsuranceComponent implements OnInit {
         this.regioni = JSON.parse(data['_body']);
 
         for (let i = 0; i < this.regioni.length; i++) {
+          this.sviRizici.push(this.regioni[i]);
           let s = {
-            label: this.regioni[i].vrednost, value: this.regioni[i].vrednost
+            label: this.regioni[i].vrednost, value: this.regioni[i].idRizik
           };
           this.destinacije.push(s);
         }
@@ -160,10 +166,11 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.svrhaOsiguranja.push(temp);
         }
       }
@@ -175,8 +182,9 @@ export class InsuranceComponent implements OnInit {
         this.osiguranjaDoIznosaRizik = JSON.parse(data['_body']);
 
         for (let i = 0; i < this.osiguranjaDoIznosaRizik.length; i++) {
+          this.sviRizici.push(this.osiguranjaDoIznosaRizik[i]);
           let s = {
-            label: this.osiguranjaDoIznosaRizik[i].vrednost, value: this.osiguranjaDoIznosaRizik[i].vrednost
+            label: this.osiguranjaDoIznosaRizik[i].vrednost, value: this.osiguranjaDoIznosaRizik[i].idRizik
           };
           this.osiguranjaDoIznosa.push(s);
         }
@@ -187,9 +195,10 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.paketiOsiguranja.push(temp);
         }
       }
@@ -199,9 +208,10 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.slepovanjaDoKm.push(temp);
         }
       }
@@ -211,9 +221,10 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.popravkeDoCene.push(temp);
         }
       }
@@ -223,9 +234,10 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik
           this.alternativniPrevozi.push(temp);
         }
       }
@@ -235,9 +247,10 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.smestajiDoDana.push(temp);
         }
       }
@@ -247,10 +260,11 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.starostiStana.push(temp);
         }
       }
@@ -260,10 +274,11 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.procenjeneVrednostiStana.push(temp);
         }
       }
@@ -273,10 +288,11 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
           let val: string[] = rizici[i].vrednost.split(" ");
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.osiguranjaStana.push(temp);
         }
       }
@@ -286,9 +302,10 @@ export class InsuranceComponent implements OnInit {
       (data) => {
         let rizici: Rizik[] = JSON.parse(data['_body']);
         for (var i = 0; i < rizici.length; i++) {
+          this.sviRizici.push(rizici[i]);
           let temp: SelectItem = { label: '', value: '' };
           temp.label = rizici[i].vrednost;
-          temp.value = rizici[i].vrednost;
+          temp.value = rizici[i].idRizik;
           this.povrsineStana.push(temp);
         }
       }
@@ -453,9 +470,6 @@ export class InsuranceComponent implements OnInit {
       return;
     }
 
-    console.log(this.form1Data);
-    console.log(this.starosti);
-
     this.activeIndex++;
 
     if (this.activeIndex != 1)
@@ -618,9 +632,6 @@ export class InsuranceComponent implements OnInit {
   }
 
   thirdStepSubmit(){
-
-    console.log(this.osiguranjaVozila);
-    console.log(this.osiguranjaNekretnina);
     this.activeIndex++;
   }
 
@@ -720,13 +731,13 @@ export class InsuranceComponent implements OnInit {
     let riziciPutno:Rizik[]=[];
 
     riziciPutno[0] = new Rizik();
-    riziciPutno[0].vrednost = this.form1Data.destinacija;
+    riziciPutno[0].idRizik = this.form1Data.destinacija;
     riziciPutno[1] = new Rizik();
-    riziciPutno[1].vrednost = this.form1Data.osiguranDoIznosa;
+    riziciPutno[1].idRizik = this.form1Data.osiguranDoIznosa;
     let temp:number = 2;
     if(this.form1Data.vrstaPaketa == "individualno"){
       riziciPutno[temp] = new Rizik();
-      riziciPutno[temp].vrednost = this.form1Data.starost;
+      riziciPutno[temp].idRizik = this.form1Data.starost;
       riziciPutno[temp].kolicina = 1;
       temp++;
     }else{
@@ -735,7 +746,7 @@ export class InsuranceComponent implements OnInit {
         let broj:number = this.form1Data[tipRizikaString];
         if(broj > 0){
           riziciPutno[temp] = new Rizik();
-          riziciPutno[temp].vrednost = tipRizikaString;
+          riziciPutno[temp].idRizik = this.starosti[i].idRizik;
           riziciPutno[temp].kolicina = broj;
           temp++;
         }
@@ -743,7 +754,7 @@ export class InsuranceComponent implements OnInit {
     }
 
     riziciPutno[temp] = new Rizik();
-    riziciPutno[temp].vrednost = this.form1Data.svrhaOsiguranja;
+    riziciPutno[temp].idRizik = this.form1Data.svrhaOsiguranja;
     temp++;
 
     polisa.riziciPutno = riziciPutno;
@@ -765,19 +776,19 @@ export class InsuranceComponent implements OnInit {
       vozila[i].markaTip = this.osiguranjaVozila[i].markaITip;
 
       vozila[i].rizici[0] = new Rizik();
-      vozila[i].rizici[0].vrednost = this.osiguranjaVozila[i].paketOsiguranja;
+      vozila[i].rizici[0].idRizik = this.osiguranjaVozila[i].paketOsiguranja;
 
       vozila[i].rizici[1] = new Rizik();
-      vozila[i].rizici[1].vrednost = this.osiguranjaVozila[i].slepovanje;
+      vozila[i].rizici[1].idRizik = this.osiguranjaVozila[i].slepovanje;
 
       vozila[i].rizici[2] = new Rizik();
-      vozila[i].rizici[2].vrednost = this.osiguranjaVozila[i].popravka;
+      vozila[i].rizici[2].idRizik = this.osiguranjaVozila[i].popravka;
 
       vozila[i].rizici[3] = new Rizik();
-      vozila[i].rizici[3].vrednost = this.osiguranjaVozila[i].smestaj;
+      vozila[i].rizici[3].idRizik = this.osiguranjaVozila[i].smestaj;
 
       vozila[i].rizici[4] = new Rizik();
-      vozila[i].rizici[4].vrednost = this.osiguranjaVozila[i].prevoz;
+      vozila[i].rizici[4].idRizik = this.osiguranjaVozila[i].prevoz;
     }
 
     polisa.vozila = vozila;
@@ -791,21 +802,30 @@ export class InsuranceComponent implements OnInit {
       nekretnine[i].vlasnik.prezime = this.osiguranjaNekretnina[i].prezimeVlasnika;
 
       nekretnine[i].rizici[0] = new Rizik();
-      nekretnine[i].rizici[0].vrednost = this.osiguranjaNekretnina[i].povrsinaStana;
+      nekretnine[i].rizici[0].idRizik = this.osiguranjaNekretnina[i].povrsinaStana;
 
       nekretnine[i].rizici[1] = new Rizik();
-      nekretnine[i].rizici[1].vrednost = this.osiguranjaNekretnina[i].starostStana;
+      nekretnine[i].rizici[1].idRizik = this.osiguranjaNekretnina[i].starostStana;
 
       nekretnine[i].rizici[2] = new Rizik();
-      nekretnine[i].rizici[2].vrednost = this.osiguranjaNekretnina[i].osiguranjeStana;
+      nekretnine[i].rizici[2].idRizik = this.osiguranjaNekretnina[i].osiguranjeStana;
 
       nekretnine[i].rizici[3] = new Rizik();
-      nekretnine[i].rizici[3].vrednost = this.osiguranjaNekretnina[i].procenjenaVrednostStana;
+      nekretnine[i].rizici[3].idRizik = this.osiguranjaNekretnina[i].procenjenaVrednostStana;
     }
 
     polisa.nekretnine = nekretnine;
 
     console.log(polisa);
+
+  }
+
+  getRizikNameById(id:number){
+    for(var i = 0; i < this.sviRizici.length; i++){
+        if(id == this.sviRizici[i].idRizik){
+          return this.sviRizici[i].vrednost;
+        }
+    }
   }
 
 
