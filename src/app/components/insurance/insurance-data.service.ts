@@ -66,7 +66,7 @@ export class InsuranceDataService {
   public saveInsurance(polisaDTO : PolisaDTO) {
     const headers = new Headers();
     headers.append('Content-Type' , 'application/json');
-    return this.http.post('https://localhost:8082/dcRizici/polisa', JSON.stringify(polisaDTO), {headers : headers});
+    return this.http.post(this.url + 'dmzMain/polisa', JSON.stringify(polisaDTO), {headers : headers});
   }
 
 }

@@ -817,6 +817,12 @@ export class InsuranceComponent implements OnInit {
     polisa.nekretnine = nekretnine;
 
     console.log(polisa);
+    this.insuranceDataService.saveInsurance(polisa).subscribe(
+      () => {
+
+      }
+    );
+
 
   }
 
