@@ -1,22 +1,24 @@
+import { VrstaPlacanja } from './../enums/vrstaPlacanja.enum';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
+import { InputTextModule } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import {Osoba, TipNosioca, TipOsobe} from "../../beans/osoba";
+import { Osoba, TipNosioca, TipOsobe } from "../../beans/osoba";
 import { InsuranceDataService } from "./insurance-data.service";
 import { Rizik } from "../../beans/rizik";
 import { Nosilac } from "../../beans/nosilac_osiguranja";
 import { Message } from 'primeng/primeng';
 import { JmbgValidators } from "../../components/validators/jmbg.validators";
-import {isNullOrUndefined} from "util";
-import {OsiguranjeDTO} from "../../beans/osiguranjeDTO";
-import {Osiguranik} from "../../beans/osiguranik";
-import {PolisaDTO} from "../../beans/dtos/polisa.dto";
-import {TipRizika} from "../../beans/tipRizlika";
-import {VoziloDTO} from "../../beans/dtos/vozilo.dto";
-import {NekretninaDTO} from "../../beans/dtos/nekretnina.dto";
-
-
+import { isNullOrUndefined } from "util";
+import { OsiguranjeDTO } from "../../beans/osiguranjeDTO";
+import { Osiguranik } from "../../beans/osiguranik";
+import { PolisaDTO } from "../../beans/dtos/polisa.dto";
+import { TipRizika } from "../../beans/tipRizlika";
+import { VoziloDTO } from "../../beans/dtos/vozilo.dto";
+import { NekretninaDTO } from "../../beans/dtos/nekretnina.dto";
+import { BuyPolicyDTO } from '../../beans/buyPolicyDTO';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-insurance',
@@ -35,7 +37,7 @@ export class InsuranceComponent implements OnInit {
   starostLabela: SelectItem[] = [];
   starosti: Rizik[] = [];
   regioni: Rizik[] = [];
-  osiguranjaDoIznosaRizik:Rizik[]=[];
+  osiguranjaDoIznosaRizik: Rizik[] = [];
   paketiOsiguranja: SelectItem[] = [{ label: 'Izaberite paket osiguranja', value: null }];
   slepovanjaDoKm: SelectItem[] = [{ label: 'Izaberite slepovanje [km]', value: null }];
   popravkeDoCene: SelectItem[] = [{ label: 'Izaberite popravku [cena]', value: null }];
@@ -50,7 +52,7 @@ export class InsuranceComponent implements OnInit {
 
 
   /*Svi rizici u sistemu I podaci dodatne promenljive potrebne da bi se sve lepo prikazivalo u cetvrtom koraku */
-  sviRizici:Rizik[] = [];
+  sviRizici: Rizik[] = [];
 
 
   /*DODATI PODACI */
@@ -71,7 +73,7 @@ export class InsuranceComponent implements OnInit {
   //Forme za kupovinu polise
 
   form1: FormGroup;
-  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: null, osiguranDoIznosa: ""};
+  form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: null, osiguranDoIznosa: "" };
 
   form2: FormGroup;
   form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
@@ -93,6 +95,7 @@ export class InsuranceComponent implements OnInit {
   private showCarDialog = false;
   private showHomeDialog = false;
   private showInsuranceDialog = false;
+  private showConfirmDialog = false;
 
   //*********************************************/
 
@@ -120,10 +123,14 @@ export class InsuranceComponent implements OnInit {
 
   //PODACI ZA BROJ OSIGURANIKA ZA DRUGI KORAK
   private brojOsiguranika: number;
-  private ukupnoOsiguranika:number = 0;
+  private ukupnoOsiguranika: number = 0;
 
+  VrstaPlacanja = VrstaPlacanja;
 
-  constructor(private fb: FormBuilder, private insuranceDataService: InsuranceDataService) { }
+  vrstaPlacanja: VrstaPlacanja;
+  buyPolicyDTO: BuyPolicyDTO;
+
+  constructor(private fb: FormBuilder, private insuranceDataService: InsuranceDataService, private router: Router) { }
 
   ngOnInit() {
 
@@ -434,11 +441,11 @@ export class InsuranceComponent implements OnInit {
   stepSubmit() {
     console.log(this.form1);
     this.msgs = [];
-    if(this.form1.controls['vrstaPaketa'].value == 'grupno') {
+    if (this.form1.controls['vrstaPaketa'].value == 'grupno') {
       this.brojOsiguranika = 0;
-      for(let i = 0; i < this.starosti.length; i++) {
+      for (let i = 0; i < this.starosti.length; i++) {
         console.log(this.form1.controls[this.starosti[i].vrednost].value);
-        if(this.form1.controls[this.starosti[i].vrednost].value != "") {
+        if (this.form1.controls[this.starosti[i].vrednost].value != "") {
           this.brojOsiguranika += this.form1.controls[this.starosti[i].vrednost].value;
           this.form1Data[this.starosti[i].vrednost] = this.form1.controls[this.starosti[i].vrednost].value;
         } else {
@@ -447,26 +454,26 @@ export class InsuranceComponent implements OnInit {
       }
       console.log(this.brojOsiguranika);
       this.ukupnoOsiguranika = this.brojOsiguranika;
-      if(this.brojOsiguranika < 2) {
-        this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas unesite broj osoba veci od 1!'});
+      if (this.brojOsiguranika < 2) {
+        this.msgs.push({ severity: 'info', summary: 'Postovani,', detail: 'Molim Vas unesite broj osoba veci od 1!' });
         return;
       }
 
-      if(this.osobe.length > 0){
+      if (this.osobe.length > 0) {
         this.brojOsiguranika = this.brojOsiguranika - this.osobe.length;
       }
 
     } else {
       this.brojOsiguranika = 1;
       this.ukupnoOsiguranika = 1;
-        if(this.form1.controls['starost'].value == null) {
-          this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas odaberite uzrast lica koje putuje!'});
-          return;
-        }
+      if (this.form1.controls['starost'].value == null) {
+        this.msgs.push({ severity: 'info', summary: 'Postovani,', detail: 'Molim Vas odaberite uzrast lica koje putuje!' });
+        return;
+      }
     }
 
-    if(this.form1.controls['svrhaOsiguranja'].value == null){
-      this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas odaberite svrhu osiguranja!'});
+    if (this.form1.controls['svrhaOsiguranja'].value == null) {
+      this.msgs.push({ severity: 'info', summary: 'Postovani,', detail: 'Molim Vas odaberite svrhu osiguranja!' });
       return;
     }
 
@@ -476,7 +483,7 @@ export class InsuranceComponent implements OnInit {
       return;
   }
 
-  vrstaPaketaChange(){
+  vrstaPaketaChange() {
     this.osobe = [];
   }
 
@@ -484,12 +491,12 @@ export class InsuranceComponent implements OnInit {
 
     this.msgs = [];
 
-    if(this.osobe.length < this.ukupnoOsiguranika){
-      this.msgs.push({severity:'info', summary:'Postovani,', detail:'Molim Vas unesite osiguranike!'});
+    if (this.osobe.length < this.ukupnoOsiguranika) {
+      this.msgs.push({ severity: 'info', summary: 'Postovani,', detail: 'Molim Vas unesite osiguranike!' });
       return;
     }
 
-    if(this.osobe.length == this.ukupnoOsiguranika && this.nosilac != null){
+    if (this.osobe.length == this.ukupnoOsiguranika && this.nosilac != null) {
       this.activeIndex++;
       return;
     }
@@ -531,8 +538,8 @@ export class InsuranceComponent implements OnInit {
 
 
   previous() {
-    if(this.activeIndex == 1 && this.form1.controls['vrstaPaketa'].value == 'grupno') {
-      for(let i = 0; i < this.starosti.length; i++) {
+    if (this.activeIndex == 1 && this.form1.controls['vrstaPaketa'].value == 'grupno') {
+      for (let i = 0; i < this.starosti.length; i++) {
         this.form1.controls[this.starosti[i].vrednost].setValue(this.form1Data[this.starosti[i].vrednost]);
       }
     }
@@ -631,7 +638,7 @@ export class InsuranceComponent implements OnInit {
     }
   }
 
-  thirdStepSubmit(){
+  thirdStepSubmit() {
     this.activeIndex++;
   }
 
@@ -653,7 +660,7 @@ export class InsuranceComponent implements OnInit {
   nosiocOsiguranjaChange(checked: boolean) {
 
     this.enterEmailBoolean = checked;
-    if(this.enterEmailBoolean == false){
+    if (this.enterEmailBoolean == false) {
       this.form2.controls['emailNosioca'].setValue('');
       this.form2Data.emailNosioca = '';
       this.form2.controls['emailNosioca'].setErrors(null);
@@ -713,7 +720,7 @@ export class InsuranceComponent implements OnInit {
     return (!this.formNosilac.controls[field].valid && this.formNosilac.controls[field].touched);
   }
 
-  step4Back(){
+  step4Back() {
     this.activeIndex--;
   }
 
@@ -722,29 +729,29 @@ export class InsuranceComponent implements OnInit {
     let polisa = new PolisaDTO();
     polisa.osiguranici = this.osobe;
     polisa.nosilac = this.nosilac.osoba;
-    if(this.nosilac.tip == TipNosioca.OSIGURANIK){
+    if (this.nosilac.tip == TipNosioca.OSIGURANIK) {
       polisa.nosilac.tipOsobe = TipOsobe.OSIGURANIK;
-    }else{
+    } else {
       polisa.nosilac.tipOsobe = TipOsobe.DRUGO_LICE;
     }
 
-    let riziciPutno:Rizik[]=[];
+    let riziciPutno: Rizik[] = [];
 
     riziciPutno[0] = new Rizik();
     riziciPutno[0].idRizik = this.form1Data.destinacija;
     riziciPutno[1] = new Rizik();
     riziciPutno[1].idRizik = this.form1Data.osiguranDoIznosa;
-    let temp:number = 2;
-    if(this.form1Data.vrstaPaketa == "individualno"){
+    let temp: number = 2;
+    if (this.form1Data.vrstaPaketa == "individualno") {
       riziciPutno[temp] = new Rizik();
       riziciPutno[temp].idRizik = this.form1Data.starost;
       riziciPutno[temp].kolicina = 1;
       temp++;
-    }else{
-      for(var i = 0; i < this.starosti.length; i++){
-        let tipRizikaString:string = this.starosti[i].vrednost;
-        let broj:number = this.form1Data[tipRizikaString];
-        if(broj > 0){
+    } else {
+      for (var i = 0; i < this.starosti.length; i++) {
+        let tipRizikaString: string = this.starosti[i].vrednost;
+        let broj: number = this.form1Data[tipRizikaString];
+        if (broj > 0) {
           riziciPutno[temp] = new Rizik();
           riziciPutno[temp].idRizik = this.starosti[i].idRizik;
           riziciPutno[temp].kolicina = broj;
@@ -762,9 +769,9 @@ export class InsuranceComponent implements OnInit {
     polisa.trajanjeOsiguranja = this.form1Data.trajanjeOsiguranja;
     polisa.pocetakOsiguranja = this.form1Data.pocetakOsiguranja;
 
-    let vozila:VoziloDTO[] = [];
+    let vozila: VoziloDTO[] = [];
 
-    for(var i = 0; i < this.osiguranjaVozila.length; i++){
+    for (var i = 0; i < this.osiguranjaVozila.length; i++) {
       vozila[i] = new VoziloDTO();
       vozila[i].vlasnik.ime = this.osiguranjaVozila[i].imeVlasnika;
       vozila[i].vlasnik.prezime = this.osiguranjaVozila[i].prezimeVlasnika;
@@ -792,9 +799,9 @@ export class InsuranceComponent implements OnInit {
     }
 
     polisa.vozila = vozila;
-    let nekretnine:NekretninaDTO[]=[];
+    let nekretnine: NekretninaDTO[] = [];
 
-    for(var i = 0; i < this.osiguranjaNekretnina.length; i++){
+    for (var i = 0; i < this.osiguranjaNekretnina.length; i++) {
       nekretnine[i] = new NekretninaDTO();
       nekretnine[i].vlasnik.ime = this.osiguranjaNekretnina[i].imeVlasnika;
       nekretnine[i].vlasnik.adresa = this.osiguranjaNekretnina[i].adresaVlasnika;
@@ -817,6 +824,7 @@ export class InsuranceComponent implements OnInit {
     polisa.nekretnine = nekretnine;
 
     console.log(polisa);
+
     this.insuranceDataService.saveInsurance(polisa).subscribe(
       () => {
 
@@ -826,13 +834,135 @@ export class InsuranceComponent implements OnInit {
 
   }
 
-  getRizikNameById(id:number){
-    for(var i = 0; i < this.sviRizici.length; i++){
-        if(id == this.sviRizici[i].idRizik){
-          return this.sviRizici[i].vrednost;
-        }
+  getRizikNameById(id: number) {
+    for (var i = 0; i < this.sviRizici.length; i++) {
+      if (id == this.sviRizici[i].idRizik) {
+        return this.sviRizici[i].vrednost;
+      }
     }
   }
+  potvrdiKupovinuPolise() {
+    //this.router.navigateByUrl(this.buyPolicyDTO.paymentURL);
+    window.location.replace(this.buyPolicyDTO.paymentURL);
+  }
 
+  otkaziKupovinuPolise() {
+    this.showConfirmDialog = false;
+  }
+
+  buyInsurance(vrstaPlacanja) {
+
+    let polisa = new PolisaDTO();
+    polisa.osiguranici = this.osobe;
+    polisa.nosilac = this.nosilac.osoba;
+    if (this.nosilac.tip == TipNosioca.OSIGURANIK) {
+      polisa.nosilac.tipOsobe = TipOsobe.OSIGURANIK;
+    } else {
+      polisa.nosilac.tipOsobe = TipOsobe.DRUGO_LICE;
+    }
+
+    let riziciPutno: Rizik[] = [];
+
+    riziciPutno[0] = new Rizik();
+    riziciPutno[0].idRizik = this.form1Data.destinacija;
+    riziciPutno[1] = new Rizik();
+    riziciPutno[1].idRizik = this.form1Data.osiguranDoIznosa;
+    let temp: number = 2;
+    if (this.form1Data.vrstaPaketa == "individualno") {
+      riziciPutno[temp] = new Rizik();
+      riziciPutno[temp].idRizik = this.form1Data.starost;
+      riziciPutno[temp].kolicina = 1;
+      temp++;
+    } else {
+      for (var i = 0; i < this.starosti.length; i++) {
+        let tipRizikaString: string = this.starosti[i].vrednost;
+        let broj: number = this.form1Data[tipRizikaString];
+        if (broj > 0) {
+          riziciPutno[temp] = new Rizik();
+          riziciPutno[temp].idRizik = this.starosti[i].idRizik;
+          riziciPutno[temp].kolicina = broj;
+          temp++;
+        }
+      }
+    }
+
+    riziciPutno[temp] = new Rizik();
+    riziciPutno[temp].idRizik = this.form1Data.svrhaOsiguranja;
+    temp++;
+
+    polisa.riziciPutno = riziciPutno;
+    polisa.vrstaPaketa = this.form1Data.vrstaPaketa;
+    polisa.trajanjeOsiguranja = this.form1Data.trajanjeOsiguranja;
+    polisa.pocetakOsiguranja = this.form1Data.pocetakOsiguranja;
+
+    let vozila: VoziloDTO[] = [];
+
+    for (var i = 0; i < this.osiguranjaVozila.length; i++) {
+      vozila[i] = new VoziloDTO();
+      vozila[i].vlasnik.ime = this.osiguranjaVozila[i].imeVlasnika;
+      vozila[i].vlasnik.prezime = this.osiguranjaVozila[i].prezimeVlasnika;
+      vozila[i].vlasnik.jmbg = this.osiguranjaVozila[i].jmbgVlasnika;
+
+      vozila[i].brojSasije = this.osiguranjaVozila[i].brojSasije;
+      vozila[i].brojTablica = this.osiguranjaVozila[i].brojTablica;
+      vozila[i].godinaProizvodnje = this.osiguranjaVozila[i].godinaProizvodnje;
+      vozila[i].markaTip = this.osiguranjaVozila[i].markaITip;
+
+      vozila[i].rizici[0] = new Rizik();
+      vozila[i].rizici[0].idRizik = this.osiguranjaVozila[i].paketOsiguranja;
+
+      vozila[i].rizici[1] = new Rizik();
+      vozila[i].rizici[1].idRizik = this.osiguranjaVozila[i].slepovanje;
+
+      vozila[i].rizici[2] = new Rizik();
+      vozila[i].rizici[2].idRizik = this.osiguranjaVozila[i].popravka;
+
+      vozila[i].rizici[3] = new Rizik();
+      vozila[i].rizici[3].idRizik = this.osiguranjaVozila[i].smestaj;
+
+      vozila[i].rizici[4] = new Rizik();
+      vozila[i].rizici[4].idRizik = this.osiguranjaVozila[i].prevoz;
+    }
+
+    polisa.vozila = vozila;
+    let nekretnine: NekretninaDTO[] = [];
+
+    for (var i = 0; i < this.osiguranjaNekretnina.length; i++) {
+      nekretnine[i] = new NekretninaDTO();
+      nekretnine[i].vlasnik.ime = this.osiguranjaNekretnina[i].imeVlasnika;
+      nekretnine[i].vlasnik.adresa = this.osiguranjaNekretnina[i].adresaVlasnika;
+      nekretnine[i].vlasnik.jmbg = this.osiguranjaNekretnina[i].jmbgVlasnika;
+      nekretnine[i].vlasnik.prezime = this.osiguranjaNekretnina[i].prezimeVlasnika;
+
+      nekretnine[i].rizici[0] = new Rizik();
+      nekretnine[i].rizici[0].idRizik = this.osiguranjaNekretnina[i].povrsinaStana;
+
+      nekretnine[i].rizici[1] = new Rizik();
+      nekretnine[i].rizici[1].idRizik = this.osiguranjaNekretnina[i].starostStana;
+
+      nekretnine[i].rizici[2] = new Rizik();
+      nekretnine[i].rizici[2].idRizik = this.osiguranjaNekretnina[i].osiguranjeStana;
+
+      nekretnine[i].rizici[3] = new Rizik();
+      nekretnine[i].rizici[3].idRizik = this.osiguranjaNekretnina[i].procenjenaVrednostStana;
+    }
+
+    polisa.nekretnine = nekretnine;
+
+    console.log(polisa);
+
+
+    // this.router.navigateByUrl('/user');
+    this.insuranceDataService.buyInsurance(polisa, vrstaPlacanja).subscribe(
+      (data) => {
+        this.buyPolicyDTO = JSON.parse(data['_body']);
+        console.log("BUYPOLICYDTO!!!!!");
+        console.log(this.buyPolicyDTO);
+        this.showConfirmDialog = true;
+        // this.router.navigateByUrl(buyPolicyDTO.paymentURL + '/' + buyPolicyDTO.paymentID);
+      }
+    );
+
+  }
 
 }

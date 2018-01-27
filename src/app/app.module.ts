@@ -31,7 +31,9 @@ import {InsuranceDataService} from "./components/insurance/insurance-data.servic
 
 import { FieldErrorDisplayComponent } from './components/field-error-display/field-error-display.component';
 import { PaypalComponent } from './paypal/paypal.component';
-
+import { InsuranceComponentFailedComponent } from './insurance-component-failed/insurance-component-failed.component';
+import { InsuranceComponentSuccessComponent } from './insurance-component-success/insurance-component-success.component';
+import { InsuranceComponentErrorComponent } from './insurance-component-error/insurance-component-error.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,10 @@ import { PaypalComponent } from './paypal/paypal.component';
     FooterComponent,
     InsuranceComponent,
     FieldErrorDisplayComponent,
-    PaypalComponent
+    PaypalComponent, 
+    InsuranceComponentFailedComponent,
+    InsuranceComponentSuccessComponent,
+    InsuranceComponentErrorComponent
   ],
   imports: [
     BrowserModule,

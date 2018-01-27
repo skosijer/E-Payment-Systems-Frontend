@@ -837,6 +837,10 @@
           </p-dataTable>
         </div>
 
+         <!--  [routerLink]="acquirer" -->
+      <button type="button" class="btn btn-primary-outline pull-right" (click)="buyInsurance(VrstaPlacanja.Banka)">
+        <i class="fa fa-plus"></i>Banka</button> 
+
       </div>
 
       <p align="center">
@@ -852,8 +856,23 @@
         <button pButton class="ui-button-warning" (click)="buy()"></button>
       </div>
     </div>
-
-
   </div>
+
+  <p-dialog header="Kupovina polise" [(visible)]="showConfirmDialog">
+    <div align="center" style="margin-top: 30px;">
+      <h3>Da li potvrdjujete kupovinu polise?</h3>
+    </div>
+
+    <div style="margin-top: 20px;" align="center">
+      <button pButton class="ui-button-primary" type="text" (click)="potvrdiKupovinuPolise()" label="Da" icon="fa-car"></button>
+      <button pButton class="ui-button-primary" type="text" (click)="otkaziKupovinuPolise()" label="Ne" icon="fa-home"></button>
+    </div>
+         
+  </p-dialog>
+
+
+  <!-- kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk -->
+
+
 </div>
 

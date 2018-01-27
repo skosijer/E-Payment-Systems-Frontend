@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http, Headers} from "@angular/http";
-import {OsiguranjeDTO} from "../../beans/osiguranjeDTO";
 import {PolisaDTO} from "../../beans/dtos/polisa.dto";
+import { VrstaPlacanja } from '../enums/vrstaPlacanja.enum';
 
 @Injectable()
 export class InsuranceDataService {
@@ -67,6 +67,13 @@ export class InsuranceDataService {
     const headers = new Headers();
     headers.append('Content-Type' , 'application/json');
     return this.http.post(this.url + 'dmzMain/polisa', JSON.stringify(polisaDTO), {headers : headers});
+  }
+
+  public buyInsurance(polisaDTO : PolisaDTO) {
+    const headers = new Headers();
+    headers.append('Content-Type' , 'application/json');
+    console.log(polisaDTO.nekretnine);
+    return this.http.post(this.url + 'dmzMain/buyInsurance', JSON.stringify(polisaDTO), {headers : headers});
   }
 
 }
