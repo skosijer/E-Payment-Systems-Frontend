@@ -11,7 +11,6 @@ import { Nosilac } from "../../beans/nosilac_osiguranja";
 import { Message } from 'primeng/primeng';
 import { JmbgValidators } from "../../components/validators/jmbg.validators";
 import { isNullOrUndefined } from "util";
-import { OsiguranjeDTO } from "../../beans/osiguranjeDTO";
 import { Osiguranik } from "../../beans/osiguranik";
 import { PolisaDTO } from "../../beans/dtos/polisa.dto";
 import { TipRizika } from "../../beans/tipRizlika";
@@ -949,11 +948,12 @@ export class InsuranceComponent implements OnInit {
 
     polisa.nekretnine = nekretnine;
 
+    polisa.vrstaPlacanja = vrstaPlacanja; 
     console.log(polisa);
 
 
     // this.router.navigateByUrl('/user');
-    this.insuranceDataService.buyInsurance(polisa, vrstaPlacanja).subscribe(
+    this.insuranceDataService.buyInsurance(polisa).subscribe(
       (data) => {
         this.buyPolicyDTO = JSON.parse(data['_body']);
         console.log("BUYPOLICYDTO!!!!!");
