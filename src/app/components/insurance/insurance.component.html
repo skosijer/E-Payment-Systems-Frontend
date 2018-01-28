@@ -125,11 +125,13 @@
 
       <div class="form-group" align="center">
         <label class="col-md-3 control-label"></label>
-        <div class="step1_button_div">
+        <div>
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <button pButton [disabled]="!form1.valid" class="ui-button-info" label="Izračunaj cenu" type="submit" (click)="onPrikaziCenovnik()"></button>
 
         </div>
-      </div>
+        </div>
     </form>
   </div>
 
@@ -871,12 +873,13 @@
   </p-dialog>
 
 
-  <!-- kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk -->
-<button pButton class="ui-button-primary" label="PRIKAZI CENOVNIK" icon="fa-eur" (click)="onPrikaziCenovnik()" style="position: absolute;bottom: 0;right: 0"></button>
-  <p-dialog [(visible)]="cenovnikDialogBool" styleClass="cenovnikDialogStyle">
+  <!-- Prikaz cenovnika -->
+
+  <p-dialog [(visible)]="cenovnikDialogBool" modal="true" draggable="false" resizable="false" styleClass="cenovnikDialogStyle">
     <p-header>
       Cenovnik
     </p-header>
+
     <div class="container">
       <div class="row">
         <div>
@@ -887,69 +890,38 @@
                 <br>
                 Srbija, Novi Sad 21000
                 <br>
-                <abbr title="Phone">TEL:</abbr> (+381) 63-165-2267
+                TEL: (+381) 63-165-2267
               </address>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 text-right">
               <p>
-                <em>Date: {{currectDate | date:'dd-MM-yyyy'}}</em>
+                <em>Datum: {{currectDate | date:'dd.MM.yyyy.'}}</em>
               </p>
             </div>
           </div>
+          <br>
+          <br>
           <div class="row">
-            <table class="table table-hover">
-              <thead>
+            <table>
               <tr>
-                <th></th>
-                <th></th>
-                <th>#</th>
-                <th class="text-center">Jedinicna cena</th>
-                <th class="text-center">Cena</th>
+                <th>Tip rizika</th>
+                <th>Odabrani rizik</th>
+                <th>Broj osoba</th>
+                <th>Jedinična cena (po danu)</th>
+                <th>Ukupna cena (za trajanje od {{form1Data.trajanjeOsiguranja}} dan/a)</th>
               </tr>
-              </thead>
-              <tbody>
               <tr *ngFor="let cena of ukupnaCenaDTO1.cene">
-                <td class="col-md-6"><em>{{cena.rizik}}</em></td>
-                <td class="col-md-3"><em>{{cena.tipRizika}}</em></td>
-                <td class="col-md-1"> {{cena.broj}} </td>
-                <td class="col-md-1 text-center">{{cena.cena/cena.broj}}€</td>
-                <td class="col-md-1 text-center">{{cena.cena}}€</td>
+                <td>{{cena.tipRizika}}</td>
+                <td>{{cena.rizik}}</td>
+                <td>{{cena.broj}}</td>
+                <td>{{cena.cena/cena.broj | number : '1.2-2'}} €</td>
+                <td>{{cena.cena * form1Data.trajanjeOsiguranja | number : '1.2-2'}} €</td>
               </tr>
-              <!--<tr>-->
-                <!--<td class="col-md-9"><em>{{ukupnaCenaDTO1.cene[0].tipRizika}}</em></td>-->
-                <!--<td class="col-md-1" style="text-align: center"> {{ukupnaCenaDTO1.cene[0].broj}} </td>-->
-                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena/ukupnaCenaDTO1.cene[0].broj}}</td>-->
-                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena}}</td>-->
-              <!--</tr>-->
-              <!--<tr>-->
-                <!--<td class="col-md-9"><em>{{ukupnaCenaDTO1.cene[0].tipRizika}}</em></td>-->
-                <!--<td class="col-md-1" style="text-align: center"> {{ukupnaCenaDTO1.cene[0].broj}} </td>-->
-                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena/ukupnaCenaDTO1.cene[0].broj}}</td>-->
-                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena}}</td>-->
-              <!--</tr>-->
-              <tr>
-                <td>   </td>
-                <td>   </td>
-                <td class="text-right">
-                  <p>
-                    <strong>Trajanje: </strong>
-                  </p>
-                  </td>
-                <td class="text-center">
-                  <p>
-                    <strong>{{form1Data.trajanjeOsiguranja}} dan/a</strong>
-                  </p>
-                  </td>
-              </tr>
-              <tr>
-                <td>   </td>
-                <td>   </td>
-                <td class="text-right"><h4><strong>Ukupno: </strong></h4></td>
-                <td class="text-center text-danger"><h4><strong>{{ukupnaCenaDTO1.ukupnaCena}}€</strong></h4></td>
-              </tr>
-              </tbody>
             </table>
           </div>
+          <br>
+          <br>
+          <h4 style="float:right"> Trenutna cena putnog osiguranja je: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ukupnaCenaDTO1.ukupnaCena * form1Data.trajanjeOsiguranja | number : '1.2-2'}} € &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h4>
         </div>
       </div>
       </div>

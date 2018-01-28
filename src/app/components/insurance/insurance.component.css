@@ -74,6 +74,14 @@ body {
     font-weight: 200;
 }
 
+.ui-button-info {
+  width: 150px;
+  height: 40px;
+  border-radius: 12px;
+  font-family: 'Lato';
+  font-weight: 200;
+}
+
 .calendar1StyleClass {
     width: 304px;
 }
@@ -203,6 +211,23 @@ body {
 
 .cenovnikDialogStyle{
   background-color: #fffaef;
+}
+
+/*tabela za prikaz cena*/
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }
 
 
