@@ -18,6 +18,8 @@ import { VoziloDTO } from "../../beans/dtos/vozilo.dto";
 import { NekretninaDTO } from "../../beans/dtos/nekretnina.dto";
 import { BuyPolicyDTO } from '../../beans/buyPolicyDTO';
 import { Router } from '@angular/router';
+import {CenaRequestDTO} from "../../beans/dtos/cena-request.dto";
+import {UkupnaCenaDTO} from "../../beans/dtos/ukupna-cena.dto";
 
 @Component({
   selector: 'app-insurance',
@@ -48,6 +50,9 @@ export class InsuranceComponent implements OnInit {
   starostiStana: SelectItem[] = [{ label: 'Izaberite starost stana', value: null }];
   povrsineStana: SelectItem[] = [{ label: 'Izaberite povrsinu stana', value: null }];
   procenjeneVrednostiStana: SelectItem[] = [{ label: 'Izaberite starost stana', value: null }];
+  cenovnikDialogBool = false;
+  currectDate = new Date();
+  ukupnaCenaDTO1:UkupnaCenaDTO = new UkupnaCenaDTO();
 
 
   /*Svi rizici u sistemu I podaci dodatne promenljive potrebne da bi se sve lepo prikazivalo u cetvrtom koraku */
@@ -948,7 +953,7 @@ export class InsuranceComponent implements OnInit {
 
     polisa.nekretnine = nekretnine;
 
-    polisa.vrstaPlacanja = vrstaPlacanja; 
+    polisa.vrstaPlacanja = vrstaPlacanja;
     console.log(polisa);
 
 
@@ -963,6 +968,50 @@ export class InsuranceComponent implements OnInit {
       }
     );
 
+  }
+
+  onPrikaziCenovnik(){
+    if(this.activeIndex == 0){
+      let cr:CenaRequestDTO = new CenaRequestDTO();
+      cr.rizikDTO = new Rizik();
+      cr.rizikDTO.idRizik = this.form1Data.destinacija;
+
+      cr.trajanje = this.form1Data.trajanjeOsiguranja;
+
+      let r1:Rizik = new Rizik();
+      r1.idRizik = this.form1Data.osiguranDoIznosa;
+
+      cr.riziciDTO.push(r1);
+
+      if (this.form1Data.vrstaPaketa == "individualno") {
+        let r3:Rizik = new Rizik();
+        r3.idRizik = this.form1Data.starost;
+        r3.kolicina = 1;
+        cr.riziciDTO.push(r3);
+      } else {
+        for (var i = 0; i < this.starosti.length; i++) {
+          let tipRizikaString: string = this.starosti[i].vrednost;
+          let broj: number = this.form1Data[tipRizikaString];
+          if (broj > 0) {
+            let r3:Rizik = new Rizik();
+            r3.idRizik = this.starosti[i].idRizik;
+            r3.kolicina = broj;
+            cr.riziciDTO.push(r3);
+          }
+        }
+      }
+
+      let r2:Rizik = new Rizik();
+      r2.idRizik = this.form1Data.svrhaOsiguranja;
+      cr.riziciDTO.push(r2);
+
+      this.insuranceDataService.prikaziCenovnik(cr).subscribe(
+        (data) => {
+          this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
+          this.cenovnikDialogBool = true;
+        }
+      );
+    }
   }
 
 }

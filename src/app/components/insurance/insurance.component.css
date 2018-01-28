@@ -188,12 +188,21 @@ body {
   color: white;
 }
 
-.control-label.required:after { 
+.control-label.required:after {
   color: #d00;
   content: "*";
   position: absolute;
   margin-left: 5px;
   top:-5px;
+}
+
+.cenovnikDialogStyle .ui-dialog-titlebar{
+  background: #1e90ff;
+  color: white;
+}
+
+.cenovnikDialogStyle{
+  background-color: #fffaef;
 }
 
 

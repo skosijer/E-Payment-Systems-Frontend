@@ -1,4 +1,4 @@
-<div class="container-fluid forms-container">
+<div class="container-fluid forms-container" style="position: relative">
   <p-steps [model]="items" [(activeIndex)]="activeIndex" styleClass="steps-custom"></p-steps>
   <p-growl [(value)]="msgs"></p-growl>
   <br>
@@ -839,7 +839,7 @@
 
          <!--  [routerLink]="acquirer" -->
       <button type="button" class="btn btn-primary-outline pull-right" (click)="buyInsurance(VrstaPlacanja.Banka)">
-        <i class="fa fa-plus"></i>Banka</button> 
+        <i class="fa fa-plus"></i>Banka</button>
 
       </div>
 
@@ -867,12 +867,92 @@
       <button pButton class="ui-button-primary" type="text" (click)="potvrdiKupovinuPolise()" label="Da" icon="fa-car"></button>
       <button pButton class="ui-button-primary" type="text" (click)="otkaziKupovinuPolise()" label="Ne" icon="fa-home"></button>
     </div>
-         
+
   </p-dialog>
 
 
   <!-- kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk -->
-
-
+<button pButton class="ui-button-primary" label="PRIKAZI CENOVNIK" icon="fa-eur" (click)="onPrikaziCenovnik()" style="position: absolute;bottom: 0;right: 0"></button>
+  <p-dialog [(visible)]="cenovnikDialogBool" styleClass="cenovnikDialogStyle">
+    <p-header>
+      Cenovnik
+    </p-header>
+    <div class="container">
+      <div class="row">
+        <div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <address>
+                <strong style="font-family: Impact">S Jelenom na put</strong>
+                <br>
+                Srbija, Novi Sad 21000
+                <br>
+                <abbr title="Phone">TEL:</abbr> (+381) 63-165-2267
+              </address>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+              <p>
+                <em>Date: {{currectDate | date:'dd-MM-yyyy'}}</em>
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>#</th>
+                <th class="text-center">Jedinicna cena</th>
+                <th class="text-center">Cena</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let cena of ukupnaCenaDTO1.cene">
+                <td class="col-md-6"><em>{{cena.rizik}}</em></td>
+                <td class="col-md-3"><em>{{cena.tipRizika}}</em></td>
+                <td class="col-md-1"> {{cena.broj}} </td>
+                <td class="col-md-1 text-center">{{cena.cena/cena.broj}}€</td>
+                <td class="col-md-1 text-center">{{cena.cena}}€</td>
+              </tr>
+              <!--<tr>-->
+                <!--<td class="col-md-9"><em>{{ukupnaCenaDTO1.cene[0].tipRizika}}</em></td>-->
+                <!--<td class="col-md-1" style="text-align: center"> {{ukupnaCenaDTO1.cene[0].broj}} </td>-->
+                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena/ukupnaCenaDTO1.cene[0].broj}}</td>-->
+                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena}}</td>-->
+              <!--</tr>-->
+              <!--<tr>-->
+                <!--<td class="col-md-9"><em>{{ukupnaCenaDTO1.cene[0].tipRizika}}</em></td>-->
+                <!--<td class="col-md-1" style="text-align: center"> {{ukupnaCenaDTO1.cene[0].broj}} </td>-->
+                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena/ukupnaCenaDTO1.cene[0].broj}}</td>-->
+                <!--<td class="col-md-1 text-center">{{ukupnaCenaDTO1.cene[0].cena}}</td>-->
+              <!--</tr>-->
+              <tr>
+                <td>   </td>
+                <td>   </td>
+                <td class="text-right">
+                  <p>
+                    <strong>Trajanje: </strong>
+                  </p>
+                  </td>
+                <td class="text-center">
+                  <p>
+                    <strong>{{form1Data.trajanjeOsiguranja}} dan/a</strong>
+                  </p>
+                  </td>
+              </tr>
+              <tr>
+                <td>   </td>
+                <td>   </td>
+                <td class="text-right"><h4><strong>Ukupno: </strong></h4></td>
+                <td class="text-center text-danger"><h4><strong>{{ukupnaCenaDTO1.ukupnaCena}}€</strong></h4></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      </div>
+  </p-dialog>
 </div>
 
