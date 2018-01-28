@@ -57,7 +57,7 @@ body {
 }
 
 .col-lg-4 .ui-dropdown-item {
-    color: #0081c2;
+    color: #00c0c2;
     text-align: left;
 }
 
@@ -202,11 +202,6 @@ body {
   position: absolute;
   margin-left: 5px;
   top:-5px;
-}
-
-.cenovnikDialogStyle .ui-dialog-titlebar{
-  background: #1e90ff;
-  color: white;
 }
 
 .cenovnikDialogStyle{
