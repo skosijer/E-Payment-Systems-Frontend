@@ -14,7 +14,7 @@ export class PaypalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
+      let amount = this.amount;
       let obj = {
 
         env: 'sandbox', // sandbox | production
@@ -37,7 +37,7 @@ export class PaypalComponent implements OnInit {
             payment: {
               transactions: [
                 {
-                  amount: { total: '0.01', currency: 'USD' }
+                  amount: { total: amount, currency: 'USD' }
                 }
               ]
             }

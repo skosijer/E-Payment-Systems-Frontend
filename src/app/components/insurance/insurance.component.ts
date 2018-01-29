@@ -134,6 +134,8 @@ export class InsuranceComponent implements OnInit {
   vrstaPlacanja: VrstaPlacanja;
   buyPolicyDTO: BuyPolicyDTO;
 
+  private amount : number;
+
   constructor(private fb: FormBuilder, private insuranceDataService: InsuranceDataService, private router: Router) { }
 
   ngOnInit() {
