@@ -3,6 +3,8 @@ import {Http, Headers} from "@angular/http";
 import {PolisaDTO} from "../../beans/dtos/polisa.dto";
 import { VrstaPlacanja } from '../enums/vrstaPlacanja.enum';
 import { CompletePaymentDTO } from '../../beans/completePaymentDTO';
+import {CenaRequestDTO} from "../../beans/dtos/cena-request.dto";
+
 
 @Injectable()
 export class InsuranceDataService {
@@ -62,6 +64,12 @@ export class InsuranceDataService {
 
   public getPovrsina(){
     return this.http.get(this.url + 'dmzMain/getPovrsina');
+  }
+
+  public prikaziCenovnik(cr:CenaRequestDTO){
+    const headers = new Headers();
+    headers.append('Content-Type' , 'application/json');
+    return this.http.post(this.url + 'dmzMain/cena', JSON.stringify(cr), {headers : headers});
   }
 
   public saveInsurance(polisaDTO : PolisaDTO) {

@@ -1,4 +1,4 @@
-<div class="container-fluid forms-container">
+<div class="container-fluid forms-container" style="position: relative">
   <p-steps [model]="items" [(activeIndex)]="activeIndex" styleClass="steps-custom"></p-steps>
   <p-growl [(value)]="msgs"></p-growl>
   <br>
@@ -125,11 +125,13 @@
 
       <div class="form-group" align="center">
         <label class="col-md-3 control-label"></label>
-        <div class="step1_button_div">
+        <div>
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <button pButton [disabled]="!form1.valid" class="ui-button-info" label="Izračunaj cenu" type="submit" (click)="onPrikaziCenovnik()"></button>
 
         </div>
-      </div>
+        </div>
     </form>
   </div>
 
@@ -842,13 +844,17 @@
       </div>
 
       <button type="button" class="btn btn-primary-outline pull-right" (click)="buyInsurance(VrstaPlacanja.Banka)">
-        <i class="fa fa-plus"></i>Banka</button> 
+        <i class="fa fa-plus"></i>Banka</button>
 
       <p align="center">
+
         <app-paypal style="position: center" 
         [amount]="5000" 
         (onPayPalButtonClick)="buyInsurance(VrstaPlacanja.PayPal)"
         (onCompletePayment)="completePayment()"></app-paypal>
+
+        <app-paypal style="position: center" [amount]="ukupnaCenaDTO1.ukupnaCena"></app-paypal>
+
       </p>
 
     </div>
@@ -871,12 +877,62 @@
       <button pButton class="ui-button-primary" type="text" (click)="potvrdiKupovinuPolise()" label="Da" icon="fa-car"></button>
       <button pButton class="ui-button-primary" type="text" (click)="otkaziKupovinuPolise()" label="Ne" icon="fa-home"></button>
     </div>
-         
+
   </p-dialog>
 
 
-  <!-- kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk -->
+  <!-- Prikaz cenovnika -->
 
+  <p-dialog [(visible)]="cenovnikDialogBool" modal="true" draggable="false" resizable="false" styleClass="cenovnikDialogStyle">
+    <p-header>
+      Cenovnik
+    </p-header>
 
+    <div class="container">
+      <div class="row">
+        <div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <address>
+                <strong style="font-family: Impact">S Jelenom na put</strong>
+                <br>
+                Srbija, Novi Sad 21000
+                <br>
+                TEL: (+381) 63-165-2267
+              </address>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+              <p>
+                <em>Datum: {{currectDate | date:'dd.MM.yyyy.'}}</em>
+              </p>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="row">
+            <table>
+              <tr>
+                <th>Tip rizika</th>
+                <th>Odabrani rizik</th>
+                <th>Broj osoba</th>
+                <th>Jedinična cena (po danu)</th>
+                <th>Ukupna cena (za trajanje od {{form1Data.trajanjeOsiguranja}} dan/a)</th>
+              </tr>
+              <tr *ngFor="let cena of ukupnaCenaDTO1.cene">
+                <td>{{cena.tipRizika}}</td>
+                <td>{{cena.rizik}}</td>
+                <td>{{cena.broj}}</td>
+                <td>{{cena.cena/cena.broj | number : '1.2-2'}} €</td>
+                <td>{{cena.cena * form1Data.trajanjeOsiguranja | number : '1.2-2'}} €</td>
+              </tr>
+            </table>
+          </div>
+          <br>
+          <br>
+          <h4 style="float:right"> Trenutna cena putnog osiguranja je: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ukupnaCenaDTO1.ukupnaCena * form1Data.trajanjeOsiguranja | number : '1.2-2'}} € &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h4>
+        </div>
+      </div>
+      </div>
+  </p-dialog>
 </div>
 

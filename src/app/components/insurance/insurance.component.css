@@ -57,7 +57,7 @@ body {
 }
 
 .col-lg-4 .ui-dropdown-item {
-    color: #0081c2;
+    color: #00c0c2;
     text-align: left;
 }
 
@@ -72,6 +72,14 @@ body {
     border-radius: 12px;
     font-family: 'Lato';
     font-weight: 200;
+}
+
+.ui-button-info {
+  width: 150px;
+  height: 40px;
+  border-radius: 12px;
+  font-family: 'Lato';
+  font-weight: 200;
 }
 
 .calendar1StyleClass {
@@ -188,12 +196,33 @@ body {
   color: white;
 }
 
-.control-label.required:after { 
+.control-label.required:after {
   color: #d00;
   content: "*";
   position: absolute;
   margin-left: 5px;
   top:-5px;
+}
+
+.cenovnikDialogStyle{
+  background-color: #fffaef;
+}
+
+/*tabela za prikaz cena*/
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }
 
 
