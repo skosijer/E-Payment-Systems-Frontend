@@ -989,9 +989,9 @@ export class InsuranceComponent implements OnInit {
         r3.kolicina = 1;
         cr.riziciDTO.push(r3);
       } else {
-        for (var i = 0; i < this.starosti.length; i++) {
+        for (let i = 0; i < this.starosti.length; i++) {
           let tipRizikaString: string = this.starosti[i].vrednost;
-          let broj: number = this.form1Data[tipRizikaString];
+          let broj: number = this.form1.controls[tipRizikaString].value;
           if (broj > 0) {
             let r3:Rizik = new Rizik();
             r3.idRizik = this.starosti[i].idRizik;
@@ -1004,7 +1004,7 @@ export class InsuranceComponent implements OnInit {
       let r2:Rizik = new Rizik();
       r2.idRizik = this.form1Data.svrhaOsiguranja;
       cr.riziciDTO.push(r2);
-
+      console.log(cr);
       this.insuranceDataService.prikaziCenovnik(cr).subscribe(
         (data) => {
           this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
