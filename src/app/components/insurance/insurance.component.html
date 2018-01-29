@@ -838,13 +838,17 @@
         </div>
 
          <!--  [routerLink]="acquirer" -->
+      
+      </div>
+
       <button type="button" class="btn btn-primary-outline pull-right" (click)="buyInsurance(VrstaPlacanja.Banka)">
         <i class="fa fa-plus"></i>Banka</button> 
 
-      </div>
-
       <p align="center">
-        <app-paypal style="position: center" [amount]="5000"></app-paypal>
+        <app-paypal style="position: center" 
+        [amount]="5000" 
+        (onPayPalButtonClick)="buyInsurance(VrstaPlacanja.PayPal)"
+        (onCompletePayment)="completePayment()"></app-paypal>
       </p>
 
     </div>

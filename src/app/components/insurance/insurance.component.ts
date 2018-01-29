@@ -1,3 +1,4 @@
+import { CompletePaymentDTO } from './../../beans/completePaymentDTO';
 import { VrstaPlacanja } from './../enums/vrstaPlacanja.enum';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
@@ -964,5 +965,14 @@ export class InsuranceComponent implements OnInit {
     );
 
   }
+
+  completePayment() {
+    console.log("COMPLETING PAYMENT!!!");
+    let dto = new CompletePaymentDTO(); 
+    dto.orderId = this.buyPolicyDTO.paymentID; 
+    dto.success = true; 
+    this.insuranceDataService.completePayment(dto); 
+  }
+
 
 }

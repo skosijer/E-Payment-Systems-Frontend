@@ -6,7 +6,7 @@ import {Http, Headers} from "@angular/http";
 export class InsuranceComponentErrorDataService {
 
 
-  private url = 'http://localhost:8080/';
+  private url = 'https://localhost:8080/';
 
   constructor(private http:Http) { }
 
