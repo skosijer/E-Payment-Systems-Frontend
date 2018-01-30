@@ -89,8 +89,8 @@ export class InsuranceComponent implements OnInit {
   form3Data: any = { markaITip: "191919", godinaProizvodnje: "1950", brojTablica: "21442", brojSasije: "421", imeVlasnika: 'Ludak', prezimeVlasnika: 'Ludacina', jmbgVlasnika: '2409994340053', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
 
   form4: FormGroup;
-  //form4Data: any = { povrsinaStana: "", starostStana: "", procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: '' };
-  form4Data: any = { povrsinaStana: "525", starostStana: "5252", procenjenaVrednostStana: "1255", osiguranjeStana: "", imeVlasnika: 'Predrag', prezimeVlasnika: 'Preludovic', jmbgVlasnika: '2409994340053', adresaVlasnika: 'Murovac 2' };
+  form4Data: any = { povrsinaStana: "", starostStana: "", procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: '' };
+  //form4Data: any = { povrsinaStana: "525", starostStana: "5252", procenjenaVrednostStana: "1255", osiguranjeStana: "", imeVlasnika: 'Predrag', prezimeVlasnika: 'Preludovic', jmbgVlasnika: '2409994340053', adresaVlasnika: 'Murovac 2' };
 
   formNosilac: FormGroup;
   formNosilacData: any = { potencijalniNosilac: "", osobe: "", ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
@@ -124,6 +124,8 @@ export class InsuranceComponent implements OnInit {
 
   /*Poruke za ne validnu prvu formu*/
   msgs: Message[] = [];
+
+  cenaNazivKolone : string = "";
 
 
   //PODACI ZA BROJ OSIGURANIKA ZA DRUGI KORAK
@@ -993,8 +995,7 @@ export class InsuranceComponent implements OnInit {
 
       let r1: Rizik = new Rizik();
       r1.idRizik = this.form1Data.osiguranDoIznosa;
-
-      cr.riziciDTO.push(r1);
+      r1.kolicina = 1;
 
       if (this.form1Data.vrstaPaketa == "individualno") {
         let r3: Rizik = new Rizik();
@@ -1016,15 +1017,95 @@ export class InsuranceComponent implements OnInit {
 
       let r2: Rizik = new Rizik();
       r2.idRizik = this.form1Data.svrhaOsiguranja;
+      r2.kolicina = 1;
+      let ukupanBrojOsoba = 0;
+
+      if (this.form1Data.vrstaPaketa == "grupno"){
+        for (let i = 0; i < this.starosti.length; i++) {
+          let tipRizikaString: string = this.starosti[i].vrednost;
+          let broj: number = this.form1.controls[tipRizikaString].value;
+          ukupanBrojOsoba += broj;
+        }
+      }
+
+      if(ukupanBrojOsoba > 0)
+      {
+        r2.kolicina = ukupanBrojOsoba;
+        r1.kolicina = ukupanBrojOsoba;
+      }
+
+
       cr.riziciDTO.push(r2);
+      cr.riziciDTO.push(r1);
+
       console.log(cr);
       this.insuranceDataService.prikaziCenovnik(cr).subscribe(
         (data) => {
           this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
+          this.cenaNazivKolone = "osoba";
           this.cenovnikDialogBool = true;
         }
       );
     }
+  }
+
+  izracunajCenuVozila(formaOsiguranjaVozila) {
+
+    let cenaReq : CenaRequestDTO = new CenaRequestDTO();
+
+    cenaReq.rizikDTO = new Rizik();
+    cenaReq.rizikDTO.idRizik = formaOsiguranjaVozila.paketOsiguranja;
+
+    cenaReq.riziciDTO[0] = new Rizik();
+    cenaReq.riziciDTO[0].idRizik = formaOsiguranjaVozila.slepovanje;
+
+    cenaReq.riziciDTO[1] = new Rizik();
+    cenaReq.riziciDTO[1].idRizik = formaOsiguranjaVozila.popravka;
+
+    cenaReq.riziciDTO[2] = new Rizik();
+    cenaReq.riziciDTO[2].idRizik = formaOsiguranjaVozila.smestaj;
+
+    cenaReq.riziciDTO[3] = new Rizik();
+    cenaReq.riziciDTO[3].idRizik = formaOsiguranjaVozila.prevoz;
+
+    cenaReq.trajanje = this.form1Data.trajanjeOsiguranja;
+
+    this.insuranceDataService.prikaziCenovnik(cenaReq).subscribe(
+      (data) => {
+        this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
+        this.cenaNazivKolone = "vozila";
+        this.cenovnikDialogBool = true;
+      }
+    );
+  }
+
+  izracunajCenuNekretnine(formaOsiguranjaNekretnine){
+
+    let cenaReq : CenaRequestDTO = new CenaRequestDTO();
+
+    console.log(formaOsiguranjaNekretnine);
+
+    cenaReq.rizikDTO = new Rizik();
+    cenaReq.rizikDTO.idRizik = formaOsiguranjaNekretnine.povrsinaStana;
+
+    cenaReq.riziciDTO[0] = new Rizik();
+    cenaReq.riziciDTO[0].idRizik = formaOsiguranjaNekretnine.starostStana;
+
+    cenaReq.riziciDTO[1] = new Rizik();
+    cenaReq.riziciDTO[1].idRizik = formaOsiguranjaNekretnine.osiguranjeStana;
+
+    cenaReq.riziciDTO[2] = new Rizik();
+    cenaReq.riziciDTO[2].idRizik = formaOsiguranjaNekretnine.procenjenaVrednostStana;
+
+    cenaReq.trajanje = this.form1Data.trajanjeOsiguranja;
+
+    this.insuranceDataService.prikaziCenovnik(cenaReq).subscribe(
+      (data) => {
+        this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
+        this.cenaNazivKolone = "nekretnine";
+        this.cenovnikDialogBool = true;
+      }
+    );
   }
 }
 

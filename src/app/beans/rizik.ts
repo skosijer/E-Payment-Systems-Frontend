@@ -4,7 +4,7 @@ export class Rizik {
 
   public idRizik : number;
   public vrednost : string;
-  public kolicina:number;
+  public kolicina:number = 1;
   public tipRizik : TipRizika = new TipRizika();
   public stavkaCenovnik : StavkaCenovnik = new StavkaCenovnik();
 
