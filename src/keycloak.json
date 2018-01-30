@@ -1,7 +1,7 @@
 {
-  "realm": "SpringBoot-Angular",
+  "realm": "master",
   "auth-server-url": "http://localhost:8080/auth",
   "ssl-required": "external",
-  "resource": "e-payment-systems-frontend",
+  "resource": "insurance-internal",
   "public-client": true
 }

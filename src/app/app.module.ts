@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -22,8 +22,6 @@ import {GrowlModule} from 'primeng/primeng';
 // Component imports
 import { HomeComponent } from './components/home/home.component';
 import {provideAuth} from "angular2-jwt";
-import {KeycloakService} from "./shared/keycloak.service";
-import {KeycloakGuard} from "./guard/guard";
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { InsuranceComponent } from './components/insurance/insurance.component';
@@ -31,6 +29,9 @@ import {InsuranceDataService} from "./components/insurance/insurance-data.servic
 
 import { FieldErrorDisplayComponent } from './components/field-error-display/field-error-display.component';
 import { PaypalComponent } from './paypal/paypal.component';
+import {initializer} from "./utils/app-init";
+import {KeycloakService, KeycloakAngularModule} from "keycloak-angular";
+import {AppAuthGuard} from "./keycloak.guard";
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { PaypalComponent } from './paypal/paypal.component';
     DialogModule,
     CheckboxModule,
     RadioButtonModule,
-    GrowlModule
+    GrowlModule,
+    KeycloakAngularModule
   ],
   providers: [
     provideAuth({
@@ -69,8 +71,13 @@ import { PaypalComponent } from './paypal/paypal.component';
       tokenGetter: () => {
         return window['_keycloak'].token;
       }
-    }), KeycloakService, KeycloakGuard,
-    InsuranceDataService
+    }), InsuranceDataService, AppAuthGuard,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService]
+    }
   ],
   bootstrap: [AppComponent]
 })

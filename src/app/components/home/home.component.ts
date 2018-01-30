@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {KeycloakService} from "../../shared/keycloak.service";
 
 @Component({
   selector: 'app-home',
@@ -8,7 +7,7 @@ import {KeycloakService} from "../../shared/keycloak.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private keycloakService:KeycloakService) { }
+  constructor() { }
 
   ngOnInit() {
     //this.keycloakService.checkAuthorization();
