@@ -90,4 +90,12 @@ export class InsuranceDataService {
     headers.append('Content-Type' , 'application/json');
     return this.http.post(this.url + 'dmzMain/completePayment', JSON.stringify(dto), {headers : headers});
   }
+
+  public cenaSvega(cr:CenaRequestDTO[]){
+    const headers = new Headers();
+    headers.append('Content-Type' , 'application/json');
+    return this.http.post('https://localhost:8082/dcRizici/cenaSvega', JSON.stringify(cr), {headers : headers});
+  }
+
+
 }

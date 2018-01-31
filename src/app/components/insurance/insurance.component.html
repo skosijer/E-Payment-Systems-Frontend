@@ -126,7 +126,7 @@
       <div class="form-group" align="center">
         <label class="col-md-3 control-label"></label>
         <div>
-          <button pButton [disabled]="!form1.valid" class="ui-button-info" label="Izračunaj cenu" type="submit" (click)="onPrikaziCenovnik()"></button>
+          <button pButton [disabled]="!form1.valid" class="ui-button-info" label="Izračunaj cenu" type="submit" (click)="onPrikaziCenovnik(false)"></button>
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
         </div>
@@ -728,7 +728,7 @@
             <header>Cena</header>
           </ng-template>
           <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
-            <button type="button" class="ui-button-primary" (click)="izracunajCenuVozila(formaOsiguranjaVozila)" pButton icon="fa-eur"
+            <button type="button" class="ui-button-primary" (click)="izracunajCenuVozila(formaOsiguranjaVozila, false)" pButton icon="fa-eur"
                     iconPos="left"></button>
           </ng-template>
         </p-column>
@@ -758,7 +758,7 @@
             <header>Cena</header>
           </ng-template>
           <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
-            <button type="button" class="ui-button-primary" (click)="izracunajCenuNekretnine(formaOsiguranjaVozila)" pButton icon="fa-eur"
+            <button type="button" class="ui-button-primary" (click)="izracunajCenuNekretnine(formaOsiguranjaVozila, false)" pButton icon="fa-eur"
                     iconPos="left"></button>
           </ng-template>
         </p-column>
@@ -866,16 +866,16 @@
       <button type="button" class="btn btn-primary-outline pull-right" (click)="buyInsurance(VrstaPlacanja.Banka)">
         <i class="fa fa-plus"></i>Banka</button>
 
-      <p align="center">
+      <div align="center">
 
         <app-paypal style="position: center"
-        [amount]="5000"
+        [amount]="cenaSvegaDTO.cenaSvega"
         (onPayPalButtonClick)="buyInsurance(VrstaPlacanja.PayPal)"
         (onCompletePayment)="completePayment()"></app-paypal>
 
-        <app-paypal style="position: center" [amount]="ukupnaCenaDTO1.ukupnaCena"></app-paypal>
+        <!--<app-paypal style="position: center" [amount]="ukupnaCenaDTO1.ukupnaCena"></app-paypal>-->
 
-      </p>
+      </div>
 
     </div>
 
