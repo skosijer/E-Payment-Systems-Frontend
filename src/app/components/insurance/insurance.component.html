@@ -1,4 +1,4 @@
-<div class="container-fluid forms-container">
+<div class="container-fluid forms-container" style="position: relative">
   <p-steps [model]="items" [(activeIndex)]="activeIndex" styleClass="steps-custom"></p-steps>
   <p-growl [(value)]="msgs"></p-growl>
   <br>
@@ -14,6 +14,17 @@
           </div>
           <div class="col-lg-4">
             <p-dropdown [options]="destinacije" formControlName="destinacija" [(ngModel)]="form1Data.destinacija" [style]="{'width':'400px'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-3">
+            <label class="control-label">Osiguranje do iznosa:</label>
+          </div>
+          <div class="col-lg-4">
+            <p-dropdown [options]="osiguranjaDoIznosa" formControlName="osiguranDoIznosa" [(ngModel)]="form1Data.osiguranDoIznosa" [style]="{'width':'400px'}"></p-dropdown>
           </div>
         </div>
       </div>
@@ -114,11 +125,12 @@
 
       <div class="form-group" align="center">
         <label class="col-md-3 control-label"></label>
-        <div class="step1_button_div">
+        <div>
+          <button pButton [disabled]="!form1.valid" class="ui-button-info" label="Izračunaj cenu" type="submit" (click)="onPrikaziCenovnik(false)"></button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
-
         </div>
-      </div>
+        </div>
     </form>
   </div>
 
@@ -541,53 +553,50 @@
               </div>
             </div>
           </div>
-          <!--Opciona polja u zavisnosti od izbora paketa osiguranja-->
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'slepovanje'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Broj kilometara za šlepovanje: </label>
+                <label class="control-label">Slepovanje do kilometraze:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-spinner size="35" formControlName="slepovanje" [(ngModel)]="form3Data.slepovanje" [min]="1" [max]="10000"></p-spinner>
+                <p-dropdown [options]="slepovanjaDoKm" formControlName="slepovanje" [(ngModel)]="form3Data.slepovanje" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'popravka'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Cena popravke (dinari): </label>
+                <label class="control-label">Popravka do cene:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-spinner size="35" formControlName="popravka" [(ngModel)]="form3Data.popravka" [min]="1" [max]="1000000"></p-spinner>
+                <p-dropdown [options]="popravkeDoCene" formControlName="popravka" [(ngModel)]="form3Data.popravka" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'smestaj'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Smeštaj u hotelu (dani): </label>
+                <label class="control-label">Smestaj u hotelu (dani):</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-spinner size="35" formControlName="smestaj" [(ngModel)]="form3Data.smestaj" [min]="1" [max]="1000000"></p-spinner>
+                <p-dropdown [options]="smestajiDoDana" formControlName="smestaj" [(ngModel)]="form3Data.smestaj" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-
-          <div class="form-group" [hidden]="form3.value.paketOsiguranja !== 'prevoz'">
+          <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <label class="control-label">Vrsta alternativnog prevoza: </label>
+                <label class="control-label">Alternativni prevoz:</label>
                 <br>
               </div>
               <div class="col-lg-8">
-                <p-dropdown [options]="vrsteAlternativnogPrevoza" formControlName="prevoz" [(ngModel)]="form3Data.prevoz" [style]="{'width':'100%'}"></p-dropdown>
+                <p-dropdown [options]="alternativniPrevozi" formControlName="prevoz" [(ngModel)]="form3Data.prevoz" [style]="{'width':'100%'}"></p-dropdown>
               </div>
             </div>
           </div>
-          <!--**********************************************************-->
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div align="center">
@@ -605,7 +614,7 @@
               <label class="control-label">Površina stana (m2):</label>
             </div>
             <div class="col-lg-8">
-              <p-spinner size="35" formControlName="povrsinaStana" [(ngModel)]="form4Data.povrsinaStana" [min]="1" [max]="5000"></p-spinner>
+              <p-dropdown [options]="povrsineStana" formControlName="povrsinaStana" [(ngModel)]="form4Data.povrsinaStana" [style]="{'width':'100%'}"></p-dropdown>
             </div>
           </div>
         </div>
@@ -713,6 +722,16 @@
               iconPos="left"></button>
           </ng-template>
         </p-column>
+
+        <p-column styleClass="col-button" [style]="{width: '65px', 'text-align': 'center'}">
+          <ng-template pTemplate="header">
+            <header>Cena</header>
+          </ng-template>
+          <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
+            <button type="button" class="ui-button-primary" (click)="izracunajCenuVozila(formaOsiguranjaVozila, false)" pButton icon="fa-eur"
+                    iconPos="left"></button>
+          </ng-template>
+        </p-column>
       </p-dataTable>
     </div>
 
@@ -733,6 +752,17 @@
               iconPos="left"></button>
           </ng-template>
         </p-column>
+
+        <p-column styleClass="col-button" [style]="{width: '65px', 'text-align': 'center'}">
+          <ng-template pTemplate="header">
+            <header>Cena</header>
+          </ng-template>
+          <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
+            <button type="button" class="ui-button-primary" (click)="izracunajCenuNekretnine(formaOsiguranjaVozila, false)" pButton icon="fa-eur"
+                    iconPos="left"></button>
+          </ng-template>
+        </p-column>
+
       </p-dataTable>
     </div>
 
@@ -777,14 +807,14 @@
       <div class="container">
         <p>
           Osiguranje važi za region
-          <mark>{{form1Data.destinacija}}</mark>. Datum početka važenja je
+          <mark id="{{form1Data.destinacija}}"></mark>. Datum početka važenja je
           <mark>{{form1Data.pocetakOsiguranja | date: 'dd.MM.yyyy.'}}</mark>, u trajanju od
           <mark>{{form1Data.trajanjeOsiguranja}}</mark> dan/a.
         </p>
         <p>
           Paket osiguranja je
           <mark>{{form1Data.vrstaPaketa}}</mark> osiguranje. Svrha putovanja je
-          <mark>{{form1Data.svrhaOsiguranja}}</mark>.
+          <mark id="{{form1Data.svrhaOsiguranja}}"></mark>.
         </p>
       </div>
       <br>
@@ -801,9 +831,9 @@
           <br>
           <p-dataTable [value]="osiguranjaNekretnina">
             <p-header>Podaci o nekretnini</p-header>
-            <p-column field="povrsinaStana" header="Površina"></p-column>
-            <p-column field="starostStana" header="Starost"></p-column>
-            <p-column field="procenjenaVrednostStana" header="Procenjena vrednost"></p-column>
+            <p-column field="povrsinaNaziv" header="Površina"></p-column>
+            <p-column field="starostNaziv" header="Starost"></p-column>
+            <p-column field="procenjenaNaziv" header="Procenjena vrednost"></p-column>
           </p-dataTable>
         </div>
       </div>
@@ -829,11 +859,30 @@
           </p-dataTable>
         </div>
 
+         <!--  [routerLink]="acquirer" -->
+
       </div>
 
-      <p align="center">
-        <app-paypal style="position: center" [amount]="5000"></app-paypal>
-      </p>
+      <br>
+      <hr>
+
+
+        <div class="row">
+          <div class="col-md-4" align="center">
+            <button pButton class="ui-button-info" (click)="getCenaSvega()" icon="fa-align-left" label="Cenovnik"></button>
+          </div>
+          <div class="col-md-4" align="center">
+            <app-paypal style="position: center"
+                        [amount]="cenaSvegaDTO.cenaSvega"
+                        (onPayPalButtonClick)="buyInsurance(VrstaPlacanja.PayPal)"
+                        (onCompletePayment)="completePayment()"></app-paypal>
+          </div>
+          <div class="col-md-4" align="center">
+            <button pButton class="ui-button-success" (click)="buyInsurance(VrstaPlacanja.Banka)" icon="fa-university" label="Banka"></button>
+          </div>
+        </div>
+
+
 
     </div>
 
@@ -844,8 +893,125 @@
         <button pButton class="ui-button-warning" (click)="buy()"></button>
       </div>
     </div>
-
-
   </div>
+
+  <p-dialog header="Kupovina polise" [(visible)]="showConfirmDialog">
+    <div align="center" style="margin-top: 30px;">
+      <h3>Da li potvrdjujete kupovinu polise?</h3>
+    </div>
+
+    <div style="margin-top: 20px;" align="center">
+      <button pButton class="ui-button-primary" type="text" (click)="potvrdiKupovinuPolise()" label="Da" icon="fa-car"></button>
+      <button pButton class="ui-button-primary" type="text" (click)="otkaziKupovinuPolise()" label="Ne" icon="fa-home"></button>
+    </div>
+
+  </p-dialog>
+
+
+  <!-- Prikaz cenovnika -->
+
+  <p-dialog [(visible)]="cenovnikDialogBool" modal="true" draggable="false" resizable="false" styleClass="cenovnikDialogStyle">
+    <p-header>
+      Cenovnik
+    </p-header>
+
+    <div class="container">
+      <div class="row">
+        <div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <address>
+                <strong style="font-family: Impact">S Jelenom na put</strong>
+                <br>
+                Srbija, Novi Sad 21000
+                <br>
+                TEL: (+381) 63-165-2267
+              </address>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+              <p>
+                <em>Datum: {{currectDate | date:'dd.MM.yyyy.'}}</em>
+              </p>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="row">
+            <table>
+              <tr>
+                <th>Tip rizika</th>
+                <th>Odabrani rizik</th>
+                <th>Broj {{cenaNazivKolone}}</th>
+                <th>Jedinična cena (po danu)</th>
+                <th>Ukupna cena (za trajanje od {{form1Data.trajanjeOsiguranja}} dan/a)</th>
+              </tr>
+              <tr *ngFor="let cena of ukupnaCenaDTO1.cene">
+                <td>{{cena.tipRizika}}</td>
+                <td>{{cena.rizik}}</td>
+                <td>{{cena.broj}}</td>
+                <td>{{cena.cena/(cena.broj * form1Data.trajanjeOsiguranja)| number : '1.2-2'}} €</td>
+                <td>{{cena.cena | number : '1.2-2'}} €</td>
+              </tr>
+            </table>
+          </div>
+          <br>
+          <br>
+          <h4 style="float:right"> Trenutna cena osiguranja je: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ukupnaCenaDTO1.ukupnaCena}} € &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h4>
+        </div>
+      </div>
+      </div>
+  </p-dialog>
 </div>
+
+<p-dialog [(visible)]="cenaSvegaDialogBool" modal="true" draggable="false" resizable="false" styleClass="cenovnikDialogStyle">
+  <p-header>Cenovnik</p-header>
+
+  <div class="container">
+    <div class="row">
+      <div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <address>
+              <strong style="font-family: Impact">S Jelenom na put</strong>
+              <br>
+              Srbija, Novi Sad 21000
+              <br>
+              TEL: (+381) 63-165-2267
+            </address>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+            <p>
+              <em>Datum: {{currectDate | date:'dd.MM.yyyy.'}}</em>
+            </p>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="row" style="padding-bottom: 30px" *ngFor="let ukupnaCenaDTO of cenaSvegaDTO.ukupneCeneDTOs">
+          <table>
+            <tr>
+              <th>Tip rizika</th>
+              <th>Odabrani rizik</th>
+              <th>Broj osoba</th>
+              <th>Jedinična cena (po danu)</th>
+              <th>Ukupna cena (za trajanje od {{form1Data.trajanjeOsiguranja}} dan/a)</th>
+            </tr>
+            <tr *ngFor="let cena of ukupnaCenaDTO.cene">
+              <td>{{cena.tipRizika}}</td>
+              <td>{{cena.rizik}}</td>
+              <td>{{cena.broj}}</td>
+              <td>{{cena.cena/(cena.broj * form1Data.trajanjeOsiguranja)| number : '1.2-2'}} €</td>
+              <td>{{cena.cena | number : '1.2-2'}} €</td>
+            </tr>
+          </table>
+          <hr>
+          <hr>
+        </div>
+        <br>
+        <br>
+        <h4 style="float:right"> Trenutna cena osiguranja je: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{cenaSvegaDTO.cenaSvega}} € &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h4>
+      </div>
+    </div>
+  </div>
+</p-dialog>
 

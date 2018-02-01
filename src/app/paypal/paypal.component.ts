@@ -1,5 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { VrstaPlacanja } from './../components/enums/vrstaPlacanja.enum';
+import { InsuranceDataService } from './../components/insurance/insurance-data.service';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 declare let paypal: any;
+let self: any;
 
 @Component({
   selector: 'app-paypal',
@@ -10,10 +13,18 @@ export class PaypalComponent implements OnInit {
 
   //Directive for amount of the transaction, should be passed to the function below somehow - line 40
   @Input() amount: number;
+  @Output() onPayPalButtonClick = new EventEmitter(); 
+  @Output() onCompletePayment = new EventEmitter(); 
 
   constructor() { }
 
   ngOnInit() {
+
+
+      self = this; 
+      
+
+      let amount = this.amount;
 
       let obj = {
 
@@ -31,13 +42,15 @@ export class PaypalComponent implements OnInit {
 
         // payment() is called when the button is clicked
         payment: function(data, actions) {
+        
+          self.onPayPalButtonClick.emit(); 
 
           // Make a call to the REST api to create the payment
           return actions.payment.create({
             payment: {
               transactions: [
                 {
-                  amount: { total: '0.01', currency: 'USD' }
+                  amount: { total: amount, currency: 'USD' }
                 }
               ]
             }
@@ -46,9 +59,11 @@ export class PaypalComponent implements OnInit {
 
         // onAuthorize() is called when the buyer approves the payment
         onAuthorize: function(data, actions) {
+          self.onCompletePayment.emit();
 
           // Make a call to the REST api to execute the payment
           return actions.payment.execute().then(function() {
+        
             window.alert('Payment Complete!');
           });
         }
