@@ -968,7 +968,10 @@ export class InsuranceComponent implements OnInit {
         this.buyPolicyDTO = JSON.parse(data['_body']);
         console.log("BUYPOLICYDTO!!!!!");
         console.log(this.buyPolicyDTO);
-        this.showConfirmDialog = true;
+        if(vrstaPlacanja==VrstaPlacanja.Banka) {
+          this.showConfirmDialog = true;
+        }
+        
         // this.router.navigateByUrl(buyPolicyDTO.paymentURL + '/' + buyPolicyDTO.paymentID);
       }
     );
@@ -979,6 +982,8 @@ export class InsuranceComponent implements OnInit {
   completePayment() {
     console.log("COMPLETING PAYMENT!!!");
     let dto = new CompletePaymentDTO();
+    console.log("POLICY DTO!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log(this.buyPolicyDTO);
     dto.orderId = this.buyPolicyDTO.paymentID;
     dto.success = true;
     this.insuranceDataService.completePayment(dto);
