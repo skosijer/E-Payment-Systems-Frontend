@@ -21,6 +21,8 @@ import { BuyPolicyDTO } from '../../beans/buyPolicyDTO';
 import { Router } from '@angular/router';
 import { CenaRequestDTO } from "../../beans/dtos/cena-request.dto";
 import { UkupnaCenaDTO } from "../../beans/dtos/ukupna-cena.dto";
+import {forEach} from "@angular/router/src/utils/collection";
+import {CenaSvegaDTO} from "../../beans/dtos/cena-svega.dto";
 
 @Component({
   selector: 'app-insurance',
@@ -29,6 +31,14 @@ import { UkupnaCenaDTO } from "../../beans/dtos/ukupna-cena.dto";
   encapsulation: ViewEncapsulation.None
 })
 export class InsuranceComponent implements OnInit {
+
+
+  //PODACI ZA PRIKAZ NA 4toj FORMI
+
+  regionStep4: string = '';
+  svrhaStep4: string = '';
+
+  //--------
 
   //Podaci za select polja u formama
 
@@ -52,8 +62,11 @@ export class InsuranceComponent implements OnInit {
   povrsineStana: SelectItem[] = [{ label: 'Izaberite povrsinu stana', value: null }];
   procenjeneVrednostiStana: SelectItem[] = [{ label: 'Izaberite starost stana', value: null }];
   cenovnikDialogBool = false;
+  cenaSvegaDialogBool = false;
   currectDate = new Date();
   ukupnaCenaDTO1: UkupnaCenaDTO = new UkupnaCenaDTO();
+
+  cenaSvegaDTO:CenaSvegaDTO = new CenaSvegaDTO();
 
 
   /*Svi rizici u sistemu I podaci dodatne promenljive potrebne da bi se sve lepo prikazivalo u cetvrtom koraku */
@@ -81,15 +94,15 @@ export class InsuranceComponent implements OnInit {
   form1Data: any = { destinacija: "", vrstaPaketa: "individualno", pocetakOsiguranja: new Date, trajanjeOsiguranja: 1, svrhaOsiguranja: null, osiguranDoIznosa: "" };
 
   form2: FormGroup;
-  form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
-  //form2Data: any = { ime: "Stevan", jmbg: "2409994340053", prezime: "Kosijer", brojPasosa: "123456789", datumRodjenja: null, adresa: "MGorkog 2C", brojTelefona: "184848" };
+  //form2Data: any = { ime: "", jmbg: "", prezime: "", brojPasosa: "", datumRodjenja: null, adresa: "", brojTelefona: "", emailNosioca: "" };
+  form2Data: any = { ime: "Stevan", jmbg: "2409994340053", prezime: "Kosijer", brojPasosa: "123456789", datumRodjenja: null, adresa: "MGorkog 2C", brojTelefona: "184848", emailNosioca: "" };
 
   form3: FormGroup;
   //form3Data: any = { markaITip: "", godinaProizvodnje: "", brojTablica: "", brojSasije: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
-  form3Data: any = { markaITip: "191919", godinaProizvodnje: "1950", brojTablica: "21442", brojSasije: "421", imeVlasnika: 'Ludak', prezimeVlasnika: 'Ludacina', jmbgVlasnika: '2409994340053', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus' };
+  form3Data: any = { markaITip: "191919", godinaProizvodnje: "1950", brojTablica: "21442", brojSasije: "421", imeVlasnika: 'Ludak', prezimeVlasnika: 'Ludacina', jmbgVlasnika: '2409994340053', paketOsiguranja: '', slepovanje: 0, popravka: 0, smestaj: 0, prevoz: 'autobus', paketNaziv: '', slepovanjeNaziv: '', smestajNaziv: '', prevozNaziv: '' };
 
   form4: FormGroup;
-  form4Data: any = { povrsinaStana: "", starostStana: "", procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: '' };
+  form4Data: any = { povrsinaStana: "", starostStana: "", procenjenaVrednostStana: "", osiguranjeStana: "", imeVlasnika: '', prezimeVlasnika: '', jmbgVlasnika: '', adresaVlasnika: '', povrsinaNaziv: '', procenjenaNaziv: '', starostNaziv: '', osiguranjeNaziv: '' };
   //form4Data: any = { povrsinaStana: "525", starostStana: "5252", procenjenaVrednostStana: "1255", osiguranjeStana: "", imeVlasnika: 'Predrag', prezimeVlasnika: 'Preludovic', jmbgVlasnika: '2409994340053', adresaVlasnika: 'Murovac 2' };
 
   formNosilac: FormGroup;
@@ -353,17 +366,17 @@ export class InsuranceComponent implements OnInit {
       { field: 'brojTablica', header: 'Broj tablica' },
       { field: 'brojSasije', header: 'Broj šasije' },
       { field: 'paketOsiguranja', header: 'Paket osiguranja' },
-      //{ field: 'slepovanje', header: 'Šlepovanje (KM)' },
-      //{ field: 'popravka', header: 'Popravka (RSD)' },
-      //{ field: 'smestaj', header: 'Smeštaj (dana)' },
-      { field: 'prevoz', header: 'Prevoz' }
+      { field: 'slepovanjeNaziv', header: 'Šlepovanje (KM)' },
+      { field: 'popravkaNaziv', header: 'Popravka' },
+      { field: 'smestajNaziv', header: 'Smeštaj' },
+      { field: 'prevozNaziv', header: 'Prevoz' }
     ];
 
     this.osiguranjaNekretninaKolone = [
-      { field: 'povrsinaStana', header: 'Površina stana' },
-      { field: 'starostStana', header: 'Starost stana (godine)' },
-      { field: 'procenjenaVrednostStana', header: 'Procenjena vrednost stana (RSD)' },
-      { field: 'osiguranjeStana', header: 'Od čega se osigurava' },
+      { field: 'povrsinaNaziv', header: 'Površina stana' },
+      { field: 'starostNaziv', header: 'Starost stana (godine)' },
+      { field: 'procenjenaNaziv', header: 'Procenjena vrednost stana (EUR)' },
+      { field: 'osiguranjeNaziv', header: 'Od čega se osigurava' },
       { field: 'imeVlasnika', header: 'Ime vlasnika' },
       { field: 'prezimeVlasnika', header: 'Adresa vlasnika' },
       { field: 'jmbgVlasnika', header: 'JMBG vlasnika' },
@@ -558,7 +571,30 @@ export class InsuranceComponent implements OnInit {
   dodajOsiguranjeVozila() {
     console.log(this.form3);
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
+
+    if(this.form3Data.paketOsiguranja !== null && this.form3Data.paketOsiguranja !== '' && this.form3Data.paketOsiguranja !== undefined){
+      this.form3Data.paketNaziv = this.getRizikNameById(this.form3Data.paketOsiguranja);
+    }
+
+    if(this.form3Data.slepovanje !== null && this.form3Data.slepovanje !== '' && this.form3Data.slepovanje !== undefined){
+      this.form3Data.slepovanjeNaziv = this.getRizikNameById(this.form3Data.slepovanje);
+    }
+
+    if(this.form3Data.popravka !== null && this.form3Data.popravka !== '' && this.form3Data.popravka !== undefined){
+      this.form3Data.popravkaNaziv = this.getRizikNameById(this.form3Data.popravka);
+    }
+
+    if(this.form3Data.prevoz !== null && this.form3Data.prevoz !== '' && this.form3Data.prevoz !== undefined){
+      this.form3Data.prevozNaziv = this.getRizikNameById(this.form3Data.prevoz);
+    }
+
+    if(this.form3Data.smestaj !== null && this.form3Data.smestaj !== '' && this.form3Data.smestaj !== undefined){
+      this.form3Data.smestajNaziv = this.getRizikNameById(this.form3Data.smestaj);
+    }
+
     let x = Object.assign({}, this.form3Data);
+    console.log('aasdasd');
+    console.log(this.form3Data);
     //spread operator za unos kopije objekta u niz
     this.osiguranjaVozila = [...this.osiguranjaVozila, x];
     this.showCarDialog = false;
@@ -572,6 +608,23 @@ export class InsuranceComponent implements OnInit {
   }
 
   dodajOsiguranjeNekretnine() {
+
+    if(this.form4Data.povrsinaStana !== null && this.form4Data.povrsinaStana !== '' && this.form4Data.povrsinaStana !== undefined){
+      this.form4Data.povrsinaNaziv = this.getRizikNameById(this.form4Data.povrsinaStana);
+    }
+
+    if(this.form4Data.procenjenaVrednostStana !== null && this.form4Data.procenjenaVrednostStana !== '' && this.form4Data.procenjenaVrednostStana !== undefined){
+      this.form4Data.procenjenaNaziv = this.getRizikNameById(this.form4Data.procenjenaVrednostStana);
+    }
+
+    if(this.form4Data.starostStana !== null && this.form4Data.starostStana !== '' && this.form4Data.starostStana !== undefined){
+      this.form4Data.starostNaziv = this.getRizikNameById(this.form4Data.starostStana);
+    }
+
+    if(this.form4Data.osiguranjeStana !== null && this.form4Data.osiguranjeStana !== '' && this.form4Data.osiguranjeStana !== undefined){
+      this.form4Data.osiguranjeNaziv = this.getRizikNameById(this.form4Data.osiguranjeStana);
+    }
+
     //pravljenje kopije objekta da se ne bi prenosila referenca u novi niz
     let x = Object.assign({}, this.form4Data);
     //spread operator za unos kopije objekta u niz
@@ -648,6 +701,10 @@ export class InsuranceComponent implements OnInit {
   }
 
   thirdStepSubmit() {
+
+    this.regionStep4 = this.getRizikNameById(this.form1Data.destinacija);
+    this.svrhaStep4 = this.getRizikNameById(this.form1Data.svrhaOsiguranja);
+
     this.activeIndex++;
   }
 
@@ -990,8 +1047,8 @@ export class InsuranceComponent implements OnInit {
   }
 
 
-  onPrikaziCenovnik() {
-    if (this.activeIndex == 0) {
+  onPrikaziCenovnik(flag:boolean) {
+
       let cr: CenaRequestDTO = new CenaRequestDTO();
       cr.rizikDTO = new Rizik();
       cr.rizikDTO.idRizik = this.form1Data.destinacija;
@@ -1044,6 +1101,11 @@ export class InsuranceComponent implements OnInit {
       cr.riziciDTO.push(r1);
 
       console.log(cr);
+
+      if(flag){
+        return cr;
+      }
+
       this.insuranceDataService.prikaziCenovnik(cr).subscribe(
         (data) => {
           this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
@@ -1051,10 +1113,10 @@ export class InsuranceComponent implements OnInit {
           this.cenovnikDialogBool = true;
         }
       );
-    }
+
   }
 
-  izracunajCenuVozila(formaOsiguranjaVozila) {
+  izracunajCenuVozila(formaOsiguranjaVozila, flag: boolean) {
 
     let cenaReq : CenaRequestDTO = new CenaRequestDTO();
 
@@ -1075,6 +1137,10 @@ export class InsuranceComponent implements OnInit {
 
     cenaReq.trajanje = this.form1Data.trajanjeOsiguranja;
 
+    if(flag){
+      return cenaReq;
+    }
+
     this.insuranceDataService.prikaziCenovnik(cenaReq).subscribe(
       (data) => {
         this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
@@ -1084,7 +1150,7 @@ export class InsuranceComponent implements OnInit {
     );
   }
 
-  izracunajCenuNekretnine(formaOsiguranjaNekretnine){
+  izracunajCenuNekretnine(formaOsiguranjaNekretnine, flag: boolean){
 
     let cenaReq : CenaRequestDTO = new CenaRequestDTO();
 
@@ -1104,6 +1170,10 @@ export class InsuranceComponent implements OnInit {
 
     cenaReq.trajanje = this.form1Data.trajanjeOsiguranja;
 
+    if(flag){
+      return cenaReq;
+    }
+
     this.insuranceDataService.prikaziCenovnik(cenaReq).subscribe(
       (data) => {
         this.ukupnaCenaDTO1 = JSON.parse(data['_body']);
@@ -1112,6 +1182,37 @@ export class InsuranceComponent implements OnInit {
       }
     );
   }
+
+  getCenaSvega(){
+    let ceneReq:CenaRequestDTO[]=[];
+
+    ceneReq[0] = this.onPrikaziCenovnik(true);
+
+    let n: number = 1;
+
+    this.osiguranjaVozila.forEach( ov => {
+      ceneReq[n++] = this.izracunajCenuVozila(ov, true);
+    });
+
+    this.osiguranjaNekretnina.forEach( on => {
+      ceneReq[n++] = this.izracunajCenuNekretnine(on, true);
+    });
+
+    console.log(ceneReq);
+
+    this.insuranceDataService.cenaSvega(ceneReq).subscribe(
+      (data) => {
+        this.cenaSvegaDTO = JSON.parse(data['_body']);
+        this.cenaSvegaDialogBool = true;
+        console.log('aaaaaaaadasdasdasdas');
+        console.log(this.cenaSvegaDTO);
+      }
+    );
+
+
+  }
+
+
 }
 
 

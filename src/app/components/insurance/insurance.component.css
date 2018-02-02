@@ -74,6 +74,14 @@ body {
     font-weight: 200;
 }
 
+.ui-button-success {
+  width: 150px;
+  height: 40px;
+  border-radius: 12px;
+  font-family: 'Lato';
+  font-weight: 200;
+}
+
 .ui-button-info {
   width: 150px;
   height: 40px;

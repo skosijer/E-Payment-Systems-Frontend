@@ -126,7 +126,7 @@
       <div class="form-group" align="center">
         <label class="col-md-3 control-label"></label>
         <div>
-          <button pButton [disabled]="!form1.valid" class="ui-button-info" label="Izračunaj cenu" type="submit" (click)="onPrikaziCenovnik()"></button>
+          <button pButton [disabled]="!form1.valid" class="ui-button-info" label="Izračunaj cenu" type="submit" (click)="onPrikaziCenovnik(false)"></button>
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           <button pButton [disabled]="!form1.valid" class="ui-button-warning" (click)="stepSubmit()" type="submit" label="Sledeci korak"></button>
         </div>
@@ -728,7 +728,7 @@
             <header>Cena</header>
           </ng-template>
           <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
-            <button type="button" class="ui-button-primary" (click)="izracunajCenuVozila(formaOsiguranjaVozila)" pButton icon="fa-eur"
+            <button type="button" class="ui-button-primary" (click)="izracunajCenuVozila(formaOsiguranjaVozila, false)" pButton icon="fa-eur"
                     iconPos="left"></button>
           </ng-template>
         </p-column>
@@ -758,7 +758,7 @@
             <header>Cena</header>
           </ng-template>
           <ng-template let-formaOsiguranjaVozila="rowData" pTemplate="body">
-            <button type="button" class="ui-button-primary" (click)="izracunajCenuNekretnine(formaOsiguranjaVozila)" pButton icon="fa-eur"
+            <button type="button" class="ui-button-primary" (click)="izracunajCenuNekretnine(formaOsiguranjaVozila, false)" pButton icon="fa-eur"
                     iconPos="left"></button>
           </ng-template>
         </p-column>
@@ -831,9 +831,9 @@
           <br>
           <p-dataTable [value]="osiguranjaNekretnina">
             <p-header>Podaci o nekretnini</p-header>
-            <p-column field="povrsinaStana" header="Površina"></p-column>
-            <p-column field="starostStana" header="Starost"></p-column>
-            <p-column field="procenjenaVrednostStana" header="Procenjena vrednost"></p-column>
+            <p-column field="povrsinaNaziv" header="Površina"></p-column>
+            <p-column field="starostNaziv" header="Starost"></p-column>
+            <p-column field="procenjenaNaziv" header="Procenjena vrednost"></p-column>
           </p-dataTable>
         </div>
       </div>
@@ -863,17 +863,26 @@
 
       </div>
 
-      <button type="button" class="btn btn-primary-outline pull-right" (click)="buyInsurance(VrstaPlacanja.Banka)">
-        <i class="fa fa-plus"></i>Banka</button>
+      <br>
+      <hr>
 
-      <p align="center">
 
-        <app-paypal style="position: center"
-        [amount]="5000"
-        (onPayPalButtonClick)="buyInsurance(VrstaPlacanja.PayPal)"
-        (onCompletePayment)="completePayment()"></app-paypal>
+        <div class="row">
+          <div class="col-md-4" align="center">
+            <button pButton class="ui-button-info" (click)="getCenaSvega()" icon="fa-align-left" label="Cenovnik"></button>
+          </div>
+          <div class="col-md-4" align="center">
+            <app-paypal style="position: center"
+                        [amount]="cenaSvegaDTO.cenaSvega"
+                        (onPayPalButtonClick)="buyInsurance(VrstaPlacanja.PayPal)"
+                        (onCompletePayment)="completePayment()"></app-paypal>
+          </div>
+          <div class="col-md-4" align="center">
+            <button pButton class="ui-button-success" (click)="buyInsurance(VrstaPlacanja.Banka)" icon="fa-university" label="Banka"></button>
+          </div>
+        </div>
 
-      </p>
+
 
     </div>
 
@@ -953,4 +962,56 @@
       </div>
   </p-dialog>
 </div>
+
+<p-dialog [(visible)]="cenaSvegaDialogBool" modal="true" draggable="false" resizable="false" styleClass="cenovnikDialogStyle">
+  <p-header>Cenovnik</p-header>
+
+  <div class="container">
+    <div class="row">
+      <div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <address>
+              <strong style="font-family: Impact">S Jelenom na put</strong>
+              <br>
+              Srbija, Novi Sad 21000
+              <br>
+              TEL: (+381) 63-165-2267
+            </address>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+            <p>
+              <em>Datum: {{currectDate | date:'dd.MM.yyyy.'}}</em>
+            </p>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="row" style="padding-bottom: 30px" *ngFor="let ukupnaCenaDTO of cenaSvegaDTO.ukupneCeneDTOs">
+          <table>
+            <tr>
+              <th>Tip rizika</th>
+              <th>Odabrani rizik</th>
+              <th>Broj osoba</th>
+              <th>Jedinična cena (po danu)</th>
+              <th>Ukupna cena (za trajanje od {{form1Data.trajanjeOsiguranja}} dan/a)</th>
+            </tr>
+            <tr *ngFor="let cena of ukupnaCenaDTO.cene">
+              <td>{{cena.tipRizika}}</td>
+              <td>{{cena.rizik}}</td>
+              <td>{{cena.broj}}</td>
+              <td>{{cena.cena/(cena.broj * form1Data.trajanjeOsiguranja)| number : '1.2-2'}} €</td>
+              <td>{{cena.cena | number : '1.2-2'}} €</td>
+            </tr>
+          </table>
+          <hr>
+          <hr>
+        </div>
+        <br>
+        <br>
+        <h4 style="float:right"> Trenutna cena osiguranja je: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{cenaSvegaDTO.cenaSvega}} € &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h4>
+      </div>
+    </div>
+  </div>
+</p-dialog>
 
