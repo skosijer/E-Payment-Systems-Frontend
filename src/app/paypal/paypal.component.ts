@@ -13,16 +13,16 @@ export class PaypalComponent implements OnInit {
 
   //Directive for amount of the transaction, should be passed to the function below somehow - line 40
   @Input() amount: number;
-  @Output() onPayPalButtonClick = new EventEmitter(); 
-  @Output() onCompletePayment = new EventEmitter(); 
+  @Output() onPayPalButtonClick = new EventEmitter();
+  @Output() onCompletePayment = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
 
 
-      self = this; 
-      
+      self = this;
+
 
       let amount = this.amount;
 
@@ -42,8 +42,8 @@ export class PaypalComponent implements OnInit {
 
         // payment() is called when the button is clicked
         payment: function(data, actions) {
-        
-          self.onPayPalButtonClick.emit(); 
+
+          self.onPayPalButtonClick.emit();
 
           // Make a call to the REST api to create the payment
           return actions.payment.create({
@@ -63,7 +63,7 @@ export class PaypalComponent implements OnInit {
 
           // Make a call to the REST api to execute the payment
           return actions.payment.execute().then(function() {
-        
+
             window.alert('Payment Complete!');
           });
         }
