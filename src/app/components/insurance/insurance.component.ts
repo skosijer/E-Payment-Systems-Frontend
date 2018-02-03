@@ -69,6 +69,7 @@ export class InsuranceComponent implements OnInit {
   cenaSvegaDTO:CenaSvegaDTO = new CenaSvegaDTO();
 
 
+
   /*Svi rizici u sistemu I podaci dodatne promenljive potrebne da bi se sve lepo prikazivalo u cetvrtom koraku */
   sviRizici: Rizik[] = [];
 
@@ -148,7 +149,7 @@ export class InsuranceComponent implements OnInit {
   VrstaPlacanja = VrstaPlacanja;
 
   vrstaPlacanja: VrstaPlacanja;
-  buyPolicyDTO: BuyPolicyDTO;
+  buyPolicyDTO: BuyPolicyDTO = new BuyPolicyDTO();
 
   private amount: number;
 
@@ -156,6 +157,8 @@ export class InsuranceComponent implements OnInit {
 
   ngOnInit() {
 
+    // this.cenaSvegaDTO.cenaSvega = 300.55;
+    // this.activeIndex = 3;
     this.insuranceDataService.getStarosneGrupe().subscribe(
       (data) => {
         this.starosti = JSON.parse(data['_body']);
@@ -705,7 +708,30 @@ export class InsuranceComponent implements OnInit {
     this.regionStep4 = this.getRizikNameById(this.form1Data.destinacija);
     this.svrhaStep4 = this.getRizikNameById(this.form1Data.svrhaOsiguranja);
 
-    this.activeIndex++;
+    let ceneReq:CenaRequestDTO[]=[];
+
+    ceneReq[0] = this.onPrikaziCenovnik(true);
+
+    let n: number = 1;
+
+    this.osiguranjaVozila.forEach( ov => {
+      ceneReq[n++] = this.izracunajCenuVozila(ov, true);
+    });
+
+    this.osiguranjaNekretnina.forEach( on => {
+      ceneReq[n++] = this.izracunajCenuNekretnine(on, true);
+    });
+
+    console.log(ceneReq);
+
+    this.insuranceDataService.cenaSvega(ceneReq).subscribe(
+      (data) => {
+        this.cenaSvegaDTO = JSON.parse(data['_body']);
+        console.log('aaaaaaaadasdasdasdas');
+        console.log(this.cenaSvegaDTO);
+        this.activeIndex++;
+      }
+    );
   }
 
   onShowCarDialog() {
