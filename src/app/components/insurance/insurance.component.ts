@@ -705,7 +705,31 @@ export class InsuranceComponent implements OnInit {
     this.regionStep4 = this.getRizikNameById(this.form1Data.destinacija);
     this.svrhaStep4 = this.getRizikNameById(this.form1Data.svrhaOsiguranja);
 
-    this.activeIndex++;
+    let ceneReq:CenaRequestDTO[]=[];
+
+    ceneReq[0] = this.onPrikaziCenovnik(true);
+
+    let n: number = 1;
+
+    this.osiguranjaVozila.forEach( ov => {
+      ceneReq[n++] = this.izracunajCenuVozila(ov, true);
+    });
+
+    this.osiguranjaNekretnina.forEach( on => {
+      ceneReq[n++] = this.izracunajCenuNekretnine(on, true);
+    });
+
+    console.log(ceneReq);
+
+    this.insuranceDataService.cenaSvega(ceneReq).subscribe(
+      (data) => {
+        this.cenaSvegaDTO = JSON.parse(data['_body']);
+        this.activeIndex++;
+        console.log('aaaaaaaadasdasdasdas');
+        console.log(this.cenaSvegaDTO);
+      }
+    );
+
   }
 
   onShowCarDialog() {

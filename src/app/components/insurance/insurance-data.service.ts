@@ -10,7 +10,7 @@ import {CenaRequestDTO} from "../../beans/dtos/cena-request.dto";
 export class InsuranceDataService {
 
 
-  private url = 'http://localhost:8081/corpMain/';
+  private url = 'https://localhost:8081/corpMain/';
   //private url = 'https://localhost:8080/';
 
   constructor(private http:Http) { }
